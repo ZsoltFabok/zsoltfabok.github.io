@@ -1,0 +1,377 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Liquidity for Kanban Systems, My First Look &#8211; Zsolt Fabók</title>
+<meta name="description" content="In his keynote at the Lean Kanban Central Europe 2012 conference David J. Anderson proposed a new metric for Kanban Systems, which is supposed to provide an answer to the big organizational governance question.<br/><br/>more...">
+<meta name="keywords" content="kanban, liquidity">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Liquidity for Kanban Systems, My First Look">
+<meta name="twitter:description" content="In his keynote at the Lean Kanban Central Europe 2012 conference David J. Anderson proposed a new metric for Kanban Systems, which is supposed to provide an answer to the big organizational governance question.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liquidity for Kanban Systems, My First Look">
+<meta property="og:description" content="In his keynote at the Lean Kanban Central Europe 2012 conference David J. Anderson proposed a new metric for Kanban Systems, which is supposed to provide an answer to the big organizational governance question.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/11/liquidity-for-kanban-systems/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/11/liquidity-for-kanban-systems/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Liquidity for Kanban Systems, My First Look</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-11-25T00:00:00+01:00"><i class="fa fa-calendar-o"></i> November 25, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,liquidity&amp;text=Liquidity%20for%20Kanban%20Systems,%20My%20First%20Look&amp;url=/blog/2012/11/liquidity-for-kanban-systems/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/11/liquidity-for-kanban-systems/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/11/liquidity-for-kanban-systems/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p><img class="right" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/david_anderson.png" />
+In his <a href="http://www.lean-kanban.eu/sessions/anderson/">keynote</a> at the <a href="http://www.lean-kanban.eu/">Lean Kanban Central Europe 2012</a> conference <a href="http://djaa.com">David J. Anderson</a> proposed a new metric for Kanban Systems, which is supposed to provide an answer to the big organizational governance question: <em>“How do you choose where to place a piece of work or project?”</em> <strong>The idea is to measure the pull transactions per volume (persons or units of currency) in a Kanban System, which shall tell us how liquid it actually is</strong>. There is an analogy to the liquidity of the markets from the investment banking domain: the more liquid a market is the higher the trust is. According to David:
+&gt; <em>…Measuring and reporting system liquidity is important to building trust to enable a probabilistic approach to management of knowledge work and hence elimination of wasteful economic overheads facilitating the comfort mechanisms inherent in the existing pseudo-deterministic approach to management. System liquidity provides an important indicator, solving the governance challenge of selecting the best vendor or department to process a work order…</em></p>
+
+<p>In layman’s terms, the probability of getting desired outcome is higher if I work with the team with the highest liquidity.</p>
+
+<!-- more -->
+
+<h3 id="liquidity-for-kanban-systems">Liquidity for Kanban Systems</h3>
+
+<p><img class="center" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/board.png" /></p>
+
+<p>Imagine the Kanban System as a market where the transactions are the pulls. In this context <strong>the liquidity of a Kanban System is the number of pull transactions in a given time period</strong> (which is three in the example above). There is a normalized form in which the number of pull transactions is divided by the number of team members (or currency) in a given time period. I’m going to use the normalized form in the rest of this post, but will leave out the word “normalized” when referring to it for simplicity.</p>
+
+<p><img class="right" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/challenge-accepted.png" /></p>
+
+<p>At the end of his talk, David challenged the Kanban community to measure the liquidity in their organizations and collect as much information as possible to see how the idea works in practice. I was curious about it, so I took the data from my <a href="https://speakerdeck.com/fabokzs/measure-and-manage-flow-in-practice">“Measure and Manage Flow in Practice” talk</a> (<a href="#note1">[1]</a>) and <em>calculated</em> the liquidity of an old team of mine (<a href="#note2">[2]</a>). <strong>I use the word <em>“calculated”</em> and not <em>“measured”</em> on purpose</strong>: my results weren’t entirely measured so they’re not solid enough. Back then I was collecting data for a different purpose and therefore I was missing some details which I had to figure out by using calculations, and this is not the way to do accurate measurements. Additionally, I didn’t remember the entire context, which made it hard to explain the data. Nevertheless, I think the result of my calculations is good enough to start with, so here is it:</p>
+
+<p><img class="center" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/liquidity-days-weeks.png" /></p>
+
+<p>The matching CFD chart:</p>
+
+<p><img class="center" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/cfd.png" /></p>
+
+<p>Towards the end the CFD shows some stability, however the liquidity is still moves up and down. I don’t have a good explanation, so I’d rather wait for the real measurements to provide more details about this phenomenon.</p>
+
+<h3 id="unclear-relationship-between-liquidity-lead-time-and-throughput">Unclear relationship between liquidity, lead time and throughput</h3>
+
+<p>At the moment I dare to state that <strong>the connection between liquidity, <a href="/blog/2013/07/lead-time">lead time</a> and <a href="/blog/2014/01/throughput">throughput</a> is not clear yet</strong>. I cannot say that a team with higher liquidity will deliver faster or deliver more. For example, there was another team where we had a separate column for code review. After long discussions we decided to merge the code review and development columns and made the code review a part of the definition of done. I clearly remember that the lead time and the throughput did not change, however if I had calculated the liquidity I would have ended up with a lower number, because fewer columns on the board means fewer pull transactions.</p>
+
+<p>This statement isn’t one hundred percent accurate either, because pull transactions won’t necessarily happen linearly, by pull after pull. Pull transactions can happen in parallel, completely unrelated to each other. Imagine that you have to do a work item and you have five columns on your board. This means that your liquidity will be five if you work only on that work item and finish it within the given time period (the number of pull transactions to get a task done is equal to the number of columns you have on your board). If you take away a column, your liquidity will be four if you follow this linear thinking. However, with fewer columns you can reduce the <a href="/blog/tag/inventory">inventories</a> and waiting times, so you may find some time to pull another item somewhere else on the board, so you might have a liquidity of five again. This works the other way around as well: if you need an extra column (like when we had to create verification and validation columns instead of a single testing column) you may increase your liquidity, but you may need more time to pull work items forward, so time-wise you won’t gain that extra in your liquidity.</p>
+
+<p>Concerning throughput, have a look at the following charts:</p>
+
+<p><img class="center" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/liquidity-vs-throughput.png" /></p>
+
+<p>They are quite the same, but not really. There is a noticeable gap in throughput although there were multiple pulls at the very same time. Since my data comes from calculations I don’t know too much about the context, but an infinite queue on the board can explain the difference (an <em>infinite queue</em> is a specific column which has no WIP limit and works as an unlimited <a href="/blog/tag/inventory">inventory</a>): the team pushed work items into that queue more frequently than they pulled form it. <strong>In this case the liquidity will be high because of the frequent pushes, but the throughput will be low because of the rare pulls</strong>.</p>
+
+<h3 id="what-liquidity-is-telling-me-at-the-moment">What liquidity is telling me at the moment</h3>
+
+<p><img class="left" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/pattern.png" /></p>
+
+<p>At the moment <strong>I see liquidity as an energy level indicator</strong>. <strong>In order to keep this level relatively high, the team needs to continuously improve itself</strong> (this is the fuel which is necessary to create energy). When liquidity drops or increases we know something is happening. For example, you can spot a recurring pattern (the chart on the left) in the first daily chart. There is a calmer period, which is followed by a spike and then a drop. A little bit later, there is an almost equally large spike and a calm period again. First I thought that this phenomenon happened around the dates when we had deliveries, but as far as I remember we rarely worked that much before deliveries (high number of pull transactions may indicate high workload, too). However, we had an infinite queue after implementation - I remember that clearly -, which we emptied (first spike) when we were physically unable to put more work items into it. After that we put the implemented work items into the empty queue and pulled them forward (second spike) so that we could continue the implementation (the longer calm periods) with a clean sheet.</p>
+
+<h3 id="calculation-and-measurement-issues">Calculation and measurement issues</h3>
+
+<p>I’ve already written about the problems that <em>infinite queues</em> in the middle of the flow can cause, but there are more gotchas, which may make the measurements hard to perform.</p>
+
+<p>The first issue is with <strong><a href="/blog/2011/09/expand-and-collapse-got-beaten">the expand and collapse method</a></strong>: a couple of times, we broke down a large work item into smaller pieces and worked only with those, but at the validation phase we merged them back together. My common sense would dictate to use the pull transactions of the broken down work items, but the breakdown process is really team-specific, which may make the comparison of teams (this is the purpose of the liquidity measurements) less possible or accurate. On the other hand, <strong>if a team can break down work items in an efficient way, then that team may be better than other teams</strong>.</p>
+
+<p>The second issue appears when <strong>the team rejects work items and moves them back on the board</strong>. In this case the number of pull transactions on those work items can be easily doubled if they moved back to the beginning of the board.</p>
+
+<p>The last issue has nothing to do with measurements (or calculations) directly, but may cause some trouble later: <strong>the changing number of the columns and the people in the team</strong>. I’ve already written about the issues with the number of columns, and my pessimistic half has already visualized teams arguing about having more columns just to have the chance of achieving a higher liquidity instead of improving their ways of working. Additionally, the number of columns and the number of team members were changing frequently in the observed time period (for example in my case I calculated about five column changes and six changes in the number of persons in the team), and I don’t know how this change will affect the liquidity-based comparisons in the future.</p>
+
+<h3 id="liquidity-by-work-item-size">Liquidity by work item size</h3>
+
+<p>Finally, I was curious how the liquidity by work item size chart looked like:</p>
+
+<p><img class="center" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/sizes.png" /></p>
+
+<p>It seems that the smaller the items are, the more pull transactions are in the system, but this needs to be investigated further. I’ve already written about <em>expand and collapse</em> and I’m wondering if there are any connections here. In theory there is one, but I’d rather wait for some evidence from measurements before jumping to any conclusions.</p>
+
+<h3 id="the-first-comparison">The first comparison</h3>
+
+<p><img class="right" src="/images/posts/2012-11-25-liquidity-for-kanban-systems/teams.png" /></p>
+
+<p>I managed to find a picture of another team, calculated their liquidity and compared it to ours (check out the chart on the right, which covers two weeks). As you can see, their liquidity was way lower than ours, but they were more trusted inside the whole organization. This might be important in the future: <strong>the measured data or scientific proof such as liquidity won’t change cognitive biases automatically</strong>. I’m certain that no matter what our team would have done, the other team had been in favor. Nevertheless, I see a great potential in liquidity for Kanban Systems, because besides the potential in comparison, liquidity provides more details about the internal affairs of a team.</p>
+
+<p><strong>Update:</strong> you can find David’s own post about liquidity on his <a href="http://agilemanagement.net/index.php/Blog/thoughts_on_the_value_of_liquidity_as_metric/">blog</a>.</p>
+
+<h4 id="notes">Notes</h4>
+<ol>
+  <li>
+    <p><a id="note1"></a><em>I used the data behind the CFD (Cumulative Flow Diagram) and some pictures from the material of the talk</em></p>
+  </li>
+  <li>
+    <p><a id="note2"></a><em>The pictures provided the number of columns of our boards at the time when they had been taken. I used this information to calculate the number of pull transactions, because the number of pull transactions of a finished work item was equal to the number of columns when the work item had been done. I used the lead time (done - started) to figure out when the pull transactions had happened: I evenly distributed the number of pull transactions along the working period</em></p>
+  </li>
+</ol>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/05/kanban-on-organisational-level/">Kanban on Organisational Level</a></li><li><a href="/blog/2012/03/visualize-on-the-highest-level/">Visualize the Flow on the Highest Possible Level</a></li><li><a href="/blog/2012/04/see-the-whole-flow-exercise/">See the Whole Flow - An Exercise for Managers to Start a Transition</a></li><li><a href="/blog/2012/10/hidden-inventory/">The Hidden Inventory</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/liquidity" title="liquidity">liquidity</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/11/liquidity-for-kanban-systems/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/11/liquidity-for-kanban-systems/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/11/liquidity-for-kanban-systems/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/11/liquidity-for-kanban-systems/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/11/remote-desktop-plugin/" class="basic-alignment left" title="Chrome Remote Desktop Plugin">&laquo; Chrome Remote Desktop Plugin</a>
+            
+            
+              <a href="/blog/2012/12/walnut/" class="basic-alignment right" title="The Walnut">The Walnut &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

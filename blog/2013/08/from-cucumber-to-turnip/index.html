@@ -1,0 +1,461 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Moving From Cucumber to Turnip &#8211; Zsolt Fabók</title>
+<meta name="description" content="I was about to refactor one of my old ruby apps when I realized that I didn't want to write more cucumber features and scenarios. I do bdd whenever I can (I even wrote a detailed post about it), but in ruby I don't want to have test cases both under .<br/><br/>more...">
+<meta name="keywords" content="cucumber, turnip, rspec, testing, ruby">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Moving From Cucumber to Turnip">
+<meta name="twitter:description" content="I was about to refactor one of my old ruby apps when I realized that I didn't want to write more cucumber features and scenarios. I do bdd whenever I can (I even wrote a detailed post about it), but in ruby I don't want to have test cases both under .<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Moving From Cucumber to Turnip">
+<meta property="og:description" content="I was about to refactor one of my old ruby apps when I realized that I didn't want to write more cucumber features and scenarios. I do bdd whenever I can (I even wrote a detailed post about it), but in ruby I don't want to have test cases both under .<br/><br/>more...">
+<meta property="og:url" content="/blog/2013/08/from-cucumber-to-turnip/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2013/08/from-cucumber-to-turnip/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Moving From Cucumber to Turnip</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2013-08-30T00:00:00+02:00"><i class="fa fa-calendar-o"></i> August 30, 2013</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=cucumber,turnip,rspec,testing,ruby&amp;text=Moving%20From%20Cucumber%20to%20Turnip&amp;url=/blog/2013/08/from-cucumber-to-turnip/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/08/from-cucumber-to-turnip/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2013/08/from-cucumber-to-turnip/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I was about to refactor one of my old ruby apps when I realized that I didn’t want to write more <a href="/blog/tag/cucumber">cucumber</a> <em>features</em> and <em>scenarios</em>. I do <a href="/blog/tag/bdd">bdd</a> whenever I can (I even wrote a <a href="/blog/2011/12/bdd-demonstration/">detailed post</a> about it), but in ruby I don’t want to have test cases both under <code>./features</code> for <em>cucumber</em> and <code>./spec</code> for <a href="/blog/tag/rspec">rspec</a> any more. I know that it is possible to run both of them at once, but that is not simple: it makes automatic test case execution, getting test coverage, and maintenance complicated. Moreover, it is easy to forget to run one of them before commit, and that usually leads to a failed build. So, I decided that I would ditch <em>cucumber</em> and use only <em>rspec</em> and use <code>it "" do ... end</code> methods as <em>scenarios</em> and write <em>steps</em> such as <code>when_i_enter_something</code>, but then I found <a href="https://github.com/jnicklas/turnip">turnip</a>, and I like it very much.</p>
+
+<!-- more -->
+
+<p>Moving from <em>cucumber</em> to <em>turnip</em> was pretty easy. It uses the same <em>feature</em> syntax as <em>cucumber</em>, which means that I don’t have to do anything with the <em>feature files</em> besides moving them under the <code>./spec</code> folder. I’ve created a <code>acceptance</code> folder under <code>./spec</code> just to keep the acceptance test cases separated from the unit tests.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % ls -1 features spec/acceptance
+features:
+numeral_conversion.feature
+user_interface.feature
+...
+
+spec/acceptance:
+numeral_conversion.feature
+user_interface.feature
+...</code></pre></div>
+
+<p>And one of the <em>feature files</em> - <code>spec/acceptance/user_interface.feature</code>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> Provide a simple form for the user so that she can use the converter</span>
+
+<span class="nf">  </span><span class="k">Background:</span><span class="nf"></span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Display a number as a word</span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I enter </span><span class="s">10</span><span class="nf"> into my field</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I press submit</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I see it as a name in the result</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I see the original number as well</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Don&#39;t display anything when the user pressed submit without giving a number</span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I press submit</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I do not see any errors just the content of the main page</span>
+<span class="c">  # ... (more scenarios)</span><span class="nf"></span></code></pre></div>
+
+<p>Running the test cases:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % bundle <span class="nb">exec </span>rspec spec
+..........
+
+Finished in 3.74 seconds
+<span class="m">10</span> examples, <span class="m">0</span> failures
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p>It didn’t work because <em>turnip</em> needs to “know” that it has to run the <em>features</em>, too. It can be easily achieved by adding <code>-r turnip/rspec</code> to <code>./.rspec</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % cat .rspec
+--colour -r turnip/rspec
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p>Now, running the test cases again:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % bundle <span class="nb">exec </span>rspec spec
+...
+  Provide a simple form <span class="k">for</span> the user so that she can use the converter
+  Don<span class="s1">&#39;t display anything when the user gave something else than a number</span>
+<span class="s1">  I am on the main page -&gt; I enter something else than a number into my field</span>
+<span class="s1">  -&gt; I press submit -&gt; I do not see any errors just the content of the main page</span>
+<span class="s1">    # No such step: &#39;</span>I am on the main page<span class="err">&#39;</span>
+    <span class="c"># ./spec/acceptance/user_interface.feature:68</span>
+
+Finished in 4.18 seconds
+<span class="m">50</span> examples, <span class="m">0</span> failures, <span class="m">40</span> pending
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p>Nice, that seems to work, and it is time to move the <em>steps</em>, too. They will go under the <code>spec/acceptance/steps</code> with the name <code>spec/acceptance/steps/user_interface_steps.rb</code> folder, but will need little change:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># cucumber step:</span>
+ <span class="c1">#...</span>
+<span class="no">Given</span> <span class="sr">/^I am on the main page$/</span> <span class="k">do</span>
+  <span class="n">visit</span> <span class="s2">&quot;/&quot;</span>
+<span class="k">end</span>
+
+<span class="no">When</span> <span class="sr">/^I enter (\d+) into my field$/</span> <span class="k">do</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span>
+  <span class="vi">@number</span> <span class="o">=</span> <span class="n">number</span>
+  <span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="n">number</span><span class="p">)</span>
+<span class="k">end</span>
+ <span class="c1">#...</span>
+ <span class="c1"># ---------------------------------------------</span>
+ <span class="c1"># turnip step:</span>
+ <span class="c1">#...</span>
+<span class="nb">require</span> <span class="s2">&quot;spec_helper&quot;</span>
+
+<span class="k">module</span> <span class="nn">UserInterfaceSteps</span>
+  <span class="n">step</span> <span class="s2">&quot;I am on the main page&quot;</span> <span class="k">do</span>
+    <span class="n">visit</span> <span class="s2">&quot;/&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">step</span> <span class="s2">&quot;I enter :number into my field&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span>
+    <span class="vi">@number</span> <span class="o">=</span> <span class="n">number</span>
+    <span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="n">number</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+ <span class="c1"># ...</span></code></pre></div>
+
+<p>The body of the method is the same, but the syntax is a bit different. <em>Turnip</em> doesn’t do regexp argumentation (I never understood why that beneficial anyway), it uses symbols as placeholders. As you can see, it is not necessary to put the placeholder between <code>""</code> because <em>turnip</em> will find the placeholder without them. Moreover, the <em>steps</em> aren’t global anymore. If you need global ones, just define them in the <code>Turnip::Steps</code> module.</p>
+
+<p>There are three things that I still have to do: tell <em>turnip</em> where it can load the <em>steps</em> from, make them available for <em>scenarios</em>, and make the <code>capybara</code> methods - such as <code>visit</code> - work. <em>Turnip</em> has its own configuration file (<code>./spec/turnip_helper.rb</code>) that it loads automatically. Add the following line to <code>spec/turnip_helper.rb</code>, so that the <em>steps</em> are loaded:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;spec/acceptance/steps/**/*_steps.rb&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="nb">load</span> <span class="n">f</span><span class="p">,</span> <span class="kp">true</span> <span class="p">}</span></code></pre></div>
+
+<p>This will load the <em>steps</em>, and you can use the following line when you want to use them:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># default</span>
+<span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="o">.</span><span class="n">include</span> <span class="no">UserInterfaceSteps</span> <span class="p">}</span></code></pre></div>
+
+<p>In this example I’m loading them right after definition:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">UserInterfaceSteps</span>
+  <span class="n">step</span> <span class="s2">&quot;I am on the main page&quot;</span> <span class="k">do</span>
+    <span class="n">visit</span> <span class="s2">&quot;/&quot;</span>
+  <span class="k">end</span>
+
+  <span class="c1"># ... (more steps)</span>
+<span class="k">end</span>
+
+<span class="no">RSpec</span><span class="o">.</span><span class="n">configure</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="o">.</span><span class="n">include</span> <span class="no">UserInterfaceSteps</span> <span class="p">}</span></code></pre></div>
+
+<p>Three more lines in the <code>spec_helper.rb</code> so that the <code>capybara</code> methods - such as <code>visit</code> - can be used in <em>rpsec</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="nb">require</span> <span class="s1">&#39;rspec/rails&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;rspec/autorun&#39;</span>
+
+<span class="nb">require</span> <span class="s1">&#39;capybara/rspec&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capybara/rails&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;turnip/capybara&#39;</span> <span class="c1"># for scopes</span>
+ <span class="c1"># ...</span></code></pre></div>
+
+<p>And technically we are done: <strong>both the acceptance and unit test cases are executed with one command</strong>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % bundle <span class="nb">exec </span>rspec spec
+..................................................
+
+Finished in 5.56 seconds
+<span class="m">50</span> examples, <span class="m">0</span> failures
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p><em>Turnip</em> supports <em>scopes</em>, too (they start with <code>@</code> like <code>@selenium</code> or <code>@database</code>). For example, there are test cases I’d like to run with <em>selenium</em>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="nt">@selenium</span><span class="nf"></span>
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Display a number as a word</span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I enter </span><span class="s">10</span><span class="nf"> into my field</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I press submit</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I see it as a name in the result</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I see the original number as well</span></code></pre></div>
+
+<p>This will open my Firefox and run the test case in it, but that will ruin the whole <em>“running everything with one command fast and simple”</em> experience. Fortunately, <em>turnip</em> handles scopes as tags, so it is pretty easy not to run the <em>scoped</em> test cases:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % bundle <span class="nb">exec </span>rspec spec --tag <span class="s2">&quot;~selenium&quot;</span>
+Run filtered excluding <span class="o">{</span>:selenium<span class="o">=</span>&gt;true<span class="o">}</span>
+.................................................
+
+Finished in 4.83 seconds
+<span class="m">49</span> examples, <span class="m">0</span> failures
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p>The <code>~</code> tells <em>rspec</em> not to run the tests with the specified <em>scope</em> or <em>tag</em>, and the <code>""</code> tells my <code>zsh</code> not to interpret the <code>~</code> symbol.</p>
+
+<p><em>Turnip</em> knows much more then I mentioned in this post (the code samples are <a href="https://github.com/ZsoltFabok/coding-dojo/tree/master/numerals">here</a>), such as calling steps from other steps, custom steps, placeholders, and different scope options etc., but I won’t write about them now because its <a href="https://github.com/jnicklas/turnip">README</a> is very detailed. <em>Turnip</em> is a great tool that makes my development work easier and I hope you’ll give it a chance, too.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/12/bdd-demonstration/">A Step by Step BDD Demonstration with Some Useful Insights</a></li><li><a href="/blog/2012/07/put-your-todo-into-the-test-case/">Put Your TODO Items Into Your Test Case</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li><li><a href="/blog/tag/turnip" title="turnip">turnip</a></li><li><a href="/blog/tag/rspec" title="rspec">rspec</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li><li><a href="/blog/tag/ruby" title="ruby">ruby</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2013/08/from-cucumber-to-turnip/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/08/from-cucumber-to-turnip/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2013/08/from-cucumber-to-turnip/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2013/08/from-cucumber-to-turnip/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2013/08/public-speaking-events-in-autumn/" class="basic-alignment left" title="Public Speaking Events in Autumn">&laquo; Public Speaking Events in Autumn</a>
+            
+            
+              <a href="/blog/2013/09/fault-tree-analysis/" class="basic-alignment right" title="Fault Tree Analysis">Fault Tree Analysis &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

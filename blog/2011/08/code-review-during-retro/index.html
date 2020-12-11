@@ -1,0 +1,573 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Code Review During Retrospective &#8211; Zsolt Fabók</title>
+<meta name="description" content="Most of the retrospectives I've kept or participated in were about agile approaches (for example communication with the&nbsp;Product Owner)&nbsp;and organisation-related changes, but not everybody is into these. Most software engineers and craftsmen aren't that interested in how to deliver faster, or how to communicate better, they are interested in how to be better at their profession: programming.<br/><br/>more...">
+<meta name="keywords" content="agile, code review, refactoring, dojo, improvement, xp, retrospective, programming">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Code Review During Retrospective">
+<meta name="twitter:description" content="Most of the retrospectives I've kept or participated in were about agile approaches (for example communication with the&nbsp;Product Owner)&nbsp;and organisation-related changes, but not everybody is into these. Most software engineers and craftsmen aren't that interested in how to deliver faster, or how to communicate better, they are interested in how to be better at their profession: programming.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Code Review During Retrospective">
+<meta property="og:description" content="Most of the retrospectives I've kept or participated in were about agile approaches (for example communication with the&nbsp;Product Owner)&nbsp;and organisation-related changes, but not everybody is into these. Most software engineers and craftsmen aren't that interested in how to deliver faster, or how to communicate better, they are interested in how to be better at their profession: programming.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/08/code-review-during-retro/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/08/code-review-during-retro/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Code Review During Retrospective</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-08-02T07:46:03-06:00"><i class="fa fa-calendar-o"></i> August 02, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=agile,codereview,refactoring,dojo,improvement,xp,retrospective,programming&amp;text=Code%20Review%20During%20Retrospective&amp;url=/blog/2011/08/code-review-during-retro/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/08/code-review-during-retro/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/08/code-review-during-retro/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>Most of the <a href="/blog/tag/retrospective">retrospectives</a> I’ve kept or participated in were about agile approaches (for example communication with the <a href="/blog/tag/product-owner">Product Owner</a>) and organisation-related changes, but not everybody is into these. Most software engineers and craftsmen aren’t that interested in how to deliver faster, or how to communicate better, they are interested in how to be better at their profession: <strong>programming</strong>.</p>
+
+<p>Usually, software craftsmen are interested in new technologies and improving their programming skills. <strong>The easiest way to gain knowledge and improve skills is to learn from each other</strong>, see how others are programming, what kind of tricks they are using, what problems they have, and how they solve them. Last but not least, <strong>when you read other people’s code, you will have more information about what is going on in the project(s) you are working in</strong>.</p>
+
+<p>My proposal is to <strong>do code review during your <em>retrospective</em> meetings</strong>.</p>
+
+<p>Usually, this kind of *retrospective *has the following goals:</p>
+
+<ul>
+  <li>
+    <p>learn new programming techniques</p>
+  </li>
+  <li>
+    <p>find quality improvement ideas</p>
+  </li>
+  <li>
+    <p>find coding behavioural patterns which need to be kept</p>
+  </li>
+  <li>
+    <p>find coding behavioural patterns which need to be changed</p>
+  </li>
+</ul>
+
+<p>It is really important to keep these goals in mind, because the <em>retrospective</em> is not a <a href="/blog/2010/05/basics-of-code-review/" title="Basics of Code Review">real code review</a> session where the goal is to find mistakes and correct them. It is about finding those things which can make you a better craftsman in the long run.</p>
+
+<!--more-->
+<p>As a <em>preparation,</em> find some code snippets which were developed during the last <em>sprint</em> or in the last two weeks. Even if the participants find out who wrote the piece of code under review, try not to show the original author. Remember the goals and the long term effects; this meeting isn’t about blaming or improving an individual.</p>
+
+<p>I’ll use an old project of mine for the examples. The project was a very, very simple version control system written in Java. * *I decided to review my methods which work with file versions and content copying.</p>
+
+<p><em>I’ll present specific methods from this project for the sake of the readability of this post, but when you do code review during your meeting, remember to use code snippets from the last sprint or iteration.</em></p>
+
+<p><strong>The first step is to examine the snippets individually:</strong></p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="cm">/**</span>
+<span class="cm">     * Returns the list of possible versions.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @return the list of possible versions</span>
+<span class="cm">     * @throws IOException if error occurs while getting the versions</span>
+<span class="cm">     *  from the metadata file</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">List</span> <span class="nf">getVersions</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">List</span> <span class="n">versions</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ArrayList</span><span class="o">();</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="na">load</span><span class="o">();</span>
+        <span class="c1">// Get the version from the file (3rd element in an entry -&gt; index 2)</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">metadata</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">versions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">metadata</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">2</span><span class="o">));</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">versions</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Returns the currently selected version.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @return the currently selected version,</span>
+<span class="cm">     *  ``null`` if nothing is selected</span>
+<span class="cm">     * @throws IOException</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getCheckedoutVersion</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="na">load</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">trackedFile</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+            <span class="c1">// There is a real selected version</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">metadata</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">metadata</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="c1">// The selected version was deleted, but no new version was selected</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>My findings:</p>
+
+<ul>
+  <li>
+    <p><strong>+</strong> short, focused methods</p>
+  </li>
+  <li>
+    <p><strong>+</strong> meaningful method names</p>
+  </li>
+  <li>
+    <p><strong>+</strong> javaDoc comments are <strong>present and accurate</strong></p>
+  </li>
+  <li>
+    <p><strong>-</strong> do not return <em>null, *otherwise you have to “</em>null check”* values before calling a method or accessing a member variable, use <a href="http://sourcemaking.com/design_patterns/null_object">null object pattern</a> or <a href="http://martinfowler.com/eaaCatalog/specialCase.html">special case pattern</a> instead</p>
+  </li>
+  <li>
+    <p><strong>-</strong> use constants instead of magic numbers</p>
+  </li>
+  <li>
+    <p><strong>-</strong> mind the explanations in comments (in <em>getCheckedoutVersion()</em> the explanation of the second argument of <em>metadata.get(0, 2)</em> is missing)</p>
+  </li>
+</ul>
+
+<p>With this approach, <strong>the team can find and improve existing coding habits.</strong> <strong>However, this will not present additional good practices - for that, make sure you also check</strong>** code snippets written by somebody else outside the team**.</p>
+
+<p>There are tons of <em>open source</em> projects out there, and it is a really good practice to check them from time to time. There is a psychological reason why the code quality of open source projects is usually high and the contributors have the tendency to use the latest techniques and algorithms.</p>
+
+<p>So, the next step is to <strong>compare one of our snippets to the code of an open source project</strong>. There are some things worth keeping in mind:</p>
+
+<ul>
+  <li>
+    <p>look for code written in the same language</p>
+  </li>
+  <li>
+    <p>look for code which does quite the same as your candidate</p>
+  </li>
+  <li>
+    <p>limit your efforts on finding the right candidate (maximum 1 hour)</p>
+  </li>
+</ul>
+
+<p>I was very lucky, because I found a copy method in <a href="https://github.com/spearce/jgit">jgit</a>, which is the Java implementation of the <a href="http://git-scm.com/">git</a> version control system.</p>
+
+<p>The source of <em>jgit</em>’s <a href="https://github.com/spearce/jgit/blob/master/org.eclipse.jgit/src/org/eclipse/jgit/storage/file/LockFile.java">LockFile#copyCurrentContent()</a> method:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">copyCurrentContent</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="n">requireLock</span><span class="o">();</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">FileInputStream</span> <span class="n">fis</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FileInputStream</span><span class="o">(</span><span class="n">ref</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">2048</span><span class="o">];</span>
+      <span class="kt">int</span> <span class="n">r</span><span class="o">;</span>
+      <span class="k">while</span> <span class="o">((</span><span class="n">r</span> <span class="o">=</span> <span class="n">fis</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">r</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="n">fis</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">FileNotFoundException</span> <span class="n">fnfe</span><span class="o">)</span> <span class="o">{</span>
+     <span class="c1">// Don&#39;t worry about a file that doesn&#39;t exist yet, it</span>
+     <span class="c1">// conceptually has no current content to copy.</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">unlock</span><span class="o">();</span>
+    <span class="k">throw</span> <span class="n">ioe</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">RuntimeException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">unlock</span><span class="o">();</span>
+    <span class="k">throw</span> <span class="n">ioe</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Error</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">unlock</span><span class="o">();</span>
+    <span class="k">throw</span> <span class="n">ioe</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>My legacy version:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">copyFile</span><span class="o">(</span><span class="n">File</span> <span class="n">source</span><span class="o">,</span> <span class="n">File</span> <span class="n">destination</span><span class="o">)</span>
+            <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+         <span class="n">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FileInputStream</span><span class="o">(</span><span class="n">source</span><span class="o">);</span>
+         <span class="n">OutputStream</span> <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FileOutputStream</span><span class="o">(</span><span class="n">destination</span><span class="o">);</span>
+         <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span>
+         <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
+         <span class="k">while</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+             <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+         <span class="o">}</span>
+         <span class="n">in</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+         <span class="n">out</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>My findings:</p>
+
+<ul>
+  <li>
+    <p><strong>+</strong> my version looks cleaner, and the exception handling is better</p>
+  </li>
+  <li>
+    <p><strong>-</strong> I don’t have a locking mechanism</p>
+  </li>
+  <li>
+    <p><strong>-</strong> in case of failure I won’t close the streams properly</p>
+  </li>
+  <li>
+    <p>**- **both methods could be more readable</p>
+  </li>
+  <li>
+    <p><strong>#</strong> does the buffer size make any difference?</p>
+  </li>
+</ul>
+
+<p><strong>As a last step, review projects written by experts</strong> like <a href="http://cleancoder.posterous.com/">Robert C. Martin</a>. He wrote <a href="https://github.com/unclebob/fitnesse">fitnesse</a>, so that code must really be clean. Here is a snippet from the <a href="https://github.com/unclebob/fitnesse/blob/master/src/fitnesse/wiki/FileSystemPage.java">FileSystemPage</a> class:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">loadContent</span><span class="o">(</span><span class="kd">final</span> <span class="n">PageData</span> <span class="n">data</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">getFileSystemPath</span><span class="o">()</span> <span class="o">+</span> <span class="n">contentFilename</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="n">File</span> <span class="n">input</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">readContentBytes</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+      <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">bytes</span><span class="o">,</span> <span class="s">&quot;UTF-8&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">data</span><span class="o">.</span><span class="na">setContent</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+  <span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">readContentBytes</span><span class="o">(</span><span class="kd">final</span> <span class="n">File</span> <span class="n">input</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">FileInputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[(</span><span class="kt">int</span><span class="o">)</span> <span class="n">input</span><span class="o">.</span><span class="na">length</span><span class="o">()];</span>
+      <span class="n">inputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FileInputStream</span><span class="o">(</span><span class="n">input</span><span class="o">);</span>
+      <span class="n">inputStream</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+      <span class="k">return</span> <span class="n">bytes</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">inputStream</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">inputStream</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>My findings:</p>
+
+<ul>
+  <li>
+    <p><strong>+</strong> small, readable methods</p>
+  </li>
+  <li>
+    <p><strong>+</strong> proper method names</p>
+  </li>
+  <li>
+    <p><strong>+</strong> good exception handling</p>
+  </li>
+</ul>
+
+<p>Now I have several findings, let’s see what I should continue to do and what I should improve when I do programming next time:</p>
+
+<p><strong>Keep</strong>:</p>
+
+<ul>
+  <li>
+    <p>short methods and clean code (<em>from self-check and expert compare</em>)</p>
+  </li>
+  <li>
+    <p>updated javaDoc (<em>from self-check</em>)</p>
+  </li>
+</ul>
+
+<p><strong>Change</strong>:</p>
+
+<ul>
+  <li>
+    <p>use more finally blocks in error handling (<em>from open source and expert compare</em>)</p>
+  </li>
+  <li>
+    <p>locking mechanism (<em>from open source compare</em>)</p>
+  </li>
+  <li>
+    <p>introduce null object pattern (<em>from self-check</em>)</p>
+  </li>
+</ul>
+
+<p><strong>Think about</strong>:</p>
+
+<ul>
+  <li>what will happen when I increase the buffer during copy? (<em>from open source and expert compare)</em></li>
+</ul>
+
+<p>For a code review based retrospective, I recommend the following activities</p>
+
+<ol>
+  <li>
+    <p>look for some code snippets from the last sprint or from the last two weeks</p>
+  </li>
+  <li>
+    <p>review those code snippets together as a team</p>
+  </li>
+  <li>
+    <p>compare those snippets to snippets from open source projects</p>
+  </li>
+  <li>
+    <p>see how experts do it</p>
+  </li>
+  <li>
+    <p>find a manageable list of what needs to be kept and what needs to be changed</p>
+  </li>
+</ol>
+
+<p><em>Code review based retrospective</em> can help you get better as a craftsman, but in order to be more agile you’ll also need the agile approaches I mentioned at the beginning. So find a healthy mixture of agile and craftsmanship related activities for your retrospectives: fifty-fifty usually works. Keep me posted how it turned out for you.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2010/05/basics-of-code-review/">Basics of Code Review</a></li><li><a href="/blog/2011/04/pair-programming-in-retrospect/">Pair Programming in Retrospect</a></li><li><a href="/blog/2012/04/see-the-whole-flow-exercise/">See the Whole Flow - An Exercise for Managers to Start a Transition</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/agile" title="agile">agile</a></li><li><a href="/blog/tag/code-review" title="code review">code&nbsp;review</a></li><li><a href="/blog/tag/refactoring" title="refactoring">refactoring</a></li><li><a href="/blog/tag/dojo" title="dojo">dojo</a></li><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/retrospective" title="retrospective">retrospective</a></li><li><a href="/blog/tag/programming" title="programming">programming</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/08/code-review-during-retro/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/08/code-review-during-retro/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/08/code-review-during-retro/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/08/code-review-during-retro/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/07/third-meetup/" class="basic-alignment left" title="Third Meetup - Open Space">&laquo; Third Meetup - Open Space</a>
+            
+            
+              <a href="/blog/2011/08/kanban-in-5-minutes/" class="basic-alignment right" title="Budapest New Technology Meetup - Kanban in 5 Minutes">Budapest New Technology Meetup - Kanban in 5 Minutes &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

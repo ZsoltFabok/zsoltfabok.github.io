@@ -1,0 +1,300 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Lean Kanban UK 2013 - I Broke the WIP Limit Twice, and I'm Still on the Team &#8211; Zsolt Fabók</title>
+<meta name="description" content="Starting over requires us to do at least two things; re-learn the principles and practices, and look for examples on how others recovered. I believe that understanding the pull system, the WIP limits, and the difference between manufacturing and software development will give us enough to recover faster from failures and accelerate the learning process.<br/><br/>more...">
+<meta name="keywords" content="speaking, kanban, wip, continuous improvement">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Lean Kanban UK 2013 - I Broke the WIP Limit Twice, and I'm Still on the Team">
+<meta name="twitter:description" content="Starting over requires us to do at least two things; re-learn the principles and practices, and look for examples on how others recovered. I believe that understanding the pull system, the WIP limits, and the difference between manufacturing and software development will give us enough to recover faster from failures and accelerate the learning process.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lean Kanban UK 2013 - I Broke the WIP Limit Twice, and I'm Still on the Team">
+<meta property="og:description" content="Starting over requires us to do at least two things; re-learn the principles and practices, and look for examples on how others recovered. I believe that understanding the pull system, the WIP limits, and the difference between manufacturing and software development will give us enough to recover faster from failures and accelerate the learning process.<br/><br/>more...">
+<meta property="og:url" content="/blog/2013/11/broke-the-wip-limit-twice/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2013/11/broke-the-wip-limit-twice/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Lean Kanban UK 2013 - I Broke the WIP Limit Twice, and I'm Still on the Team</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2013-11-01T00:00:00+01:00"><i class="fa fa-calendar-o"></i> November 01, 2013</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=speaking,kanban,wip,continuousimprovement&amp;text=Lean%20Kanban%20UK%202013%20-%20I%20Broke%20the%20WIP%20Limit%20Twice,%20and%20I&#39;m%20Still%20on%20the%20Team&amp;url=/blog/2013/11/broke-the-wip-limit-twice/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/11/broke-the-wip-limit-twice/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2013/11/broke-the-wip-limit-twice/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>Starting over requires us to do at least two things; re-learn the principles and practices, and look for examples on how others recovered. I believe that understanding the pull system, the WIP limits, and the difference between manufacturing and software development will give us enough to recover faster from failures and accelerate the learning process. Moreover, I assume that I did more wrong than right during my journey in Kanban land, and it cost me a lot. I believe that if I share these stories with you, it will save you a great deal of trouble for yourself, and if not, at least you’ll have some ideas on how to recover.</p>
+
+<div class="oembed rich"><iframe src="https://www.slideshare.net/slideshow/embed_code/key/2FeejjBtN39sIZ" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen=""> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/fabokzs/lkuk13-i-broke-the-wip-limit-twice-and-im-still-on-the-team" title="[LKUK13] I Broke the WIP Limit Twice, and I&#x27;m Still on the Team" target="_blank">[LKUK13] I Broke the WIP Limit Twice, and I&#x27;m Still on the Team</a> </strong> from <strong><a target="_blank" href="http://www.slideshare.net/fabokzs">Zsolt Fabok</a></strong> </div>
+</div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/speaking" title="speaking">speaking</a></li><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/wip" title="wip">wip</a></li><li><a href="/blog/tag/continuous-improvement" title="continuous improvement">continuous&nbsp;improvement</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2013/11/broke-the-wip-limit-twice/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/11/broke-the-wip-limit-twice/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2013/11/broke-the-wip-limit-twice/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2013/11/broke-the-wip-limit-twice/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2013/10/i-broke-the-wip-limit-slides/" class="basic-alignment left" title="I broke the WIP limit TWICE, still on the team - slides">&laquo; I broke the WIP limit TWICE, still on the team - slides</a>
+            
+            
+              <a href="/blog/2013/11/the-kanban-board-is-a-mirror/" class="basic-alignment right" title="The Kanban Board is a Mirror">The Kanban Board is a Mirror &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

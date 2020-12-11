@@ -1,0 +1,364 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Cucumber JVM: Mocking &#8211; Zsolt Fabók</title>
+<meta name="description" content="In the previous cucumber-jvm post I introduced dependency injection, which makes it possible to use mocks during testing. Usually, it is a bad idea to introduce mocks in cucumber scenarios, because they are supposed to test the whole system as it is, however there are cases when mocking comes in handy: for example, a module or component of your system communicates with a 3rd party system.<br/><br/>more...">
+<meta name="keywords" content="bdd, development, java, cucumber, bdd, eclipse, cucumber-jvm, mockito">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Cucumber JVM: Mocking">
+<meta name="twitter:description" content="In the previous cucumber-jvm post I introduced dependency injection, which makes it possible to use mocks during testing. Usually, it is a bad idea to introduce mocks in cucumber scenarios, because they are supposed to test the whole system as it is, however there are cases when mocking comes in handy: for example, a module or component of your system communicates with a 3rd party system.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cucumber JVM: Mocking">
+<meta property="og:description" content="In the previous cucumber-jvm post I introduced dependency injection, which makes it possible to use mocks during testing. Usually, it is a bad idea to introduce mocks in cucumber scenarios, because they are supposed to test the whole system as it is, however there are cases when mocking comes in handy: for example, a module or component of your system communicates with a 3rd party system.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/03/cucumber-jvm-mocking/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/03/cucumber-jvm-mocking/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Cucumber JVM: Mocking</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-03-31T10:14:18-06:00"><i class="fa fa-calendar-o"></i> March 31, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=bdd,development,java,cucumber,bdd,eclipse,cucumber-jvm,mockito&amp;text=Cucumber%20JVM:%20Mocking&amp;url=/blog/2012/03/cucumber-jvm-mocking/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/03/cucumber-jvm-mocking/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/03/cucumber-jvm-mocking/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>In the previous <a href="/blog/2012/01/cucumber-jvm-di/">cucumber-jvm post</a> I introduced <em>dependency injection</em>, which makes it possible to use mocks during testing. Usually, <strong>it is a bad idea to introduce mocks in cucumber scenarios, because they are supposed to test the whole system as it is</strong>, however <a href="http://xunitpatterns.com/Fake%20Object.html">there are cases when mocking comes in handy</a>: for example, a module or component of your system communicates with a 3rd party system. In this case, running the <em>scenarios</em> may be difficult, and the best option here is to mock or simulate that 3rd party system so that your application or product can still be tested. Technically, it is really easy to use mocks with <em>cucumber-jvm</em>, but there are certain limitations, which you’ll see at the end of this post.</p>
+
+<p>Let’s say that the munger functionality in our <code>SimpleTextMunger</code> application is a 3rd party system, which communicates through the network, but that network is not reachable from our test system. Here is the current version of <code>SimpleTextMunger.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">(</span><span class="n">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">List</span> <span class="n">words</span> <span class="o">=</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">sentence</span><span class="o">);</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">words</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">words</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">munger</span><span class="o">.</span><span class="na">munge</span><span class="o">(</span><span class="n">words</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="n">words</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
+
+<p>In order to mock the calls of the <code>munger</code> object we need something like this - I’m going use <a href="/blog/2010/08/jmock-versus-mockito/">mockito</a> as a mocking framework - <code>SimpleTextMungerStepsdef.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">mockito</span><span class="o">.</span><span class="na">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">mockito</span><span class="o">.</span><span class="na">Mockito</span><span class="o">.</span><span class="na">when</span><span class="o">;</span>
+<span class="c1">// ...</span>
+<span class="n">when</span><span class="o">(</span><span class="n">munger</span><span class="o">.</span><span class="na">munge</span><span class="o">(</span><span class="n">inputWord</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">mungedWord</span><span class="o">);</span>
+<span class="c1">// ...</span></code></pre></div>
+
+<!--more-->
+<p>Mocks cannot do much, they are very simple. You have to define what they should return for a certain input. In order to use them effectively we need a different approach with the <em>scenarios. *The original *scenarios</em> - in <code>simple_text_munger.feature</code> - looked like this:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Background:</span><span class="nf"></span>
+<span class="k">  Given </span><span class="nf">I have an instance of my class</span>
+
+<span class="nf">  </span><span class="k">Scenario Outline:</span><span class="nf"> It should munger a word properly</span>
+<span class="k">    When </span><span class="nf">I call my method with </span><span class="nv">&lt;text&gt;</span><span class="nf"></span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I receive </span><span class="nv">&lt;output&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> input</span><span class="k">   |</span><span class="nv"> output</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;a&quot;</span><span class="k">     |</span><span class="s"> &quot;a&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;an&quot;</span><span class="k">    |</span><span class="s"> &quot;an&quot;</span><span class="k">    |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;and&quot;</span><span class="k">   |</span><span class="s"> &quot;and&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;spice&quot;</span><span class="k"> |</span><span class="s"> &quot;scipe&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> It should process a sentence</span>
+<span class="k">    When </span><span class="nf">I call my method with &quot;</span><span class="s">And the spice must flow</span><span class="nf">&quot;</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">And the scipe msut folw</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>As you can see, all the existing <em>scenarios</em> test the <code>munger</code>, so we have to get rid of them, and have something like this in <code>simple_text_munger.feature</code>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Background:</span><span class="nf"></span>
+<span class="k">  Given </span><span class="nf">I have a mocked munger which always returns &quot;</span><span class="s">folw</span><span class="nf">&quot; for &quot;</span><span class="s">flow</span><span class="nf">&quot;</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">I have an instance of my class</span>
+
+<span class="k">Scenario:</span><span class="nf"> It should process a sentence</span>
+<span class="k">  When </span><span class="nf">I call my method with &quot;</span><span class="s">flow flow</span><span class="nf">&quot;</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">folw folw</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>I admit that the original <em>scenarios</em> were more readable, but remember that the <em>munger</em> is mocked, because it is a 3rd party system and the <em>scenario</em> tells exactly what is happening: <strong>for a specific request return a specific result</strong>.</p>
+
+<p>As you can see, it isn’t that hard, but there is a limitation here. In <a href="/blog/2010/08/jmock-versus-mockito/">this article</a> I mentioned that certain features of <em>mockito</em> - like using the <code>@Mock</code> annotation - require a <code>@RunWith(MockitoJUnitRunner.class)</code> annotation on the test case, but unfortunately, there is already a <code>@RunWith</code> annotation on the test case:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">Cucumber</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@Cucumber.Options</span><span class="o">(</span><span class="n">features</span><span class="o">=</span><span class="s">&quot;classpath:simple_text_munger.feature&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTextMunger_Test</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></div>
+
+<p>In <a href="http://junit.org/">jUnit</a> we cannot have more than one <code>@RunWith</code> annotation, and we need the one above for running <em>cucumber-jvm</em> test cases, so we cannot use those <em>mockito</em> features which require the presence of the <code>MockitoJUnitRunner</code>.</p>
+
+<p>Nevertheless, <em>mockito</em> - and I assume the other mock frameworks as well - works fine with <em><a href="/blog/tag/cucumber-jvm/">cucumber-jvm</a></em>. The <em>scenarios</em> may look a bit weird, but there are cases when you cannot avoid using mocks. In the <em><a href="/blog/tag/ruby/">ruby</a></em> version of <em>cucumber</em> there is no way to use mocks such as the mocks from <a href="/blog/tag/rspec/">RSpec</a>. I don’t know why, but I have a theory: <em>when you test the whole system then test the whole system, no exceptions</em>. It is a nice idea, but as usual there are cases when you have to break some rules in order to achieve your goal. When I was doing web development, we used <em>cucumber</em> for testing. Since we couldn’t use <em>RSpec</em> mocks we implemented our own mocks and did almost the same as described above.</p>
+
+<p>The only advice I can give you is to <strong>be really careful when you introduce a mock and cut a system out of your test suite</strong>. It may happen that the system changes, but your tests still relies on a mock which mimics an obsolete behavior of the 3rd party system - as it happened in our case.</p>
+
+<p>The code, as usual, is available under the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post/tree/episode_5">episode_4</a> branch of the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post">repository</a> on github. <a href="/blog/2012/09/cucumber-jvm-web-with-spring-mvc">Next time</a> I’m going to show how use <em>cucumber-jvm</em> for testing websites.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/12/cucumber-jvm-preparation/">Cucumber JVM: Preparation</a></li><li><a href="/blog/2011/12/cucumber-jvm-more-scenarios/">Cucumber JVM: More Scenarios</a></li><li><a href="/blog/2012/01/cucumber-jvm-di/">Cucumber JVM: Dependency Injection</a></li><li><a href="/blog/2012/09/cucumber-jvm-web-with-spring-mvc/">Cucumber JVM: Web Application with Spring MVC</a></li><li><a href="/blog/2012/09/cucumber-jvm-hooks/">Cucumber JVM: Hooks</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/eclipse" title="eclipse">eclipse</a></li><li><a href="/blog/tag/cucumber-jvm" title="cucumber-jvm">cucumber-jvm</a></li><li><a href="/blog/tag/mockito" title="mockito">mockito</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/03/cucumber-jvm-mocking/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/03/cucumber-jvm-mocking/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/03/cucumber-jvm-mocking/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/03/cucumber-jvm-mocking/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/03/speaking-at-spse2012/" class="basic-alignment left" title="Software Passion Summit 2012">&laquo; Software Passion Summit 2012</a>
+            
+            
+              <a href="/blog/2012/04/the-different-meanings-of-free/" class="basic-alignment right" title="The Different Meanings of Free">The Different Meanings of Free &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

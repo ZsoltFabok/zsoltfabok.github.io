@@ -1,0 +1,620 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>How to Narrow Down What to Test &#8211; Zsolt Fabók</title>
+<meta name="description" content="An old friend told me that they did not do automatic testing at her company, or any kind of testing for that matter, because in terms of money they are better off if they do ad hoc testing and bug fixing one week prior to the delivery date. Then I got into an interesting discussion where the topic was that the customer does not pay for tests, she pays for a working software.<br/><br/>more...">
+<meta name="keywords" content="code review, improvement, xp, java, innovation, testing">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="How to Narrow Down What to Test">
+<meta name="twitter:description" content="An old friend told me that they did not do automatic testing at her company, or any kind of testing for that matter, because in terms of money they are better off if they do ad hoc testing and bug fixing one week prior to the delivery date. Then I got into an interesting discussion where the topic was that the customer does not pay for tests, she pays for a working software.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Narrow Down What to Test">
+<meta property="og:description" content="An old friend told me that they did not do automatic testing at her company, or any kind of testing for that matter, because in terms of money they are better off if they do ad hoc testing and bug fixing one week prior to the delivery date. Then I got into an interesting discussion where the topic was that the customer does not pay for tests, she pays for a working software.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/05/narrow-down-what-to-test/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/05/narrow-down-what-to-test/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">How to Narrow Down What to Test</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-05-28T11:13:38-06:00"><i class="fa fa-calendar-o"></i> May 28, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=codereview,improvement,xp,java,innovation,testing&amp;text=How%20to%20Narrow%20Down%20What%20to%20Test&amp;url=/blog/2011/05/narrow-down-what-to-test/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/05/narrow-down-what-to-test/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/05/narrow-down-what-to-test/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>An old friend told me that they did not do automatic testing at her company, or any kind of testing for that matter, because in terms of money they are better off if they do ad hoc testing and bug fixing one week prior to the delivery date. Then I got into an interesting discussion where the topic was that the customer does not pay for tests, she pays for a working software. I was really surprised at the attitude of companies towards testing. So I had to find out what experts think, and at the end I found the <a href="http://stackoverflow.com/questions/153234/how-deep-are-your-unit-tests/">following quote on stackoverflow</a> from <a href="http://www.threeriversinstitute.org/">Kent Beck</a> (more on the topic is available on <a href="http://news.ycombinator.com/item?id=465317">hacker news</a>):</p>
+
+<blockquote>
+  <p>I get paid for code that works, not for tests, so my philosophy is to test as little as possible to reach a given level of confidence (I suspect this level of confidence is high compared to industry standards, but that could just be hubris). If I don’t typically make a kind of mistake (like setting the wrong variables in a constructor), I don’t test for it. I do tend to make sense of test errors, so I’m extra careful when I have logic with complicated conditionals. When coding on a team, I modify my strategy to carefully test code that we, collectively, tend to get wrong.</p>
+</blockquote>
+
+<p>This was almost a game changer for me, but then I remembered why I liked <strong>[automated] test cases</strong> in the first place. They <strong>give me confidence that my change does not modify existing functionality, and I don’t have to do manual tests repetitively</strong>. So I’m still good, and I learnt a new thing: when I talk to people about testing or work for somebody else, then I have to consider the time (money) factor, but in my own projects I’ll write as many automated tests as I can.</p>
+
+<p>I have to admit that testing, especially using automatic test cases, costs a lot. This looks like an extra expense in short time, but saves a lot of trouble in the long run. Unfortunately, not every organisation is mature enough to realize this, or can afford to spend expensive coding time on things that have no value to the customer. Nevertheless, I know that deep down they want to do testing, <strong>so in this post I’m going to share several methods that can be used to find areas which are worth testing, so that companies do not have to spend more time on testing than what is absolutely necessary</strong>.</p>
+
+<!--more-->
+<p>## How to Narrow Down Where to Start</p>
+
+<p>The best way to save money is to be <strong><a href="/blog/2012/09/effective-vs-efficient">effective</a></strong>, so test those parts of the code which really need to be tested. I recommend writing tests for those parts of the code which…</p>
+
+<ol>
+  <li>
+    <p>…<a href="#part_of_the_code_is_really_used">are the most often used</a></p>
+  </li>
+  <li>
+    <p>…<a href="#part_of_the_code_changes_often">are changing frequently</a></p>
+  </li>
+  <li>
+    <p>…<a href="#part_of_the_code_changes_data">are changing data and working with financial data</a></p>
+  </li>
+  <li>
+    <p>…<a href="#part_of_the_code_most_likely_will_fail">are more likely to fail</a></p>
+  </li>
+</ol>
+
+<p>I found one of my old projects which I wrote before I started doing <a href="/blog/tag/xp/">eXtreme Programming</a>. The code is not nice, there aren’t many test cases, but it works just fine. My friend, who used it for a while told me that he never had any problems with it. I put a lot of manual testing effort into it, which I don’t want to do again, but I would like to extend my code, and I need that confidence <em>Kent Beck</em> talked about. So I’m going to use the list above to create an ordered list of classes and methods which I have to test in order to have that <em>confidence</em> during development.</p>
+
+<h2 id="the-mythical-80-percent-line-coverage">The Mythical 80 Percent Line Coverage</h2>
+
+<p>Before explaining the mentioned list in more detail, let’s talk a bit about <em>test code coverage</em>.</p>
+
+<p>I intentionally left <em>test code coverage</em> out of the list, not because I have problems with code coverage metrics, but because they have been misinterpreted for a long time. <strong>Test code coverage results do not show how good a test case harness is, just that certain parts of the code have been visited during test case execution</strong>.</p>
+
+<p>Some companies use the mythical 8<em>0 percent line coverage principle</em>, which means that they require developers to have enough test cases to cover 80 percent of the code. It is mythical, because nobody knows how this number had evolved - at least I was unable to find a reference to it after several hours of research. <a href="http://www.artima.com/forums/flat.jsp?forum=106&amp;thread=204677">Alberto Savoia wrote a very good forum post about code coverage</a>, I really recommend reading it before going further.</p>
+
+<p>Here is an example on how to gain more than 30 percent <em>test code coverage</em> in 2 minutes. Have a look at the following code snippet and its coverage results:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CheaterTest</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldIncreaseTheCoverage</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">HarvesterTask</span> <span class="n">harvester</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">HarvesterTask</span><span class="o">();</span>
+        <span class="n">Project</span> <span class="n">project</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Project</span><span class="o">();</span>
+        <span class="n">project</span><span class="o">.</span><span class="na">setBaseDir</span><span class="o">(</span><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s">&quot;.&quot;</span><span class="o">));</span>
+        <span class="n">harvester</span><span class="o">.</span><span class="na">setProject</span><span class="o">(</span><span class="n">project</span><span class="o">);</span>
+        <span class="n">harvester</span><span class="o">.</span><span class="na">setRepository</span><span class="o">(</span><span class="s">&quot;../repository&quot;</span><span class="o">);</span>
+        <span class="n">harvester</span><span class="o">.</span><span class="na">setHistory</span><span class="o">(</span><span class="s">&quot;history&quot;</span><span class="o">);</span>
+        <span class="n">harvester</span><span class="o">.</span><span class="na">setTemplate</span><span class="o">(</span><span class="s">&quot;templates&quot;</span><span class="o">);</span>
+        <span class="n">harvester</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>coverage with <a href="http://cobertura.sourceforge.net/">cobertura</a>:</p>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/cobertura_cheater_test_coverage.png" width="550" height="145" title="cobertura_cheater_test_coverage cobertura coverage report on the cheater test case" /></p>
+
+<p>coverage with <a href="http://emma.sourceforge.net/">emma</a>:</p>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/emma_cheater_test_coverage.png" width="550" height="262" title="emma_cheater_test_coverage emma coverage report on the cheater test case" /></p>
+
+<p><strong>As you can see, my test case does not do any checking on the result</strong> - no <a href="http://junit.sourceforge.net/javadoc/org/junit/Assert.html">assertions</a> -, <strong>but it executes without any problems and, more importantly, it covers more than 30 percent of the code base.</strong> Additionally, the coverage results are not consistent. Two tools provided different results for the very same test case on the very same code base. <strong>Conclusion: do not depend too much on <em>test code coverage</em> metrics unless you <a href="/blog/2010/05/basics-of-code-review/" title="Basics of Code Review">review</a> the test code as well</strong>.</p>
+
+<h2 id="a-idpartofthecodeisreallyusedadetermine-which-parts-of-the-code-are-really-used"><a id="part_of_the_code_is_really_used"></a>Determine Which Parts of the Code are Really Used</h2>
+
+<p>According to the <a href="http://martinfowler.com/articles/xp2002.html#BuildOnlyTheFeaturesYouNeed">Standish Group Study</a>:</p>
+
+<blockquote>
+  <p>Another interesting statistic that Jim quoted was the large proportion of features that aren’t used in a software product. He quoted two studies: a DuPont study quoted only 25% of a system’s features were really needed. A Standish study found that 45% of features were never used and only 20% of features were used often or always.</p>
+</blockquote>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/usage_pie_diagram.png" width="286" height="187" title="usage_pie_diagram" /></p>
+
+<p>Somehow we have to find that 20 percent and write test cases to cover it. Actually, it is easier said than done, but there are tools, which are capable of showing which code parts have been visited: <em>code coverage tools</em>. <strong>We can use code coverage tools to find out which code parts have been visited when the customer used our software. **Mind that I’m not using the <em>testing</em> prefix in order to avoid confusion. **<a href="http://www.glenmccl.com/instr/instr.htm">Instrument</a> the code base and deliver it to the testers or the customer</strong> (I used <em>cobertura</em> in my examples).</p>
+
+<blockquote>
+  <p>Instrumentation means that the code gets enhanced with flags, and when the execution passes a certain flag, it gets set. When a <em>test code coverage</em> measurement is made then the tool</p>
+
+  <ul>
+    <li>
+      <p>instruments the code - places these flags</p>
+    </li>
+    <li>
+      <p>runs the test cases - flags get set</p>
+    </li>
+    <li>
+      <p>and finally prints out the result - how many flags have been set</p>
+    </li>
+  </ul>
+</blockquote>
+
+<p>During usage coverage measurement, test execution is replaced by customer interaction.</p>
+
+<p>Unfortunately, QA people hate approaches like this, because instrumentation changes the original code base. But <strong>if you develop your own web applications and you deploy them quite often, you can sometimes deploy instrumented applications.</strong> With this approach, you will know exactly, which parts of your code are really used. If your product cannot be deployed that often <strong>or you deliver to another department, then release a beta version</strong> (no new features, delivery should be limited to a specific group), <strong>and let the testers give you this information</strong>. Believe me, they know what the customer needs, and you will be able to map those needs to code.</p>
+
+<p>I reviewed and executed the existing <strong>test cases</strong> of my legacy application (columns <strong>on the left</strong>), and manually tested through the <strong>main use case</strong> (columns <strong>on the right</strong>). Let’s see whether I managed to cover the main use case with my tests:</p>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/class_coverage_compare.png" width="549" height="92" title="class_coverage_compare" /></p>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/line_coverage_compare.png" width="462" height="374" title="line_coverage_compare" /></p>
+
+<p>As you can see, the <em>uploader.ant</em> package could use some test cases, along with the <em>uploader.FileBasedVerifer</em> class.</p>
+
+<p>My “<em>list of classes I have to test”</em> looks like this at the moment:</p>
+
+<ol>
+  <li>
+    <p><em>uploader.FileBasedVerifier</em> (less effort, almost there)</p>
+  </li>
+  <li>
+    <p><em>uploader.ant</em> package (still a lot of work left, but there are only two classes in there)</p>
+  </li>
+  <li>
+    <p>…</p>
+  </li>
+</ol>
+
+<h2 id="a-idpartofthecodechangesoftenafind-out-which-parts-of-the-code-change-often"><a id="part_of_the_code_changes_often"></a>Find Out Which Parts of the Code Change Often</h2>
+
+<p>Philosophically, change means a tremendous amount of things, but in software development, when a file changes, it mostly means that:</p>
+
+<ul>
+  <li>
+    <p>something has been added to it</p>
+  </li>
+  <li>
+    <p>it had a problem and got fixed</p>
+  </li>
+</ul>
+
+<p>As a bonus, when one changes a file without proper regression test harness background, then there is a very good chance that this will introduce regression. As <em>Kent</em> mentioned before, it is all about <em>confidence</em>. We need confidence in order to do our job well. So write some test cases for these files.</p>
+
+<p>With this in mind <strong>find out which files change often, because it is quite certain that something interesting is happening with them</strong>. I used a simple script to find out which files were changed (committed) the most often in the version control system from the beginning until this very moment:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">14, VerifierTask.java
+13, index.jsp
+11, FileBasedUserHome.java
+11, FileBasedUser.java
+11, FileBasedContentTracker.java
+ 8, IntegrityCheckTask.java
+ 7, MailSender.java</code></pre></div>
+
+<p>And our winner is: <em>VerifierTask.java</em>, which belongs to the <em>uploader.ant</em> package. Excellent, now we know a bit more about the <em>uploader.ant</em> package, and we can also put some interesting classes on our list:</p>
+
+<ol>
+  <li>
+    <p><em>uploader.FileBasedVerifier</em></p>
+  </li>
+  <li>
+    <p><em>uploader.ant.VerifierTask (on the top of our change list)</em></p>
+  </li>
+  <li>
+    <p><em>uploader.ant.HarvesterTask (not changed that often, but used by customer)</em></p>
+  </li>
+  <li>
+    <p><em>index.jsp</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileBasedUserHome</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileBasedContentTracker</em></p>
+  </li>
+  <li>
+    <p><em>…</em></p>
+  </li>
+</ol>
+
+<h2 id="a-idpartofthecodechangesdataadetermine-which-part-of-the-code-changes-data"><a id="part_of_the_code_changes_data"></a>Determine Which Part of the Code Changes Data</h2>
+
+<p>Everybody hates losing data. For example, if your code lists certain items (read-only operation) and you allow the user to change their status (read-write operation), you have to <strong>test the</strong> status <strong>change first and maybe take care of the listing later</strong>. In the customer’s perspective, it is better not to list something than to lose or corrupt it. There is only one thing worse than data loss, and that is money loss. <strong>If your application handles money, then test it really thoroughly</strong>.</p>
+
+<p>One way to find these parts of code is to perform a <a href="/blog/2010/05/basics-of-code-review/" title="Basics of Code Review">code review</a>. I have the following classes:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">uploader/admin/ChangePassword.java
+uploader/ant/HarvesterTask.java
+uploader/ant/VerifierTask.java
+uploader/Checksum.java
+uploader/FileBasedContentTracker.java
+uploader/FileBasedMetadata.java
+uploader/FileBasedUserHome.java
+uploader/FileBasedUser.java
+uploader/FileBasedVerifier.java
+uploader/FileHelper.java
+uploader/HtmlHelper.java
+uploader/ListHelper.java
+uploader/LockExpiredException.java
+uploader/LoginBean.java
+uploader/MailSender.java
+uploader/ReportProcessor.java
+uploader/Type.java
+uploader/UserExistsException.java
+uploader/UserHelper.java
+uploader/UserHome.java
+uploader/User.java
+uploader/UserNotFoundException.java
+uploader/Verifier.java</code></pre></div>
+
+<p>Based on their names, the <em>ChangePassword</em> and <em>FileHelper</em> may change something. After checking the classes, the case of <em>ChangePassword</em> is quite obvious, and after the code review I found out that the <em>FileHelper</em> has the following methods: <em>setContent()</em>, <em>delete()</em>, and <em>copyFile()</em>. Perfect, I put them on the list immediately. They might have been covered by existing test cases, but better safe than sorry. Additionally, it turned out during the <em>code review</em> that <em>FileBasedUserHome</em> and <em>FileBasedContentTracker</em> change data, too so they move up a little bit on the list:</p>
+
+<ol>
+  <li>
+    <p><em>uploader.FileBasedVerifier</em></p>
+  </li>
+  <li>
+    <p><em>uploader.ant.VerifierTask</em></p>
+  </li>
+  <li>
+    <p><em>uploader.ant.HarvesterTask</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileBasedUserHome (modifies the user’s metadata)</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileBasedContentTracker (also modifies the user’s metadata)</em></p>
+  </li>
+  <li>
+    <p>*<em><em><em>uploader.FileHelper (modifies files on the file system, but hasn’t been changed that often)</em></em></em>
+*</p>
+  </li>
+  <li>
+    <p><em>index.jsp</em></p>
+  </li>
+  <li>
+    <p><em>uploader.admin.ChangePassword (modifies user’s password)</em></p>
+  </li>
+  <li>
+    <p><em>…</em></p>
+  </li>
+</ol>
+
+<h2 id="a-idpartofthecodemostlikelywillfailadetermine-where-the-code-is-most-likely-going-to-fail"><a id="part_of_the_code_most_likely_will_fail"></a>Determine Where the Code Is Most Likely Going to Fail</h2>
+
+<p>Static code checkers are often used to find programming errors. When a programming error is obvious to a tool, then the real application will most likely fail when it executes that faulty code. <strong>It’s worth having test cases for parts of the code base which are more likely to fail, so that you don’t waste your precious programming time on fixing defects for free</strong>.</p>
+
+<p>I executed <a href="http://findbugs.sourceforge.net/">findbugs</a> and <a href="http://www.crap4j.org/">crap4j</a> on my code. <em>Findbugs</em> does what its name says, and <em>crap4j</em> uses <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">cyclomatic complexity</a> and* code coverage tests* to find problematic code snippets. It has a nice algorithm, but the point is that the more complex your code is and the fewer test cases you have to cover these areas, the more problematic your code is. It is pretty straightforward. It’s safe to use <em>crap4j</em> in this project, because I reviewed the test cases and they really do testing.</p>
+
+<p>The result of the <em>findbugs</em> execution:</p>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/findbugs_result.png" width="500" height="343" title="findbugs_result findbugs result" /></p>
+
+<p>The result of the <em>crap4j</em> execution:</p>
+
+<p><img class="center" src="/images/posts/2011-05-28-narrow-down-what-to-test/crap4j_result.png" width="550" height="296" title="crap4j_result crap4j result" /></p>
+
+<p>Huhh, the result isn’t really nice, but on the other hand I have a more fine-grained list of test candidates:</p>
+
+<ol>
+  <li>
+    <p><em>uploader.FileBasedVerifier.setVerified() (crap4j)</em></p>
+  </li>
+  <li>
+    <p>*uploader.ant.HarvesterTask.execute() (findbugs, 2nd on the crap4j list)** *</p>
+  </li>
+  <li>
+    <p><em>uploader.ant.VerifierTask.execute() (1st on the crap4j list)</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileBasedVerifier rest of the methods (previous steps)&lt;/em&gt;</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileHelper (<em>thanks findbugs, but this isn’t that problematic after all</em>)</em></p>
+  </li>
+  <li>
+    <p><em>uploader.FileBasedUserHome</em></p>
+  </li>
+  <li>
+    <p><em><em>uploader.FileBasedContentTracker</em></em></p>
+  </li>
+  <li>
+    <p><em>index.jsp</em></p>
+  </li>
+  <li>
+    <p><em>uploader.admin.ChangePassword</em></p>
+  </li>
+  <li>
+    <p><em>…</em></p>
+  </li>
+</ol>
+
+<p>Until this point, I wasn’t sure how to handle the <em>HarvesterTask</em> and <em>VerifierTask</em> classes, but thanks to the <em>static code checker</em>s, I know now.</p>
+
+<h2 id="determine-which-part-of-the-code-is-commonly-used">Determine Which Part of the Code is Commonly Used</h2>
+
+<p>This method is kind of a <em>+1</em>, if you intend to make your list more fine-grained.</p>
+
+<p>When I do coding, I hardly write test cases for error scenarios - please don’t hold it against me. In the next step I’m going to do a quick <a href="/blog/2010/05/basics-of-code-review/" title="Basics of Code Review">code review</a> and see how the code looks like.</p>
+
+<p>A snippet from my <em>uploader.ant.HarvesterTask</em> class:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="k">if</span> <span class="o">(!</span><span class="n">user</span><span class="o">.</span><span class="na">getVersions</span><span class="o">(</span><span class="n">Type</span><span class="o">.</span><span class="na">JAVA</span><span class="o">).</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">integrityCheck</span><span class="o">(</span><span class="n">Type</span><span class="o">.</span><span class="na">JAVA</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">resultFsckMessage</span> <span class="o">=</span> <span class="n">MESSAGE_OK</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">harvestJava</span><span class="o">(</span><span class="n">user</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">resultHarvestMessage</span> <span class="o">=</span> <span class="n">MESSAGE_OK</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">resultHarvestMessage</span> <span class="o">=</span> <span class="n">MESSAGE_NONE</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">resultHarvestMessage</span> <span class="o">=</span> <span class="n">MESSAGE_FAILED</span><span class="o">;</span>
+            <span class="n">log</span><span class="o">(</span><span class="n">userName</span> <span class="o">+</span> <span class="s">&quot; JAVA IO error: &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">resultFsckMessage</span> <span class="o">=</span> <span class="n">MESSAGE_FAILED</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">resultHarvestMessage</span> <span class="o">=</span> <span class="n">MESSAGE_NONE</span><span class="o">;</span>
+<span class="o">}</span></code></pre></div>
+
+<p>In this case, I will write test cases which cover the case when the there are <em>Type.JAVA</em> versions, because based on the usage of the software, customers are mostly using Java classes. ** Cover the most common scenarios in your test cases and when you find classes or methods involved only in error handling, then put them at the end of the list**.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I started with 23 classes without any guidance about how to start my work. With approximately 1.5 hours of work - which I won’t have to repeat, because the scripts are already in place -, I ended up with a prioritized list of classes and methods which I need to test first if I don’t want to cause too much trouble to myself by breaking existing functionality or having more defects in my code. Next time when I have to perform a similar examination, I’ll just execute my scripts and evaluate the result in 5 minutes. With this approach, I can save hours of coding work.</p>
+
+<p><strong>I don’t recommend starting writing test cases for each item mentioned in the above list</strong>. The goal was to narrow down where to test. <strong>Check out how much time you have and start working on the list from top to bottom</strong>. For example, testing <em>index.jsp</em> will cost you a lot of time, because you cannot test it the usual way. You need a higher level test framework like <a href="http://seleniumhq.org/">selenium</a> which is capable of <a href="/blog/2012/08/embedded-web-services-for-testing">testing web applications</a>.</p>
+
+<p>I hope these ideas help to find the places you may want to test. If you have a different method or opinion, please share it in the comment section.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/09/our-detectives-blackboard/">Our Detective's Blackboard</a></li><li><a href="/blog/2011/10/saving-the-ci/">Saving the Continuous Integration</a></li><li><a href="/blog/2011/12/bdd-demonstration/">A Step by Step BDD Demonstration with Some Useful Insights</a></li><li><a href="/blog/2012/06/working-with-legacy-code/">How I Start Working with Legacy Code</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/code-review" title="code review">code&nbsp;review</a></li><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/innovation" title="innovation">innovation</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/05/narrow-down-what-to-test/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/05/narrow-down-what-to-test/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/05/narrow-down-what-to-test/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/05/narrow-down-what-to-test/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/05/happy-birthday/" class="basic-alignment left" title="Happy Birthday!">&laquo; Happy Birthday!</a>
+            
+            
+              <a href="/blog/2011/06/weekly-cw21-cw22-and-cw23/" class="basic-alignment right" title="Weekly - CW21, CW22 and CW23">Weekly - CW21, CW22 and CW23 &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

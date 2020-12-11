@@ -1,0 +1,326 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>The Problems of the Capacity Utilization &#8211; Zsolt Fabók</title>
+<meta name="description" content="I found a very interesting quote that I wrote in one of my notebooks a long time ago.<br/><br/>more...">
+<meta name="keywords" content="kanban, lean, waste, utilization, throughput, system thinking, demand, pull system, inventory">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="The Problems of the Capacity Utilization">
+<meta name="twitter:description" content="I found a very interesting quote that I wrote in one of my notebooks a long time ago.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Problems of the Capacity Utilization">
+<meta property="og:description" content="I found a very interesting quote that I wrote in one of my notebooks a long time ago.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/08/the-problems-of-the-capacity-utilization/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/08/the-problems-of-the-capacity-utilization/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">The Problems of the Capacity Utilization</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-08-21T00:00:00+02:00"><i class="fa fa-calendar-o"></i> August 21, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,lean,waste,utilization,throughput,systemthinking,demand,pullsystem,inventory&amp;text=The%20Problems%20of%20the%20Capacity%20Utilization&amp;url=/blog/2012/08/the-problems-of-the-capacity-utilization/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/08/the-problems-of-the-capacity-utilization/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/08/the-problems-of-the-capacity-utilization/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p><img class="right" src="/images/posts/2012-08-21-the-problems-of-the-capacity-utilization/busy.png" />
+I found a very interesting quote that I wrote in one of my notebooks a long time ago: “<em>we keep people busy all the time</em>”. There is no date after it so I’m not sure about the exact context in which it belonged when I put it down, but I’m pretty certain that it refers to <strong>capacity utilization and utilization rate</strong>. According to <a href="http://www.reference.com/browse/Capacity_utilization">reference.com</a>, <strong>capacity utilization generally rises when the economy is healthy and falls when demand softens</strong>. Compare this definition and the quote from above. According to the definition, the <em>utilization rate</em> is changed by the <em>demand</em> and the quote said that <em>we</em> kept the utilization rate of the people high. The fact that the actors are completely different suggests that we were definitely doing something wrong - now that I think about it, we still do.</p>
+
+<!-- more -->
+
+<p><strong>Most of the companies I know keep employees busy all the time, because, for example, an idle developer doesn’t write code, this means no new features, hence no profit, although the company pays his salary</strong>. There is some truth in this reasoning, however I see some issues here. When the demand is low and the employees are still working on something they will create a <strong>large inventory</strong> (<a href="/blog/2012/08/waste-in-software-development">muda</a>) and they will eventually <strong>burn out</strong> (<a href="/blog/2012/08/waste-in-software-development#muri">muri</a>).</p>
+
+<p>If a company ignores these issues, then <strong>the employees will do something about it</strong>. That’s the natural order of things: people take care of themselves and will reduce the <em>muri</em> and <em>muda</em>, but not the way the company would like them to. They most probably will have longer breaks, shorter working days and days off to reduce <em>muri</em> and have some slack time. Most of the employees don’t know much about <em>muda</em> or <em>inventory</em>, they simply feel that they aren’t doing tasks that matter. They start to learn new skills, get interested in other projects or in extreme cases they will work on their own projects and eventually leave the company.</p>
+
+<p><img class="right" src="/images/posts/2012-08-21-the-problems-of-the-capacity-utilization/mura_muda_muri.jpeg" />
+From the system’s point of view it doesn’t matter that the employees are busy or just look busy. <strong>They will   simply not be able to react to a change in demand quickly enough, because they are doing something else</strong>. I’m not saying that being idle is a good practice, but <strong>pushing work on people won’t move you forward</strong>. A <strong>pull based system</strong> helps to reduce the <em>muri</em> and <em>muda</em> wastes and provides the necessary flexibility for organizations. If the demand is low, there is nothing to pull so employees will be temporary idle, but when the demand changes they can pull the next work items, because they are available. If they feel <a href="/blog/2012/08/waste-in-software-development#muri">overburdened</a> they simply won’t pull immediately. <strong>This requires a secret ingredient: trust</strong>. The employers should trust the employees that they’ll make the right decisions when they pull a new work item. If the employees don’t know how to make the right decisions, they can be trained (this is what Toyota does when a new employee joins the company).</p>
+
+<p><img class="right" src="/images/posts/2012-08-21-the-problems-of-the-capacity-utilization/traffic.png" />
+The problems with capacity utilization - pushing the work - are usually explained using the <em>traffic jam</em> and <em>CPU load</em> metaphors. The <em>traffic jam</em> metaphor is explained with two pictures: a traffic jam and a road with light traffic. In case of the traffic jam, the utilization rate of the road is 100% and the traffic - flow - is practically stopped. In most of the cases, when one talks about this topic, the explanation stops here, which is a bit unfortunate, because there is much more in this metaphor. The traffic jam is not the cause of the traffic stopping, it’s a symptom. The traffic stops because there is a bottleneck somewhere along the road, and the utilization rate of the road is <em>higher</em> than what the bottleneck can take without affecting the traffic flow. The solution here is pretty straightforward: eliminate the impediment which creates the bottleneck (reducing the utilization rate is just a short term solution).</p>
+
+<p><img class="right" src="/images/posts/2012-08-21-the-problems-of-the-capacity-utilization/ambulance.png" />
+One can argue that most of the traffic jams are moving, but only very slowly, and this argument is valid until an ambulance shows up. It simply cannot pass through although it has to, so everybody else stops and pulls over. But there is more. Let’s say a vehicle can go faster than the rest. In heavy traffic the possibility that it will cause an accident with the frequent overtaking is quite high. And the accident creates a bottleneck. If the quality of the road is bad, drivers will pay attention to the road - protecting their vehicles - not to the traffic and in heavy traffic this can cause accidents as well. The ambulance can be an important issue, the fast driver can be an experienced developer, and the low quality road can be a code base without any test cases.</p>
+
+<p><img class="right" src="/images/posts/2012-08-21-the-problems-of-the-capacity-utilization/cpu.png" />
+The <em>CPU load</em> metaphor is less rich than the <em>traffic jam</em> metaphor, but demonstrates the previously mentioned major issues (muda, muri, lack of flexibility) a bit better:</p>
+
+<ul>
+  <li>when the CPU is running at 100% all the time, most of the started processes won’t have enough CPU time to finish so they’ll queue up: large inventory</li>
+  <li>the continuously running CPU generates a lot of heat which can eventually damage it: burning out</li>
+  <li>you cannot really start new processes: lack of flexibility</li>
+</ul>
+
+<p>Let’s go back to the definition: <em>capacity utilization generally rises when the economy is healthy and falls when demand softens</em>. <strong>So, the demand is the variant which matters. We need organizations which can follow the variety in demand and are ready when the flow is coming</strong>. Instead of the utilization we should <strong>focus more on the <a href="/blog/2014/01/throughput">throughput</a></strong>. Is it enough for the demand? How long does it take to deliver? What about the value? For me these are the important questions - “do you have something to work on?” is not.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/05/kanban-on-organisational-level/">Kanban on Organisational Level</a></li><li><a href="/blog/2012/03/visualize-on-the-highest-level/">Visualize the Flow on the Highest Possible Level</a></li><li><a href="/blog/2012/04/see-the-whole-flow-exercise/">See the Whole Flow - An Exercise for Managers to Start a Transition</a></li><li><a href="/blog/2012/05/local-optimization/">When Local Optimization Won't Make a Difference</a></li><li><a href="/blog/2012/08/waste-in-software-development/">Waste in Software Development</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/lean" title="lean">lean</a></li><li><a href="/blog/tag/waste" title="waste">waste</a></li><li><a href="/blog/tag/utilization" title="utilization">utilization</a></li><li><a href="/blog/tag/throughput" title="throughput">throughput</a></li><li><a href="/blog/tag/system-thinking" title="system thinking">system&nbsp;thinking</a></li><li><a href="/blog/tag/demand" title="demand">demand</a></li><li><a href="/blog/tag/pull-system" title="pull system">pull&nbsp;system</a></li><li><a href="/blog/tag/inventory" title="inventory">inventory</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/08/the-problems-of-the-capacity-utilization/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/08/the-problems-of-the-capacity-utilization/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/08/the-problems-of-the-capacity-utilization/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/08/the-problems-of-the-capacity-utilization/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/08/the-prioritization-experiment/" class="basic-alignment left" title="The Prioritisation Experiment">&laquo; The Prioritisation Experiment</a>
+            
+            
+              <a href="/blog/2012/08/public-speaking-events-in-autumn/" class="basic-alignment right" title="Public Speaking Events in Autumn">Public Speaking Events in Autumn &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

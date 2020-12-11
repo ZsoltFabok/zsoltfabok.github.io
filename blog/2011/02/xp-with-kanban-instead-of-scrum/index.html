@@ -1,0 +1,443 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>XP with Kanban instead of Scrum &#8211; Zsolt Fabók</title>
+<meta name="description" content="## AbstractI'm going to step into a&nbsp;minefield, because in this post, I'm going to share my subjective experiences with&nbsp;Scrum, and I'm going to share the reasons&nbsp;why moved from Scrum to XP + Kanban. I'm using the minefield metaphor, because every single sentence I'm going to share&nbsp;can be exploded with good explanations, mostly from advanced scrum practitioners.<br/><br/>more...">
+<meta name="keywords" content="kanban, change management, improvement, scrum, xp">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="XP with Kanban instead of Scrum">
+<meta name="twitter:description" content="## AbstractI'm going to step into a&nbsp;minefield, because in this post, I'm going to share my subjective experiences with&nbsp;Scrum, and I'm going to share the reasons&nbsp;why moved from Scrum to XP + Kanban. I'm using the minefield metaphor, because every single sentence I'm going to share&nbsp;can be exploded with good explanations, mostly from advanced scrum practitioners.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XP with Kanban instead of Scrum">
+<meta property="og:description" content="## AbstractI'm going to step into a&nbsp;minefield, because in this post, I'm going to share my subjective experiences with&nbsp;Scrum, and I'm going to share the reasons&nbsp;why moved from Scrum to XP + Kanban. I'm using the minefield metaphor, because every single sentence I'm going to share&nbsp;can be exploded with good explanations, mostly from advanced scrum practitioners.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/02/xp-with-kanban-instead-of-scrum/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/02/xp-with-kanban-instead-of-scrum/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">XP with Kanban instead of Scrum</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-02-05T06:40:27-07:00"><i class="fa fa-calendar-o"></i> February 05, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,changemanagement,improvement,scrum,xp&amp;text=XP%20with%20Kanban%20instead%20of%20Scrum&amp;url=/blog/2011/02/xp-with-kanban-instead-of-scrum/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/02/xp-with-kanban-instead-of-scrum/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/02/xp-with-kanban-instead-of-scrum/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <h2 id="abstract">Abstract</h2>
+
+<p>I’m going to step into a minefield, because in this post, I’m going to share my <strong>subjective</strong> experiences with <a href="/blog/tag/scrum/">Scrum</a>, and I’m going to share the reasons <strong>why moved from Scrum to XP + Kanban</strong>. I’m using the <em>minefield</em> metaphor, because every single sentence I’m going to share <em>can be exploded</em> with good explanations, mostly from advanced scrum practitioners.</p>
+
+<p>Again, this post is going to be very subjective, and is based on my experiences from the last two years. So please keep this in mind, and be gentle when you share a comment.</p>
+
+<h2 id="the-background">The Background</h2>
+
+<p>Every organization is different. Ours is a strange one: we inherited <a href="/blog/tag/scrum/">Scrum</a>, while the organizations we were working with were still doing waterfall. <em>Scrum</em> has a very different terminology, and since nobody else is doing it, they do not understand us. We had a lot of problems from misinterpretations. <a href="/blog/tag/story-point">Story points</a> are a good example.</p>
+
+<p>For example, we told the project management that we are going to deliver 400 story points. They asked in reply how much that was in man hours? We answered that in <em>Scrum</em> we don’t count man hours, we are working with story points. They insisted on the man hours, and since they pay our bills, we gave in and made an estimation in man hours. Almost the same happened with <em>sprints</em>, because the higher-level organizations had release cycles of six months, while we had <em>sprints</em> of two weeks. This means that we deliver a lot of features in one giant step, and lose all the benefits of <a href="http://www.infoq.com/interviews/jez-humble-martin-fowler-cd">continuous delivery</a>, like faster feedback on our product. And the list goes on.</p>
+
+<p>After a while, I had the feeling that we are doing several things unnecessarily, and our management does not understand our output, and they don’t care what we are doing internally. Some of us made conversions between our <em>Scrum</em> measures and the company-required measures, which turned out to be a disaster. No one can make a good conversion in this situation. We started to fail, but not at the beginning, but at the worst place ever: around global delivery dates. Additionally, we spent two years trying to change our environment, and the way how people think in this environment. We failed at it, of course. The environment is huge, one small organization cannot make a difference, unfortunately.</p>
+
+<p>My first thought was that we may be doing <em>Scrum</em> wrong. And the next one was that maybe <em>Scrum</em> is not the agile method that we should choose. There are lots of methodologies out there, we should try them out, and after that we’ll see whether we did <em>Scrum</em> wrong, or it just wasn’t for us. <a href="http://blog.crisp.se/henrikkniberg">Henrik Kniberg</a> has a very entertaining and thoughtful <a href="http://blog.crisp.se/henrikkniberg/2010/09/01/1283373060000.html">presentation</a> on this topic. I highly recommend reading it.</p>
+
+<p>So I decided that we are going to try out the <a href="/blog/tag/kanban/">Kanban</a> methodology. The principles of <em>Kanban</em> would help us handle frequent changes and the diversified work item backlog. However, Kanban isn’t a <a href="http://en.wikipedia.org/wiki/Software_development_methodology">software development methodology</a> like <em>Scrum</em>. You cannot do <em>Kanban</em>, you need a process on which you apply the principles of <em>Kanban</em>. I usually hear the expression that “<em>We are working in Kanban</em>”, which is partially true. Actually they are working according to their process following <em>Kanban</em> principles. There is a difference. A very well known and good example is <em>Scrum-ban</em>: it is a <em>Kanban</em> system which is applied on the <em>Scrum</em> methodology.</p>
+
+<p>We needed a process under Kanban, and I chose <a href="/blog/tag/xp/">eXtreme Programming</a>. I needed something without an exact requirement on iterations. <em>XP</em> also talks about iterations, but it is not based on them that strictly. <a href="http://en.wikipedia.org/wiki/Dynamic_Systems_Development_Method">DSDM</a> was a candidate for 5 minutes, but it is also iteration-based. <a href="http://en.wikipedia.org/wiki/Crystal_Clear_(software_development)">Crystal</a> was also a candidate, but since we already have experience with <em>XP</em>, we know its principles – although we still have to practice –, I chose <em>XP</em>.</p>
+
+<!--more-->
+
+<h2 id="the-reasons">The Reasons</h2>
+
+<p>Again, the following sentences are valid for my current status.</p>
+
+<h4 id="flexibility">Flexibility</h4>
+
+<p>Our environment changes a lot. Once I took the time and counted the number of changes. We had one change per day. In order to be <a href="/blog/2012/09/effective-vs-efficient">efficient</a> in such an environment, I need something very flexible.</p>
+
+<p><em>Scrum</em> is as flexible as the <em>sprints</em> are short. For a “<em>one change per day</em>” situation<em>,</em> I need a one day long <em>sprint</em>. It is an overhead: planning meeting in the morning, coding around noon, demo and retrospective in the afternoon. It is possible to do this with longer <em>sprints</em>, but every time a change shows up, the <em>sprints</em> need to be terminated. I admit this statement is a bit rigid, but it is by the book. Let’s divide the changes into two parts:</p>
+
+<ul>
+  <li>
+    <p>change on organizational level</p>
+  </li>
+  <li>
+    <p>change on team/task level</p>
+  </li>
+</ul>
+
+<p>If the project decides that a certain feature is more important than the features the teams are working on at the moment, we are talking about a <em>change on organizational level</em>. In <em>Scrum,</em> you have to finish or <em>terminate</em> the current <em>sprint</em>, start planning the new feature, build up a <em>product backlog</em> etc. In <a href="/blog/tag/kanban/">Kanban</a>, the tasks of the new feature can be put on the top of the teams <a href="/blog/2010/11/the-internal-queue-column/">Priority Queue</a>, and the teams can start working on them as soon as a resource becomes available.</p>
+
+<p>A smaller change can make some trouble as well. We don’t have the luxury any more to take some work - e.g. <a href="/blog/tag/iteration-backlog/">sprint backlog</a> -, and tell the rest of the world to leave us alone until we are finished. For example, the team commits to three user stories. So far so good. They start working on the first two, but the <a href="/blog/tag/product-owner">product owner</a> comes by and tells the team that he re-evaluated the product backlog and now a forth user story has a higher priority than the third one, which the team has already committed to. By the book, in this case neither the product owner nor team can do anything, because the commitment has been made. Of course, there are ways of solving this situation such as <em>sprint termination</em> - when the <em>product owner</em> terminates the sprint -, or cheating and simply switching the user stories. In <em>Kanban</em>, the third, not started user story goes a bit down in the <em>Priority Queue</em>, and the forth comes to the top.</p>
+
+<p><em>*I feel that the reaction time of Kanban is better than the reaction time of Scrum. **<a href="http://www.threeriversinstitute.org/">Kent Beck</a> referred to this in his “</em>Software G Forces: The Effects of Acceleration<em>” presentation at <a href="http://www.scandevconf.se/2010/">SDC2010</a>. He said that if an organization wanted to do weekly delivery it had to switch to *Kanban</em>.</p>
+
+<h4 id="continuity">Continuity</h4>
+
+<p>In Lean and Kanban teams are having a <em>flow</em>. It is hard to define the <em>flow</em>, but imagine a continuous end-to-end <a href="/blog/tag/value-stream-mapping">value stream</a> between the customer’s request and delivery. In layman’s terms, the <em>flow</em> represents everything what happens after the customer asked for something, until this something is delivered. The <em>flow</em> is like a <em>river</em>. The calmer and more predictable this <em>river</em> is, the best for everybody. Unfortunately, <em>Scrum</em> is not that calm. The implementation starts slowly with a planning meeting, then it gets faster when the end of the sprint comes, and stops for a day for <em>sprint review</em> (<em>demo</em> and <em>retrospective</em>), and starts again slowly. I feel that the <em>planning meeting</em> and <em>sprint review</em> unnecessarily interrupt this <em>flow</em>.</p>
+
+<p>I like the idea of the <em>demo</em> and the <em>retrospective</em>, and I can accept that the <em>demo</em> should happen always at the same time, because it is better for the customer. But I don’t see the benefit of having scheduled <em>retrospectives</em>. Teams should improve themselves all the time, there is no need for a separate meeting. If something turns south, the team shall stop working and discuss the situation right on the spot. I’m hearing quite regularly the phrase “<em>I’m going to raise this problem on the retrospective</em>”. I’m asking: why wait until then? Let’s do it now!</p>
+
+<p>This is true for <em>planning meeting</em>s as well. Why is it necessary to wait with planning? Do it when it is necessary. Anyway, I’ll come back to the planning meetings later.</p>
+
+<p>These meetings make the <em>flow</em> unnecessarily unpredictable. This is not healthy. I prefer the calm <em>flow</em>, in which things happen, and the reaction to those things happens right after. <strong>I prefer Kanban, because things like improvements are happening continuously, which make the work/flow smoother</strong>.</p>
+
+<h4 id="focus">Focus</h4>
+
+<p>I’ve seen several <em>scrum board</em>s, and they were usually in a state similar to this:</p>
+
+<p><img class="center" src="/images/posts/2011-02-05-xp-with-kanban-instead-of-scrum/scrum-board-with-parallel-tasks.png" width="300" height="250" title="scrum board with parallel tasks" /></p>
+
+<p>None of the user stories are finished, the sprint is almost over, a flat line has appeared on the burndown chart, but everybody is working on something. More precisely: on six somethings.</p>
+
+<p>There are several reasons why this can happen. The most common cases are:</p>
+
+<ul>
+  <li>
+    <p>Everybody is doing what she knows best</p>
+  </li>
+  <li>
+    <p>Developers move on to the next story after the implementation tasks of the current user story are done</p>
+  </li>
+</ul>
+
+<p>Not only doesn’t any of these help to build up a <a href="/blog/2010/08/in-pursuit-of-the-cross-functional-team/">cross-functional team</a>, but they risk the <em>demo</em>. If you start three user stories and start working on them in parallel, there is a good chance that you won’t finish any of them before the end of sprint.</p>
+
+<p>With a <a href="http://leanandkanban.wordpress.com/2009/05/14/wip-and-limits/">WIP limit</a>, the situation above can be solved. With the limit, the team can put a pressure on itself to finish something before starting to work on something new. In this case, we are talking about <em>Scrum-ban</em>:</p>
+
+<p><img class="center" src="/images/posts/2011-02-05-xp-with-kanban-instead-of-scrum/scrum-ban-board.png" width="300" height="250" title="scrum-ban board" /></p>
+
+<p><strong>Kanban and WIP limits help the team to stay focused and always/continuously deliver something.</strong>
+#### Wasting Time</p>
+
+<p>To <a href="/blog/2012/08/waste-in-software-development">eliminate waste</a> is one of the <a href="/blog/tag/lean"><em>Lean</em></a> principles. Companies - not just IT companies - are doing their best to reduce waste. Our <em>waste</em> manifested in time spent on things which were not necessary at that moment. When I say <em>waste</em>, I’m referring only to the time spent, because we are working in hours, our estimations are in hours, and our customers pay us based on reported hours. In our case, wasting time equals wasting money.</p>
+
+<p>I consider the <em>task breakdown</em> of planning meetings a <em>waste</em>. Usually, teams commit to several user stories during planning meeting, and do task breakdowns afterwards for each user story. During the sprints, we measured the number of unplanned tasks, and the ratio between planned and unplanned tasks was almost always 1:1. This fact suggests that we wasted some time breaking down tasks which changed afterwards. Additionally, sometimes it happened (not just with us, but with people I know in other organizations as well) that a user story wasn’t finished and was moved to the next <em>sprint</em>. In this case, the team had to re-evaluate every task and determine whether they are still valid. It is another good place for wasting time.</p>
+
+<p>On the other hand, <strong>Lean and Kanban advises to <a href="http://en.wikipedia.org/wiki/Lean_software_development#Decide_as_late_as_possible">make decisions late as possible</a>. In other words, do task breakdown - if you need it all - when the time is right.</strong></p>
+
+<h4 id="customer-perspective">Customer Perspective</h4>
+
+<p>Technically, the <em>Scrum Team</em> sees the product from the <em>product backlog</em> perspective. The customer is behind the product owner and/or the scrum master, and the team does not know too much about what she would like to have in her software. If these are not clear to the whole team, they cannot implement exactly what the customer wants, in other words, the team may deliver features in which the customer has small interest, or no interest at all.</p>
+
+<p><em>System thinking</em> can solve this situation. David Joyce has a nice <a href="http://leanandkanban.wordpress.com/2011/01/08/are-you-target-driven-or-customer-driven/">presentation about this topic</a>. <strong>System thinking can be done in Scrum, but it fits more into a Lean or Kanban way of working</strong>.
+#### Resource Handling</p>
+
+<p>I mentioned before that our environment is changing, but this is not the only change we have. Our team setups are changing as well. One of the pillars of <em>Scrum</em> is the assumption that the team setup does not change. We don’t have this pillar, which makes <em>commitment</em> and <em>estimation</em> very hard, because the measure it’s based on - the <a href="/blog/tag/velocity">velocity</a> - cannot be determined. You can combine the <em>velocity</em> with the <em>focus factor</em> to make it more realistic. It will help a bit, but it is not a silver bullet.</p>
+
+<p><em>focus factor = (actual velocity) / (available man days in the actual sprint)</em></p>
+
+<p><em>estimated velocity of the next sprint = (focus factor) * (available man days in next sprint)</em></p>
+
+<p>source: <a href="http://www.infoq.com/minibooks/scrum-xp-from-the-trenches">Scrum and XP from the Trenches</a></p>
+
+<p>Nevertheless, <em>velocity</em> and <em>focus factor</em> are the things which the customer and project management don’t take care about at all. They want to know when the feature will be ready. I assume you can imagine the accuracy of an estimate that was made using a <em>velocity</em> of a changing team. Additionally the <em>velocity</em> is calculated for each sprint. If a user story is finished in a sprint, it will not count in the <em>velocity</em> of the previous sprint, but will increase the <em>velocity</em> of that sprint. After exposing this fact, people start doing the worst thing ever: calculating average…</p>
+
+<p><strong>I feel that the <a href="/blog/2013/07/lead-time">lead time</a> from Kanban is a much better alternative</strong>. It will tell the team and the management how much time the team needed to finish a certain item. Everybody can understand the measurement of the time spent, there is no need for equations (like <em>focus factor</em>), and unnecessary calculations (like average).  There is a difference between the following two sentences: “<em>Our velocity in this sprint was 6</em>”. “<em>We needed 30 days to finish this user story</em>”. I feel that the second sentence has more information, and raises more questions: “<em>30 days? It is a month. Why did we need so much time?</em>”</p>
+
+<p>Additionally, large organizations tend to compare features and teams. “<em>If a team finishes a feature with an average velocity, the other team with a similar setup will finish another feature with the same velocity. Let’s use that velocity for estimation.</em>” I think everybody has been in a situation where a similar sentence has been told. <strong>You cannot compare velocities, because the are team specific values. You cannot compare lead times either, because they are also team specific.</strong></p>
+
+<p>There is one more thing in <em>Kanban</em> which is very helpful when it comes to resource handling: the <em>WIP limits</em>. I talked about them before in a different context. <em>Kanban</em> is a <em>pull system</em>, which means that the teams are pulling/fetching work based on their current workload and limitations. For example, have a team with four members and with a <em>WIP limit</em> of 4. This means that the team can work on four work items in parallel. When someone from the team finishes her current item, she can take a new one. <strong>The Kanban system prevents the team from taking on unnecessary workload which would usually mean unnecessary pressure on the team</strong>. If she has to leave the team for some reason, the WIP limit can be changed to three, and the rest of the team can continue the work. After she joins again, the limit shall remain three for a while, until she learns everything she missed while being away.</p>
+
+<p>In <em>Scrum,</em> this cannot happen. The product owner kind of <em>push</em>es the work on the team, and since there is no system preventing this <em>push</em>, the team might end up having more work than it’s supposed to have. Additionally, there isn’t any good indicator on the team’s possible output in <em>ScrumKanban</em>, but in it is available.</p>
+
+<h4 id="communication">Communication</h4>
+
+<p>I have shared my thoughts on daily stand-ups in <a href="/blog/2010/12/daily-stand-up-variations/">another post</a>.</p>
+
+<h4 id="progress">Progress</h4>
+
+<p>In Scrum, teams have different <em>burndown charts</em>, one for the iteration, <a href="/blog/tag/iteration-backlog/">one for the backlog</a>, and maybe - in a good case - for the releases. Usually, teams are using the iteration backlog burndown chart which shows how much time is left from the iteration. I feel that the charts we were using weren’t helping the team, the project management, the product owner nor the team leader. Different teams had different interpretations on how to draw the chart, and if the management or the team leader wanted to understand what their current situation is, we had to ask them, and they had to teach us how to read their chart. This is a waste.</p>
+
+<p>Additionally, the customer or the project management does not care how much time is left in the current iteration, they are interested in the whole <em>flow</em>, they would like see tendencies and data that help them with estimates and prognosis. I prefer <a href="http://www.slideshare.net/fabokzs/targu-mures-measure-and-manage-flow-in-practice">cumulative flow diagrams</a>, because the are more informative to the team, and project management can understand it as well.</p>
+
+<p>A burndown chart (source: <a href="http://en.wikipedia.org/wiki/File:SampleBurndownChart.png">wikipedia</a>):</p>
+
+<p><img class="center" src="/images/posts/2011-02-05-xp-with-kanban-instead-of-scrum/burndown-wikipedia.png" width="500" height="273" title="burndown wikipedia" /></p>
+
+<p>A cumulative flow diagram from Henrik Kniberg (source: <a href="http://www.infoq.com/minibooks/kanban-scrum-minibook">InfoQ minibook</a>):</p>
+
+<p><img class="center" src="/images/posts/2011-02-05-xp-with-kanban-instead-of-scrum/cfd_kniberg.jpg" width="500" height="323" title="cumulative flow diagram from Henrik Kniberg" /></p>
+
+<p>A Cumulative Flow Diagram:</p>
+
+<p><img class="center" src="/images/posts/2011-02-05-xp-with-kanban-instead-of-scrum/cfd.png" width="500" height="359" title="Cumulative Flow Diagram" /></p>
+
+<p><strong>The cumulative flow diagrams tell me much more about the overall flow. One can draw them for Scrum as well, that’s for sure, but the diagram is really for Kanban.</strong></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I cannot predict what will happen to us after the <em>Scrum -&gt; XP+Kanban</em> transformation. I know that <em>Kanban</em> helped us reaching our goals with test, maintenance and firefighting teams, so I hope it will help us with development as well. There are very good scrum teams out there, so are kanban teams.</p>
+
+<p>Any comments?</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/05/kanban-on-organisational-level/">Kanban on Organisational Level</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/change-management" title="change management">change&nbsp;management</a></li><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/scrum" title="scrum">scrum</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/02/xp-with-kanban-instead-of-scrum/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/02/xp-with-kanban-instead-of-scrum/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/02/xp-with-kanban-instead-of-scrum/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/02/xp-with-kanban-instead-of-scrum/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/02/the-currency-format-kata/" class="basic-alignment left" title="The Currency Format Kata">&laquo; The Currency Format Kata</a>
+            
+            
+              <a href="/blog/2011/02/pimp-my-team/" class="basic-alignment right" title="Pimp my Team">Pimp my Team &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Saving the Continuous Integration &#8211; Zsolt Fabók</title>
+<meta name="description" content="I really like continuous integration, that's why I'm always sad when I see one dying. Unfortunately, I've seen it happen a lot, and in every case its lifeline looked like this.<br/><br/>more...">
+<meta name="keywords" content="agile, xp, testing, continuous integration, programming, ruby, broken windows, rspec, cucumber">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Saving the Continuous Integration">
+<meta name="twitter:description" content="I really like continuous integration, that's why I'm always sad when I see one dying. Unfortunately, I've seen it happen a lot, and in every case its lifeline looked like this.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Saving the Continuous Integration">
+<meta property="og:description" content="I really like continuous integration, that's why I'm always sad when I see one dying. Unfortunately, I've seen it happen a lot, and in every case its lifeline looked like this.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/10/saving-the-ci/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/10/saving-the-ci/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Saving the Continuous Integration</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-10-19T08:28:05-06:00"><i class="fa fa-calendar-o"></i> October 19, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=agile,xp,testing,continuousintegration,programming,ruby,brokenwindows,rspec,cucumber&amp;text=Saving%20the%20Continuous%20Integration&amp;url=/blog/2011/10/saving-the-ci/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/10/saving-the-ci/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/10/saving-the-ci/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I really like <a href="/blog/tag/continuous-integration/">continuous integration</a>, that’s why I’m always sad when I see one dying. Unfortunately, I’ve seen it happen a lot, and in every case its lifeline looked like this:</p>
+
+<p><img class="center" src="/images/posts/2011-10-19-saving-the-ci/graph_.png" width="450" height="274" title="Lifeline of a Continuous Integration" /></p>
+
+<p>The introduction of the <em>continuous integration</em> is usually started by an enthusiastic team member who read about it, realized “<strong><em>it was cool”</em></strong>, and it was just what the team needed. She quickly affects the whole team, they set up the build servers and are really happy with it.</p>
+
+<p>The first fracture happens when the first unexpected failed build appears on account of a test case failure. Nobody knows why the test fails, because it works locally, also works on the server, but mysteriously sometimes it just doesn’t work in either of these places. The team is aware of the phenomenon, closes the case saying “<em>don’t worry, we know that sometimes it fails</em>” and moves forward. As time goes on, the team adds more test cases, and another failing test case appears on the horizon. Mysteriously, just as before. The same decision is made, because a team can live with two known failing test cases, can’t it? Unfortunately, this question signs the death sentence of the <em>continuous integration</em> build, because <strong>failing test cases decrease the faith in the system</strong>, and team members will start ignoring the results, because they are not trustworthy. Criminologists call this phenomenon <em>broken windows</em> syndrome:</p>
+
+<blockquote>
+  <p>Consider a building with a few broken windows. If the windows are not repaired, the tendency is for vandals to break a few more windows. Eventually, they may even break into the building, and if it’s unoccupied, perhaps become squatters or light fires inside. (source: <a href="http://en.wikipedia.org/wiki/Broken_windows_theory">wikipedia</a>)</p>
+</blockquote>
+
+<p>Occasionally, some of the team members pull themselves together and decide to <strong>“fix the build”</strong>. They might even get management support. Unfortunately, the <em>broken windows</em> are more powerful than them: while they are desperately trying to fix the test cases, other team members are going forward and building software based on an insecure base and creating more failing test cases: the <em>broken windows</em> are working behind the curtains. At the end, only the initiator checks on the build, because everybody else has already given up the fight with the windmills. This is the end of the continuous integration for the team: <strong>“flatline”</strong>.</p>
+
+<p>For me, sporadically failing test cases are like diseases, and should be handled accordingly: <strong>until it is not known what the problem is, they should be separated from the reliable (healthy) test cases</strong>. If a team relies only on reliable test cases and keeps the unreliable ones in a <strong>test quarantine</strong>, then the team won’t lose its faith in <em>continuous integration</em> and it can live and support the team. Let’s see how to set up a test quarantine.</p>
+
+<!--more-->
+<p>A test case fails sporadically, because of</p>
+
+<ul>
+  <li>
+    <p>a timing issue (either the test is too fast or too slow)</p>
+  </li>
+  <li>
+    <p>an external dependency problem (e.g. database bug, undocumented API etc)</p>
+  </li>
+</ul>
+
+<p>Let’s have a plain ruby project with <em><a href="https://www.relishapp.com/rspec">rspec</a></em> and <em><a href="https://github.com/cucumber/cucumber">cucumber</a></em> under <a href="http://jenkins-ci.org/">Jenkins</a> based on a source from the brilliant <a href="http://pragprog.com/book/achbd/the-rspec-book">RSpec Book</a>. Before I applied any changes, its build trend looked like this:</p>
+
+<p><img class="center" src="/images/posts/2011-10-19-saving-the-ci/green-build-trend.png" width="400" height="183" title="A Build Trend with Green Builds Only" /></p>
+
+<p>I did some changes right after <code>build #8</code>, and the trend has changed like this:</p>
+
+<p><img class="center" src="/images/posts/2011-10-19-saving-the-ci/red-build-trend.png" width="400" height="184" title="A Build Trend with Some Red Builds" /></p>
+
+<p>The output does not require further explanation, I think the result is familiar to everybody: increased execution times and sporadically failing builds - there was only one change between builds #8 and #9.</p>
+
+<p>The first thing to do is to find the culprits who made the build red and increased the execution time. Finding the failing test cases is trivial, because their names are provided in the <em>console output</em> of the build:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">Failures:
+
+  1<span class="o">)</span> Codebreaker::Game#guess sends the mark to output
+     Failure/Error: output.should_receive<span class="o">(</span>:puts<span class="o">)</span>.with<span class="o">(</span><span class="s1">&#39;++++&#39;</span><span class="o">)</span>
+       Double <span class="s2">&quot;output&quot;</span> received :puts with unexpected arguments
+         expected: <span class="o">(</span><span class="s2">&quot;++++&quot;</span><span class="o">)</span>
+              got: <span class="o">(</span><span class="s2">&quot;+++&quot;</span><span class="o">)</span>
+     <span class="c"># **./spec/codebreaker/game_spec.rb:31**</span>
+
+Finished in 0.12779 seconds
+<span class="m">12</span> examples, <span class="m">1</span> failure</code></pre></div>
+
+<p>On the other hand, finding the slow test cases might be tricky, but not impossible. <code>Rspec</code> has a nice functionality called <code>profile</code>. It only prints out the top 10 slowest test cases, but usually that’s more than enough:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/temp/rspec-book/code/cb/47 <span class="nv">$ </span>**rspec --profile**
+............
+
+Top <span class="m">10</span> slowest examples:
+  Codebreaker::Game#start sends a welcome message
+    0.00065 seconds ./spec/codebreaker/game_spec.rb:17
+  ...
+  Codebreaker::Marker#exact_match_count with no matches returns 0
+    0.00022 seconds ./spec/codebreaker/marker_spec.rb:15
+
+Finished in 0.11365 seconds
+<span class="m">12</span> examples, <span class="m">0</span> failures
+~/temp/rspec-book/code/cb/47 <span class="err">$</span></code></pre></div>
+
+<p>The <em>usage</em> format of <code>cucumber</code> prints out the <em>step definitions</em> with their execution times. The slowest ones come first:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/temp/rspec-book/code/cb/47 <span class="nv">$ </span>**cucumber --format usage**
+....---...............................................................
+
+0.0007265 /^I should see <span class="s2">&quot;([^&quot;</span><span class="o">]</span>*<span class="o">)</span><span class="s2">&quot;$/                    # features/step_definitions/codebreaker_steps.rb:41</span>
+<span class="s2">  0.0007590 Then I should see &quot;</span>Welcome to Codebreaker!<span class="s2">&quot; # features/codebreaker_starts_game.feature:10</span>
+<span class="s2">  0.0006940 And I should see &quot;</span>Enter guess:<span class="err">&quot;</span>             <span class="c"># features/codebreaker_starts_game.feature:11</span>
+0.0003550 /^I am not yet playing<span class="nv">$/</span>                      <span class="c"># features/step_definitions/codebreaker_steps.rb:23</span>
+  0.0003550 Given I am not yet playing                  <span class="c"># features/codebreaker_starts_game.feature:8</span>
+0.0002970 /^I start a new game<span class="nv">$/</span>                        <span class="c"># features/step_definitions/codebreaker_steps.rb:31</span>
+  0.0002970 When I start a new game                     <span class="c"># features/codebreaker_starts_game.feature:9</span>
+
+<span class="m">22</span> scenarios <span class="o">(</span><span class="m">22</span> passed<span class="o">)</span>
+<span class="m">67</span> steps <span class="o">(</span><span class="m">67</span> passed<span class="o">)</span>
+0m15.076s
+~/temp/rspec-book/code/cb/47 <span class="err">$</span></code></pre></div>
+
+<p>Nothing interesting in the <code>rspec</code> report, but the <code>codebreaker_steps.rb</code> needed twice as much time to execute as the other steps in the first scenario of <code>codebreaker_starts_game.feature</code>: <strong>0.0007265s</strong> vs. <strong>0.0003550s</strong>. Now I know which test cases need to be separated from the others:</p>
+
+<ul>
+  <li>
+    <p><code>./spec/codebreaker/game_spec.rb:31</code> (it fails sometimes)</p>
+  </li>
+  <li>
+    <p><code>features/codebreaker_starts_game.feature</code> first scenario (it is slow)</p>
+  </li>
+</ul>
+
+<p>First, I have to find a way to mark them, and second, I need a way to run the test suites without them. I’m going to use the <a href="https://www.relishapp.com/rspec/rspec-core/v/2-6/docs/filtering/exclusion-filters">exclusion filter</a> functionality of <em>rspec…</em></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">describe</span> <span class="s2">&quot;#guess&quot;</span> <span class="k">do</span>
+  <span class="n">it</span> <span class="s2">&quot;sends the mark to output&quot;</span><span class="o">**</span><span class="p">,</span> <span class="ss">:sporadic</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="o">**</span> <span class="k">do</span>
+    <span class="n">game</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">should_receive</span><span class="p">(</span><span class="ss">:puts</span><span class="p">)</span><span class="o">.</span><span class="n">with</span><span class="p">(</span><span class="s1">&#39;++++&#39;</span><span class="p">)</span>
+      <span class="n">game</span><span class="o">.</span><span class="n">guess</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>…and the <a href="https://github.com/cucumber/cucumber/wiki/tags">tagging</a> functionality of <code>cucumber</code> for marking:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="vi">@slow</span>
+<span class="ss">Scenario</span><span class="p">:</span> <span class="n">start</span> <span class="n">game</span>
+  <span class="no">Given</span> <span class="n">I</span> <span class="n">am</span> <span class="ow">not</span> <span class="n">yet</span> <span class="n">playing</span>
+  <span class="no">When</span> <span class="n">I</span> <span class="n">start</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">game</span>
+  <span class="no">Then</span> <span class="n">I</span> <span class="n">should</span> <span class="n">see</span> <span class="s2">&quot;Welcome to Codebreaker!&quot;</span>
+  <span class="no">And</span> <span class="n">I</span> <span class="n">should</span> <span class="n">see</span> <span class="s2">&quot;Enter guess:&quot;</span></code></pre></div>
+
+<p>Finally, I’m going to write <em>rake</em> tasks for the separation:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;rubygems&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;rspec/core/rake_task&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;cucumber/rake/task&#39;</span>
+
+<span class="no">RSpec</span><span class="o">::</span><span class="no">Core</span><span class="o">::</span><span class="no">RakeTask</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:spec</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="o">.</span><span class="n">rspec_opts</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;--format progress&#39;</span><span class="o">]</span>
+  <span class="o">**</span><span class="n">t</span><span class="o">.</span><span class="n">rspec_opts</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;--tag ~sporadic --tag ~slow&quot;</span><span class="o">**</span>
+<span class="k">end</span>
+
+<span class="no">RSpec</span><span class="o">::</span><span class="no">Core</span><span class="o">::</span><span class="no">RakeTask</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:spec_all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="o">.</span><span class="n">rspec_opts</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;--format progress&#39;</span><span class="o">]</span>
+<span class="k">end</span>
+
+<span class="no">Cucumber</span><span class="o">::</span><span class="no">Rake</span><span class="o">::</span><span class="no">Task</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:cucumber</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="o">.</span><span class="n">cucumber_opts</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;--format progress&quot;</span><span class="o">]</span>
+  <span class="o">**</span><span class="n">t</span><span class="o">.</span><span class="n">cucumber_opts</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;--tag ~sporadic --tag ~slow&quot;</span><span class="o">**</span>
+<span class="k">end</span>
+
+<span class="no">Cucumber</span><span class="o">::</span><span class="no">Rake</span><span class="o">::</span><span class="no">Task</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:cucumber_all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="o">.</span><span class="n">cucumber_opts</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;--format progress&quot;</span><span class="o">]</span>
+<span class="k">end</span></code></pre></div>
+
+<p>As you can see, when someone executes the regular <code>rspec</code> and <code>cucumber</code> test cases, she will only see the result of the reliable test cases (<code>~</code> means ignoring a tag). <strong>It is still wise to keep the possibility of executing the whole test suite as well, because it is important to monitor the separated test cases together with the existing ones</strong>: there might be other unsurfaced problematic test cases. Set up a completely separate *Jenkins project *for the whole test suite (<code>spec_all*, </code>cucumber_all`), which builds several times a day. With this approach, we’ve found several sporadically failing test cases, so it really paid off.</p>
+
+<p><img class="center" src="/images/posts/2011-10-19-saving-the-ci/jenkins-build-list.png" width="500" height="108" title="List of builds" /></p>
+
+<p>As you can see, the <em>commit build</em> is perfect (the sun means a continuous green build), and on the other hand the <em>quarantine build</em> is still sporadic (the clouds mean green and red builds).</p>
+
+<p>One more thing. If your test cases are using database like in <em>Ruby on Rails</em>, use separate databases for them. I forgot to do this, and when the two <em>Jenkins</em> projects were running using the same database, they corrupted each others database and both failed.</p>
+
+<p><strong>Putting test cases into a quarantine won’t make your *continuous integration *better, and it won’t stop the spread, but it is a start.</strong> Remember when I wrote about the moment when my example team got divided into two parties? Well, the first party wanted a reliable test suite - check. The second party wanted to work uninterrupted on test cases and make them better - check. For me it is a win-win situation.</p>
+
+<p>I recommend having a corner on your whiteboard - if you have any - where you count the number of test cases stated in the quarantine.** The team should commit to decrease the number of test cases stated in the quarantine week by week**. Another recommendation: if a test case is considered fixed, do not remove the tag immediately. Leave it in the quarantine for a couple of days or a week and if it is all green, then remove the tag.</p>
+
+<p><img class="center" src="/images/posts/2011-10-19-saving-the-ci/board.png" width="350" height="193" title="Board" /></p>
+
+<p>The board above shows that the team has already fixed five test cases and they still have three, but the result is promising.</p>
+
+<p>As a bonus, when a developer starts working on a feature and checks the code with the test cases, see will notice the <em>sporadic</em> or the slow mark. Then, she will know that she is going to work with a code base which does not have a reliable test suite, so she will be extremely careful when changing the production code. She might even fix a couple of quarantined test cases while she’s at it.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2010/06/one-step-back-in-testing/">One Step Back In Testing</a></li><li><a href="/blog/2011/05/narrow-down-what-to-test/">How to Narrow Down What to Test</a></li><li><a href="/blog/2011/07/reducing-waste-in-testing-1/">Reducing Waste in Testing - The Problem</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/agile" title="agile">agile</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li><li><a href="/blog/tag/continuous-integration" title="continuous integration">continuous&nbsp;integration</a></li><li><a href="/blog/tag/programming" title="programming">programming</a></li><li><a href="/blog/tag/ruby" title="ruby">ruby</a></li><li><a href="/blog/tag/broken-windows" title="broken windows">broken&nbsp;windows</a></li><li><a href="/blog/tag/rspec" title="rspec">rspec</a></li><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/10/saving-the-ci/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/10/saving-the-ci/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/10/saving-the-ci/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/10/saving-the-ci/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/10/building-a-bridge/" class="basic-alignment left" title="Building a Bridge a.k.a Parallel Changes">&laquo; Building a Bridge a.k.a Parallel Changes</a>
+            
+            
+              <a href="/blog/2011/10/agile-in-stealth-mode/" class="basic-alignment right" title="Evoline Romania - Agile in Stealth Mode">Evoline Romania - Agile in Stealth Mode &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

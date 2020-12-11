@@ -1,0 +1,429 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>How I Start Working with Legacy Code &#8211; Zsolt Fabók</title>
+<meta name="description" content="While I was cleaning up one of my old folders, I found an old application jar file from 2004. I remember that I wrote this app for my friend who used it for calculating some kind of gas&nbsp;consumption.<br/><br/>more...">
+<meta name="keywords" content="development, refactoring, java, testing, legacy">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="How I Start Working with Legacy Code">
+<meta name="twitter:description" content="While I was cleaning up one of my old folders, I found an old application jar file from 2004. I remember that I wrote this app for my friend who used it for calculating some kind of gas&nbsp;consumption.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How I Start Working with Legacy Code">
+<meta property="og:description" content="While I was cleaning up one of my old folders, I found an old application jar file from 2004. I remember that I wrote this app for my friend who used it for calculating some kind of gas&nbsp;consumption.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/06/working-with-legacy-code/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/06/working-with-legacy-code/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">How I Start Working with Legacy Code</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-06-11T00:32:52-06:00"><i class="fa fa-calendar-o"></i> June 11, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=development,refactoring,java,testing,legacy&amp;text=How%20I%20Start%20Working%20with%20Legacy%20Code&amp;url=/blog/2012/06/working-with-legacy-code/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/06/working-with-legacy-code/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/06/working-with-legacy-code/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>While I was cleaning up one of my old folders, I found an old application jar file from 2004. I remember that I wrote this app for my friend who used it for calculating some kind of gas consumption:</p>
+
+<p><img class="center" src="/images/posts/2012-06-11-working-with-legacy-code/ui.png" width="450" height="357" title="ui" /></p>
+
+<p>As you can see, the design is quite simple: you can set certain gas compounds and the application calculates the emission based on the compounds using my friend’s secret formulas. This application is eight years old now, and I don’t remember much about the details, but implementing the <a href="http://datastructuresprogramming.blogspot.fi/2010/02/expression-evaluation.html">algorithm</a> which interprets those formulas took me a lot of time, that’s for sure. I tend to revisit my old projects and see how differently I solve problems now than before, so I decided to revisit this evaluation algorithm and share it. Moreover, I can use this project for educational purposes like <a href="/blog/tag/dojo/">coding dojos</a>: <strong>how to work with legacy code, one doesn’t really know how to work with unknown legacy code</strong>. So, here is my plan:</p>
+
+<ol>
+  <li>
+    <p>I need a new project and a repository for the source files of the evaluation algorithm</p>
+  </li>
+  <li>
+    <p>I must know what I’m dealing with and how much time it will take</p>
+  </li>
+  <li>
+    <p>I must discover the available functionalities using test cases - black box testing</p>
+  </li>
+  <li>
+    <p>I must fully understand (100% coverage) what the code does using more test cases - white box testing</p>
+  </li>
+  <li>
+    <p>I can start refactoring following the previously generated code metrics</p>
+  </li>
+</ol>
+
+<h4 id="more--getting-the-source-code-and-creating-a-project"><!--more-->Getting the Source Code and Creating a Project</h4>
+
+<p>Unfortunately, neither my friend nor I have the source code anymore, so I’m using <a href="http://www.varaneckas.com/jad/">jad</a> to decompile the class files and recreate the sources. These are the directories after the decompilation:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Desktop/emcalc % ls -1
+META-INF
+calculation
+exception
+gui
+html
+xml
+~/Desktop/emcalc %</code></pre></div>
+
+<p>I’m not interested in the <em>gui</em>, <em>html</em> and <em>xml</em> folders, because I’m petty sure that they do something else, so let’s collect the files from the <em>calculation</em> and <em>exception</em> folders and create a new eclipse project. At the moment, I don’t care about the package structure, so I’m putting everything into one single package:</p>
+
+<p><img class="center" src="/images/posts/2012-06-11-working-with-legacy-code/eclipse-start.png" width="450" height="325" title="Project structure in eclipse" /></p>
+
+<p>I want to share this code so that others can practice on it, so I’m creating a <a href="https://github.com/ZsoltFabok/arithmetic.expression.evaluator">github repository</a> and pushing the current structure to the <em>master</em> branch, and I’m creating a different branch for myself. All my changes will go to the <em>zsolt_refactoring</em> branch, because if I commit my changes into the <em>master</em> branch, others who may want to use the code, won’t be able to use the HEAD as a starting point.</p>
+
+<h4 id="what-im-dealing-with">What I’m Dealing with</h4>
+
+<p>Before I start working with legacy code I like to know what I’m dealing with. In this case I ran different code analyzer tools. The detailed reports from** findbugs, pmd, and crap4j **can be found in the target/reports folder. Here’s a quick summary:</p>
+
+<ul>
+  <li>
+    <p><a href="http://findbugs.sourceforge.net/">Findbugs</a>: 2 bugs: malicious code vulnerability</p>
+  </li>
+  <li>
+    <p><a href="http://pmd.sourceforge.net/pmd-5.0.0/">PMD</a>: 1 priority 1 and 18 priority 2 issues</p>
+  </li>
+  <li>
+    <p><a href="http://www.crap4j.org/">Crap4j</a>: 5 classes whose complexity is above 5, and one with a complexity of 17</p>
+  </li>
+</ul>
+
+<p>It is not that bad, I expected worse. Based on this information I may need 2-3 hours to finish the work, which fits into my weekend schedule. <strong>If I have to deal with a large code base</strong> - larger than this -<strong> static code analysis can help me find out what I’m dealing with.</strong> If those numbers had been greater I wouldn’t have done anything, because it’s not worth the effort.
+You may wonder why I haven’t run <a href="http://checkstyle.sourceforge.net/">checkstyle</a> analysis. The reason is quite simple: I’m working with decompiled code and that analysis would show how good jad is, which would be useless in this case. However, <strong>when I have source I wrote myself, I definitely run checkstyle, too</strong>.</p>
+
+<h4 id="the-first-test-cases">The First Test Cases</h4>
+
+<p><strong>It is not wise to start working on legacy code with test cases, which can help discover what the code actually does</strong>. Of course, I can <a href="/blog/2010/05/basics-of-code-review/" title="Basics of Code Review">review the code</a>, which in this case may be a wise decision, because there aren’t too many classes and their dependency tree is simple, but when I’m dealing with a lot of classes, I most probably won’t have time for a thorough code review.</p>
+
+<p>If I have the “<em>entry point</em>” to the application, I can start writing test cases which call this <em>entry point</em> and I can check the returned results. In most of the cases this entry point is the <em>main</em> method, but in this case there is no <em>main</em> method at all - it is somewhere in the previously deleted <em>gui</em> folder. Hint: eclipse can help find the main methods: right click on the project -&gt; <em>Run as…</em> -&gt; <em>Java Application.</em></p>
+
+<p>The classes which hold the entry points have a unique attribute: no other class depends on them. If I’m able to determine the dependency graph in this project, I will find the entry points I’m looking for. I tried different tools like <a href="http://clarkware.com/software/JDepend.html">jDepend</a>, <a href="http://www.dependency-analyzer.org/">CDA</a> and <a href="http://classycle.sourceforge.net/">classycle</a>, but the result was a bit disappointing: it was hard to use these tools and their results weren’t satisfactory enough. Nevertheless, <em>classycle</em> could tell me this:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">class evaluator.NotInDomainException <span class="o">(</span><span class="m">578</span> bytes<span class="o">)</span>
+class evaluator.Expressions <span class="o">(</span><span class="m">1836</span> bytes<span class="o">)</span>
+    class evaluator.Operator <span class="o">(</span><span class="m">1716</span> bytes<span class="o">)</span>
+    class evaluator.Calculate <span class="o">(</span><span class="m">2839</span> bytes<span class="o">)</span>
+class evaluator.Function <span class="o">(</span><span class="m">1844</span> bytes<span class="o">)</span>
+    class evaluator.Interval <span class="o">(</span><span class="m">1419</span> bytes<span class="o">)</span>
+    class evaluator.NotInDomainException <span class="o">(</span><span class="m">578</span> bytes<span class="o">)</span>
+    class evaluator.Calculate <span class="o">(</span><span class="m">2839</span> bytes<span class="o">)</span>
+class evaluator.Operator <span class="o">(</span><span class="m">1716</span> bytes<span class="o">)</span>
+class evaluator.Calculate <span class="o">(</span><span class="m">2839</span> bytes<span class="o">)</span>
+    class evaluator.Operator <span class="o">(</span><span class="m">1716</span> bytes<span class="o">)</span>
+class evaluator.InvalidConfigFormatException <span class="o">(</span><span class="m">477</span> bytes<span class="o">)</span>
+class evaluator.Interval <span class="o">(</span><span class="m">1419</span> bytes<span class="o">)</span>
+class evaluator.InvalidDataException <span class="o">(</span><span class="m">453</span> bytes<span class="o">)</span></code></pre></div>
+
+<p>None of the classes depends on the <em>Expressions</em> or on the <em>Function</em> classes, so they are the entry points I’m looking for. Additionally, the <em>InvalidDataException</em> and <em>InvalidConfigFormatException</em> classes are not referenced at all, so I don’t need them in this project.</p>
+
+<p>Let’s start writing test cases for the <em>Expressions</em> and <em>Function</em> classes. At this point, I’d rather not look at the code if possible - <strong>black box testing</strong> - and try to write a green test case based on the available javaDoc and method/class signatures. This is the best approach for me to learn as much as possible about the code in a short period of time. Reading code takes a lot of time, and I’d like to make some progress, so I’m “kicking” the project until there is a green test case. After three minutes, I have the green test cases:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExpressionsTest</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Hashtable</span> <span class="n">table</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Hashtable</span><span class="o">();</span>
+        <span class="n">table</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;expression&quot;</span><span class="o">,</span> <span class="s">&quot;6 * 2&quot;</span><span class="o">);</span>
+        <span class="n">Expressions</span> <span class="n">expressions</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Expressions</span><span class="o">(</span><span class="n">table</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="mf">12.0</span><span class="o">,</span> <span class="n">expressions</span><span class="o">.</span><span class="na">getResult</span><span class="o">(</span><span class="s">&quot;expression&quot;</span><span class="o">),</span> <span class="mf">0.0</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FunctionTest</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSomething</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">NotInDomainException</span> <span class="o">{</span>
+        <span class="n">Function</span> <span class="n">function</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Function</span><span class="o">();</span>
+        <span class="n">function</span><span class="o">.</span><span class="na">addInterval</span><span class="o">(</span><span class="k">new</span> <span class="nf">Interval</span><span class="o">(-</span><span class="mf">5.0</span><span class="o">,</span> <span class="mf">5.0</span><span class="o">),</span> <span class="s">&quot;6 * 2&quot;</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="mf">12.0</span><span class="o">,</span> <span class="n">function</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="mf">2.0</span><span class="o">),</span> <span class="mf">0.0</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Here is what I’ve learnt: the arithmetic expressions are given through wrappers like a <em>Hashtable</em> or an internal class <em>Interval</em>. I have no idea why, but it would be fun to find out. And, the <em>Expressions</em> and <em>Function</em> classes seem to do the same thing.</p>
+
+<p>In the first example I only used the ‘*’ operator, but let’s see what happens if I use other operators like ‘+’, ‘-‘, ‘/’, ‘^’, ‘(‘ and ‘)’? Moreover, it may be possible to use variables, too. So I’m writing more test cases using different operators and variables.</p>
+
+<h4 id="cover-everything">Cover Everything</h4>
+
+<p>Although I have several working test cases, I’m unable to use variables in them. <strong>I’m stopping here for the moment, because I’m doing two things at the same time</strong>: covering the evaluation part and writing test cases for the <em>variable replacement</em> part. Let’s see the test coverage of the evaluation part first. After running <a href="http://cobertura.sourceforge.net/">cobertura</a>, it seems that I’ve managed to cover every possible scenario except those which are related to the <em>variable replacement part</em>. <strong>It’s time to change from the black box testing which is very fast to the white box testing, which is more precise, but slower</strong>.</p>
+
+<p>It seems that the classes are a bit strict about how the variables should be named. For example:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="k">if</span><span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="s">&quot;E[0-9]{1,2}&quot;</span><span class="o">))</span>
+  <span class="n">expression2</span><span class="o">.</span><span class="na">append</span><span class="o">((</span><span class="k">new</span> <span class="nf">Double</span><span class="o">(</span><span class="n">getResult</span><span class="o">(</span><span class="n">element</span><span class="o">))).</span><span class="na">toString</span><span class="o">());</span>
+<span class="k">else</span>
+<span class="nf">if</span><span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;n&quot;</span><span class="o">))</span>
+  <span class="n">expression2</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="k">new</span> <span class="nf">Double</span><span class="o">(</span><span class="n">factor</span><span class="o">));</span>
+<span class="k">else</span>
+  <span class="n">expression2</span><span class="o">.</span><span class="na">append</span><span class="o">((</span><span class="n">String</span><span class="o">)</span><span class="n">hashContents</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">element</span><span class="o">));</span></code></pre></div>
+
+<p>This will be the first thing I’m going to change after the code is 100% covered and refactored. Nevertheless, I’m adding some test cases where the variables are named according to the code.</p>
+
+<h4 id="refactoring-and-closing-thoughts">Refactoring and Closing Thoughts</h4>
+
+<p>I won’t repeat the refactored code here - unless you explicitly ask for it in a comment -, you can have a look and comment it on <a href="https://github.com/ZsoltFabok/arithmetic.expression.evaluator">github</a>. The purpose of the post was to share how I start working with legacy code: how to use different tools and testing methods to have the best result in a reasonable timeframe. I hope you liked it, have a good time refactoring and don’t forget that <strong>every code which was written more than 3 weeks ago is legacy</strong> :-)</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/05/narrow-down-what-to-test/">How to Narrow Down What to Test</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/refactoring" title="refactoring">refactoring</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li><li><a href="/blog/tag/legacy" title="legacy">legacy</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/06/working-with-legacy-code/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/06/working-with-legacy-code/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/06/working-with-legacy-code/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/06/working-with-legacy-code/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/06/recover-deleted-files-with-git/" class="basic-alignment left" title="Recover Deleted Files with Git">&laquo; Recover Deleted Files with Git</a>
+            
+            
+              <a href="/blog/2012/06/behind-the-curtain-they-agile-lean-way-of-working/" class="basic-alignment right" title="Targu Mures Agile Meetup - Behind the Curtain: They Agile/Lean Way of Working">Targu Mures Agile Meetup - Behind the Curtain: They Agile/Lean Way of Working &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Kanban Nightmares &#8211; Zsolt Fabók</title>
+<meta name="description" content="I've mentioned in my previous post that I have less time for coding nowadays. I've started to lead a new team with the intention to introduce Kanban in their way of working. In this post, I'm going to share the result of this introduction. In these last few years I've had opportunities to observe&nbsp;coaches and consultants how they help teams and organizations.<br/><br/>more...">
+<meta name="keywords" content="kanban, leadership, change management, improvement, retrospective">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Kanban Nightmares">
+<meta name="twitter:description" content="I've mentioned in my previous post that I have less time for coding nowadays. I've started to lead a new team with the intention to introduce Kanban in their way of working. In this post, I'm going to share the result of this introduction. In these last few years I've had opportunities to observe&nbsp;coaches and consultants how they help teams and organizations.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kanban Nightmares">
+<meta property="og:description" content="I've mentioned in my previous post that I have less time for coding nowadays. I've started to lead a new team with the intention to introduce Kanban in their way of working. In this post, I'm going to share the result of this introduction. In these last few years I've had opportunities to observe&nbsp;coaches and consultants how they help teams and organizations.<br/><br/>more...">
+<meta property="og:url" content="/blog/2010/11/kanban-nightmares/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2010/11/kanban-nightmares/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Kanban Nightmares</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2010-11-28T23:36:44-07:00"><i class="fa fa-calendar-o"></i> November 28, 2010</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,leadership,changemanagement,improvement,retrospective&amp;text=Kanban%20Nightmares&amp;url=/blog/2010/11/kanban-nightmares/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/11/kanban-nightmares/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2010/11/kanban-nightmares/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I’ve mentioned in my previous post that I have less time for coding nowadays. I’ve started to lead a new team with the intention to introduce <a href="/blog/tag/kanban/">Kanban</a> in their way of working. In this post, I’m going to share the result of this introduction.</p>
+
+<p>In these last few years I’ve had opportunities to observe coaches and consultants how they help teams and organizations. I’ve been reading about how it should be done in the proper way. In most of the cases, the person who helps the teams asks questions, points out certain areas of improvement, keeps general coding sessions, but <a href="http://www.andybrandt.net/669/three-things-i-dont-like-in-the-agile-community">does not get involved in the teams’ life</a>. No offence, but I don’t see how someone can help without taking responsibility. The intention he has is loud and clear: make the teams self-aware, self-organizing and independent. But there is a fair question, though: “<em>H**ow can a team be self-organizing if, before agile was introduced, they had been told what to do for years? How can they make decisions?”</em> After these years, I can state that this approach is not really effective for novice teams. It is very good for advanced teams, who might miss some improvement opportunities occasionally, but are able to react if that missing piece comes to light by a coach or external advisor.</p>
+
+<p>Another common mistake and myth is that the ScrumMaster should not be involved in the team’s decision making process and daily work. In novice teams, no matter what experts say, the team members want to follow the ScrumMaster, they want to hear what he thinks and they want to follow his lead. This may sound non-agile, but if someone wants to be successful with agile methodologies, he shouldn’t ignore this fact. The ScrumMaster should coach the team like the managers at Toyota in <a href="http://en.wikipedia.org/wiki/Toyota_Production_System">TPS</a>, he should give background information, and show examples on how to make decisions and how to <strong>be agile</strong>, and <strong>not just do agile</strong>. This cannot be done without the involvement of the ScrumMaster in the beginning. Teaching by example is very important. If done properly then, based on my experience, teams won’t be lost when the ScrumMaster is no longer with the team. They will continue their work, they will start <strong>being</strong> agile, and won’t depend on the ScrumMaster. There is going to be a slight setback in their work, because the team will have less new ideas due to the absence of the ScrumMaster. Fortunately, they will have learnt from the ScrumMaster how to be agile by then - and not just do agile -, so someone will start driving the changes, others will follow, and a real agile team will start <a href="http://en.wikipedia.org/wiki/Tuckman's_stages_of_group_development">forming</a>.</p>
+
+<!--more-->
+<p><a href="http://www.thekua.com/">Patrick Kua</a> once said: “<em>you had to make your hands dirty</em>”. I really like this idea, and I’m following it. I know about somebody else with the same attitude, but he is not working in the software development industry: <a href="http://en.wikipedia.org/wiki/Gordon_Ramsay">Gordon Ramsay</a>. He divides people, but one has to admit that he is doing a pretty good job with kitchen staffs in his TV series <a href="http://en.wikipedia.org/wiki/Kitchen_Nightmares">Kitchen Nightmares</a>. In the episodes, Gordon visits a restaurant in need of help and stays with them for about a week. He joins the staff, gives them energy during their daily work. He looks for bottlenecks and improvement opportunities, and tries to improve the staff members to be better at their job with face-to-face or group discussions. The show usually has a happy ending, but Gordon revisits a couple of the restaurants after a while. Some of them perform very well, but some of them have already been closed or have gone back to the old way of working. One very important thing: Gordon always emphasizes that customer satisfaction is very important. All of his actions are driven by this: the restaurant shall serve good quality food for the customer in a reasonable time. I’ve seen this approach in a very different document: in the <a href="http://agilemanifesto.org/">agile manifesto</a>.</p>
+
+<p>I prefer this kind of coaching over the “<em>question asking</em>” type, however, the yelling and swearing is not really my area - Gordon swears a lot during his shows. He works with kitchen staff in a way very similar to how I’m working with teams new to agile, so in the next part I’m going to write about what and how I did in certain cases.</p>
+
+<p>The team I temporarily joined sits next to my team, so I had some time to observe how they are doing. They don’t have a close customer relationship, but they have to work with other teams on a daily basis. They did their work, but due to their position in the organization, they received a lot of criticism. Recently, they got a very important task which needed to be done, but finishing this task would have come at the expense of their weekly duties. I always thought that they could do it, because they have the technical skills, but they could have been organized better. So I asked the management whether I could join, and they said yes.</p>
+
+<p>I started the work with changing their board. They had a Kanban-like board, but it wasn’t really updated, it was in the wrong place, and it was really hard to find out what the team was doing at any given moment, what kind of problems they had, and what their overall state was. A board is similar to a restaurant’s menu. Gordon always changes the menu without asking for the staff’s opinion. There is always resistance, but it is one of the key moments of the show, this is the “<em>kick-off</em>”.</p>
+
+<p>So I drew a completely new Kanban board for the team in a place where the entire team could see from their workplaces. Previously, the board had been around the corner, so the team members had to stand up and go there if they wanted to do something with the board. After a quick explanation, the basic Kanban rules were clear for the team. I was surprised, because there was no resistance, and I got the impression that the team liked the new place and the new Kanban board. The <a href="http://leanandkanban.wordpress.com/2009/05/14/wip-and-limits/">WIP limit</a>s of the columns were changeable, but I insisted that the global WIP limit remain the same. I calculated how much parallel work the individuals could do in the team, summed it up, and got the global WIP limit. Additionally, I wanted to know the actual output of the team, without putting them under unnecessary pressure. Therefore I needed a quite fair global WIP limit.</p>
+
+<p>I didn’t plan and didn’t do another major change in the team. From this point on I started to work with the team on an organizational level. Usually, Gordon starts cooking with the staff, but in my case, I did not interfere with their technical work. I was - and still I am - sure that their problem can be solved on an organizational level.</p>
+
+<p>I supervised the daily <a href="/blog/2010/12/daily-stand-up-variations/">stand-up meeting</a>s during the first weeks. In Kitchen Nightmares Gordon is very rigorous about the cleanness of the kitchen, so am I with the boards and stand-up meetings. People won’t get focused if you ask them to be focused. This skill can be thought by closer supervising and setting an example from the beginning. Every time the board was used in a wrong way, or somebody had a question about how to handle a certain situation, we took the time and discussed it. If at a later time the same thing happened again, I pointed it out and we did the discussion again. There is nothing wrong with pointing out problems. Usually, people don’t like this, but if the situation is solved right at the spot, they will accept it and learn from it. Fortunately, there was no need for yelling.</p>
+
+<p>In the beginning, the stand-up was very similar to a daily scrum meeting. Everybody answered the <a href="http://en.wikipedia.org/wiki/Scrum_(development)#Meetings">three questions</a>, but it wasn’t that <a href="/blog/2012/09/effective-vs-efficient">effective</a>, so I asked the team to change the meeting style and talk about the ongoing tasks in a priority order: starting from the top right and going backwards to the left. With this approach, the meeting went faster, and the information exchange was more effective, because</p>
+
+<ul>
+  <li>
+    <p>there were less discussions about irrelevant personal topics</p>
+  </li>
+  <li>
+    <p>we found tasks which weren’t on the board because colleagues wanted to talk about more than what could be seen on the Kanban board. Since these topics weren’t represented on the board, it was really hard to discuss them. So new items showed up, making the daily work more visible and transparent</p>
+  </li>
+  <li>
+    <p>we almost finished the meeting in 15 minutes, which was rare before</p>
+  </li>
+</ul>
+
+<p>Although the meeting was better and more effective, we did not manage to talk about items in the <a href="/blog/2010/11/the-internal-queue-column/">parking lot</a> and blocking issues. The next change we made was that we started with the parking lot, talked about only those items which were blocked or had problems. The philosophy behind this idea is to make the flow clear in the <a href="/blog/tag/value-stream-mapping">value stream</a>. This was my last idea for the daily stand-up, which the team enhanced: they decided they would talk about the technical details during an optional discussion after the daily stand-up. Unfortunately, there were several <a href="/blog/2010/09/never-move-items-back/"><em>hamsters</em></a> in the team, but it was a small issue compared to the others.</p>
+
+<p>The former team leader - who became the technical team leader for this period - and I had a lot of face-to-face discussions - similarity to the “<em>do you have two minutes</em>” from the show. During these “<em>two minutes</em>” we discussed what, why and how to do in a certain situation. My goal was to share as much information and technique as possible with the team leader so that he can continue the work without me. We even agreed that he would read the <a href="http://agilemanagement.net">Kanban book from David J. Anderson</a>, so that he would have the lexical knowledge for successfully working with his team. He got one and a half hours every day for reading. After that, we discussed the topics he read, and clarified the details still unclear to them. Fortunately, there were only a few of these.</p>
+
+<p>The content of the <a href="http://leansoftwareengineering.com/2007/08/29/kanban-systems-for-software-development/"><em>Queue</em></a>, the prioritization, and keeping the basic rules of Kanban required attention almost on an hourly basis. By default, I was the only one allowed to change the contents of the <em>Queue</em>. I explained every prioritization move, gave background information about why we had to do something the way we did, and why today’s situation is different from yesterday’s. Despite my efforts and explanations, new items showed up at wrong places (like bad food coming back to the kitchen in Kitchen Nightmares after Gordon’s help and insights), even in the <em>Queue</em>. In each case we suspended the work, or took some time during the daily stand-up, and discussed the situation of that particular item. After a month, this started to improve: items were almost at the place where they ought to have been. This was the time when I silently gave up my authority over the <em>Queue</em>, and let the team leader organize it and finish this improvement.</p>
+
+<p>The <em>Queue</em> was not the only problematic part of the Kanban board. Every single column - every phase of our work - required daily discussions and <a href="/blog/2010/11/the-internal-queue-column/">improvement</a>s. There were a lot of conflicts, because every time something was at the wrong place, we discussed it - sometimes even the technical background as well - until the team had all the information and practice to use the board in the proper way.</p>
+
+<p>After a while, the team no longer needed me for introducing new things in their daily work. We had three <a href="/blog/tag/retrospective/">retrospective</a>s so far, and all the change proposals came from members. This made the team a bit better each time. During these retrospectives, I tried to move the team’s focus towards fair work distribution. In other words; everyone shall do the same amount of work.</p>
+
+<p>I mentioned the Kanban board before. Now, after these changes, the board looks different, both the team and I think that it is better than the one they started out with. In order to reach this point, the team needed the “<em>kick-off</em>”. The only task I had was to keep them on the right track, by pointing out situations, that needed to be discussed. What happened is not a miracle or a fairy tale. We are very far from a highly efficient and successful agile team. I would say that the team’s work is more transparent for the management and for the team (the workflow and the current state is clear for everyone), and there is less context switching than at the beginning (the WIP limit is working). The team feels better, the management feels better, the next task is to stabilize the current situation, and after that, to speed up the process (decrease the current <a href="/blog/2013/07/lead-time">lead time</a>).</p>
+
+<p>The interactions described above took a lot of time, but I spent most of my working hours defending the team from <em>external sources</em> (management, other teams), who came by all time with new work items, questions and requests. They ignored our new way of working, made the colleagues exhausted and angry with unnecessary and unhealthy direct interruptions. Teams should interact a lot, this is beyond question, but when it turns unhealthy, meaning a lot of <a href="http://en.wikipedia.org/wiki/RTFM"><em>RTFM</em></a> questions and “<em>top-top-top priority issues</em>”, it has to be stopped. Learning and performing cannot be done under such pressure, so I did everything in my power to stop these interruptions and allow the team learn this new way of working, instead of having to handle <em>external sources</em>. After me leaving the team, this pressure will still be there, and somebody - or the whole team - has to stand up and take over the task of defending themselves. I had an ambition to find out what the real output of the team is. Now it is clear, well published, and hopefully accepted by the <em>external sources</em>, so the pressure should start to decrease. I think <em>I got my hands dirty</em>, time will eventually tell how this turns out.</p>
+
+<p>I know that a couple of the readers won’t agree with this methodology, and ask: “W<em>here is the self-organizing team in this way of working?</em>” In my experience, self-organization rarely happens immediately and by itself, so I have no problem with a small or larger external “<em>kick-off</em>”. If it is done properly and the team learns the necessary skills from this external entity - in my example, this is me, in the Kitchen Nightmare example, it is Gordon -, then it will work fine. This external entity doesn’t necessary have to be the ScrumMaster or the team leader, it can be an experienced agile developer or tester. <strong>The point is to bring the principles and dynamism into the team, show an example, be there for answering questions and for discussions, do mentoring **</strong>properly**, but most importantly: after a while, let the team do things on their own. This time can be a week, or a month. In Gordon’s case it is a week, in my case it is two months.</p>
+
+<p>To sum up, here are the key moments from the study:</p>
+
+<ul>
+  <li>
+    <p>Bring dynamism into the team’s life</p>
+  </li>
+  <li>
+    <p>Visualize the workflow and take care of the global WIP limit</p>
+  </li>
+  <li>
+    <p>Teach the team how to handle blocking items</p>
+  </li>
+  <li>
+    <p>Introduce new techniques, and do not forget to explain them in detail</p>
+  </li>
+  <li>
+    <p>Do not push more work on the team, let’s have a clear picture of their real output</p>
+  </li>
+  <li>
+    <p>Take care of fair work distribution</p>
+  </li>
+  <li>
+    <p>Mentor everybody on the team even if you have to tell things multiple times</p>
+  </li>
+</ul>
+
+<p>We are in the “letting go” phase at the moment. I’m going to leave them completely alone, and revisit them in 1 or 2 months. This period will tell me how much influence I had, and how much the team can achieve on its own. I’ll keep you updated in the comments about the progress.</p>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/leadership" title="leadership">leadership</a></li><li><a href="/blog/tag/change-management" title="change management">change&nbsp;management</a></li><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/retrospective" title="retrospective">retrospective</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2010/11/kanban-nightmares/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/11/kanban-nightmares/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2010/11/kanban-nightmares/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2010/11/kanban-nightmares/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2010/11/the-internal-queue-column/" class="basic-alignment left" title="Internal Queue Columns">&laquo; Internal Queue Columns</a>
+            
+            
+              <a href="/blog/2010/12/the-first-agile-job-interview/" class="basic-alignment right" title="The First Agile Job Interview">The First Agile Job Interview &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

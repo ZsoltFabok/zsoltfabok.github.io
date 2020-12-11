@@ -1,0 +1,761 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>jMock versus Mockito &#8211; Zsolt Fabók</title>
+<meta name="description" content="I've been using jMock for more than a year now, but recently I came across mockito. In this post, I'll show the difference between jMock and mockito - without judging which one is better - using the basic features I've been using the most often from jMock.<br/><br/>more...">
+<meta name="keywords" content="dojo, xp, java, mocking">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="jMock versus Mockito">
+<meta name="twitter:description" content="I've been using jMock for more than a year now, but recently I came across mockito. In this post, I'll show the difference between jMock and mockito - without judging which one is better - using the basic features I've been using the most often from jMock.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jMock versus Mockito">
+<meta property="og:description" content="I've been using jMock for more than a year now, but recently I came across mockito. In this post, I'll show the difference between jMock and mockito - without judging which one is better - using the basic features I've been using the most often from jMock.<br/><br/>more...">
+<meta property="og:url" content="/blog/2010/08/jmock-versus-mockito/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2010/08/jmock-versus-mockito/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">jMock versus Mockito</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2010-08-01T20:24:48-06:00"><i class="fa fa-calendar-o"></i> August 01, 2010</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=dojo,xp,java,mocking&amp;text=jMock%20versus%20Mockito&amp;url=/blog/2010/08/jmock-versus-mockito/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/08/jmock-versus-mockito/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2010/08/jmock-versus-mockito/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I’ve been using <a href="http://www.jmock.org/">jMock</a> for more than a year now, but recently I came across <a href="http://mockito.org/">mockito</a>. In this post, I’ll show the difference between <em>jMock</em> and <em>mockito</em> - without judging which one is better - using the basic features I’ve been using the most often from <em>jMock</em>. I admit that there are more features than presented in this post, but for starters, I find these enough.</p>
+
+<p>The versions under comparison:</p>
+
+<ul>
+  <li>
+    <p>jMock    : <a href="http://jmock.org/dist/jmock-2.5.1-jars.zip">2.5.1</a></p>
+  </li>
+  <li>
+    <p>mockito: <a href="http://mockito.googlecode.com/files/mockito-1.8.5.zip">1.8.5</a></p>
+  </li>
+</ul>
+
+<h1 id="the-test-object">The Test Object</h1>
+
+<p>For this demonstration, I’m using a very fictional, but simple code example which fits the purpose of comparison.</p>
+
+<p>The skeleton of the <em>main class</em> which is going to be tested:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PosTerminal</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">SHOP_ACCOUNT_NUMBER</span> <span class="o">=</span> <span class="s">&quot;00000000-00000000&quot;</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">ReceiptPrinter</span> <span class="n">receiptPrinter</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">BankConnection</span> <span class="n">bankConnection</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">PosTerminal</span><span class="o">(</span><span class="n">BankConnection</span> <span class="n">bankConnection</span><span class="o">,</span>
+                           <span class="n">ReceiptPrinter</span> <span class="n">receiptPrinter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">bankConnection</span> <span class="o">=</span> <span class="n">bankConnection</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">receiptPrinter</span> <span class="o">=</span> <span class="n">receiptPrinter</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">buyWithCard</span><span class="o">(</span><span class="kt">int</span> <span class="n">amountOfMoney</span><span class="o">,</span> <span class="n">String</span> <span class="n">cardNumber</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>The skeleton of the first injected class:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BankConnection</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="n">Account</span> <span class="nf">getAccountByCardNumber</span><span class="o">(</span><span class="n">String</span> <span class="n">cardNumber</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Account</span> <span class="nf">getAccountByAccountNumber</span><span class="o">(</span><span class="n">String</span> <span class="n">accountNumber</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>The skeleton of the second injected class:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ReceiptPrinter</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">print</span><span class="o">(</span><span class="n">String</span> <span class="n">string</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>And the interface for accounts:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Account</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="nf">withdraw</span><span class="o">(</span><span class="kt">int</span> <span class="n">amountOfMoney</span><span class="o">,</span> <span class="n">String</span> <span class="n">destinationAccountNumber</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="nf">enter</span><span class="o">(</span><span class="kt">int</span> <span class="n">amountOfMoney</span><span class="o">,</span> <span class="n">String</span> <span class="n">sourceAccountNumber</span><span class="o">);</span>
+        <span class="kt">void</span> <span class="nf">rollback</span><span class="o">();</span>
+        <span class="kt">void</span> <span class="nf">commit</span><span class="o">();</span>
+<span class="o">}</span></code></pre></div>
+
+<h1 id="creating-mocks">Creating Mocks</h1>
+
+<h2 id="jmock">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">org.jmock.Mockery</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PosTerminalTest</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Mockery</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Mockery</span><span class="o">();</span>
+
+        <span class="n">BankConnection</span> <span class="n">bankConnection</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">BankConnection</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">ReceiptPrinter</span> <span class="n">receiptPrinter</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">ReceiptPrinter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// the test case continues...</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<h2 id="mockito">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">mockito</span><span class="o">.</span><span class="na">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PosTerminalTest</span> <span class="o">{</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">BankConnection</span> <span class="n">bankConnection</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">BankConnection</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">ReceiptPrinter</span> <span class="n">receiptPrinter</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">ReceiptPrinter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// the test case continues...</span>
+   <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>There is no significant difference here. <em>jMock</em> uses a context for handling mocks, while <em>mockito</em> solves it with statically imported methods.</p>
+
+<h1 id="mocking-classes">Mocking Classes</h1>
+
+<p>If you compile and execute the examples above, the following exception is raised when the <em>jMock</em> test case is executed:</p>
+
+<p><em>java.lang.IllegalArgumentException: com.zsoltfabok.dojo.mocks.BankConnection is not an interface</em></p>
+
+<p><em>jMock</em> is designed to mock interfaces, not classes. It forces the developer to use interfaces, which is a good programming practice, but sometimes it is an overhead. Imagine that you are working on a legacy code. There is no way to extract interfaces for every single class just to satisfy a mocking framework. Fortunately, you can set <em>jMock</em> so that it can mock classes:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// the same as before ...</span>
+        <span class="n">Mockery</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Mockery</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="n">setImposteriser</span><span class="o">(</span><span class="n">ClassImposteriser</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">);</span>
+        <span class="o">}</span> <span class="o">};</span>
+        <span class="c1">// the same as before ...</span></code></pre></div>
+
+<p>There is no need for such setting in the <em>mockito</em> based test case.</p>
+
+<h1 id="two-of-the-same-kind-of-mocks">Two Of The Same Kind of Mocks</h1>
+
+<p>During testing the <em>PosTerminal</em> class, we need to fetch two <em>Account</em>s from the <em>BankConnection</em>. One for the card owner (customer) and one for the shop. They will be mocks, too:
+## jMock</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// the same as before ...</span>
+        <span class="n">Account</span> <span class="n">customerAccount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">Account</span> <span class="n">shopAccount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// the same as before ...</span></code></pre></div>
+
+<h2 id="mockito-1">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// the same as before ...</span>
+        <span class="n">Account</span> <span class="n">customerAccount</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">Account</span> <span class="n">shopAccount</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// the same as before ...</span></code></pre></div>
+
+<p>No difference here at first sight. After executing the <em>jMock</em> test case, the following exception is raised:</p>
+
+<p><em>java.lang.IllegalArgumentException: a mock with name account already exists</em></p>
+
+<p>Internally, <em>jMock</em> uses name references for handling mocks, and if no name is specified, the name will be the type of the mock. In the example above, we have two* Account*s with the same name. The problem can be solved easily:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// the same as before ...</span>
+        <span class="n">Account</span> <span class="n">customerAccount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;customer account&quot;</span><span class="o">);</span>
+        <span class="n">Account</span> <span class="n">shopAccount</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;shop account&quot;</span><span class="o">);</span>
+        <span class="c1">// the same as before ...</span></code></pre></div>
+
+<h1 id="annotation">Annotation</h1>
+
+<p>Based on the <em>mockito</em> and* jMock *documentation it is possible to setup mocks with annotations, which is excellent, because with this approach, I can make the test case much simpler.</p>
+
+<h2 id="jmock-1">jMock</h2>
+
+<p>Although the current stable jMock documentation describes the <em>@Mock</em> annotation, I was unable to find it in the framework.</p>
+
+<h2 id="mockito-2">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">org.mockito.Mock</span><span class="o">;</span>
+<span class="c1">// Other import statements ...</span>
+
+<span class="nd">@RunWith</span><span class="o">(</span><span class="n">MockitoJUnitRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PosTerminalTest</span> <span class="o">{</span>
+    <span class="nd">@Mock</span>
+    <span class="kd">private</span> <span class="n">BankConnection</span> <span class="n">bankConnection</span><span class="o">;</span>
+    <span class="nd">@Mock</span>
+    <span class="kd">private</span> <span class="n">ReceiptPrinter</span> <span class="n">receiptPrinter</span><span class="o">;</span>
+    <span class="nd">@Mock</span>
+    <span class="kd">private</span> <span class="n">Account</span> <span class="n">customerAccount</span><span class="o">;</span>
+    <span class="nd">@Mock</span>
+    <span class="kd">private</span> <span class="n">Account</span> <span class="n">shopAccount</span><span class="o">;</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Note that in order to make it work, you need a @<em>RunWith</em> annotation.
+# <strong>Call Verification and Return Value Handling</strong></p>
+
+<p>This is the good part; how our class communicates with the injected classes. The verification is quite simple: check whether or not a method of the mock is called. The other thing is how our class can handle the return value of a method of a mock.</p>
+
+<h2 id="jmock-2">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">PosTerminal</span> <span class="n">posTerminal</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PosTerminal</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">,</span> <span class="n">receiptPrinter</span><span class="o">);</span>
+
+        <span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">).</span><span class="na">getAccountByCardNumber</span><span class="o">(</span><span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">);</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">));</span>
+
+            <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">).</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;Successful withdrawal&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="o">});</span>
+
+        <span class="n">posTerminal</span><span class="o">.</span><span class="na">buyWithCard</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">);</span>
+    <span class="o">}</span></code></pre></div>
+
+<h2 id="mockito-3">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">PosTerminal</span> <span class="n">posTerminal</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PosTerminal</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">,</span> <span class="n">receiptPrinter</span><span class="o">);</span>
+
+        <span class="n">when</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">.</span><span class="na">getAccountByCardNumber</span><span class="o">(</span><span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">);</span>
+
+        <span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+
+        <span class="n">posTerminal</span><span class="o">.</span><span class="na">buyWithCard</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">);</span>
+
+        <span class="n">verify</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">).</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;Successful withdrawal&quot;</span><span class="o">);</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>The order in which the methods are called is important. In case of <em>jMock,</em> the <em>Expectation</em>s shall come before the method call, and in case of <em>mockito</em> the <em>verify()</em> always afterwards. There is no significant difference between <em>jMock</em> and <em>mockito</em> in this case, besides readability. The <em>verify()</em> method call clearly states that the we are just checking if a method is called. This clear difference makes the code more readable for me. Another readability thing is that for me, the inner class <em>Expectation</em>s is less readable. If the mocks are not fields, then, because of the inner class, I have to make the mocks <em>final</em>.</p>
+
+<h1 id="argument-matchers">Argument Matchers</h1>
+
+<p>Sometimes one or more arguments are not relevant when a method of a mock object is called.</p>
+
+<h2 id="jmock-3">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">).</span><span class="na">withdraw</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">)),</span>
+                    <span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">).</span><span class="na">enter</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="mi">100</span><span class="o">),</span> <span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+
+           <span class="c1">// Other oneOf() will() statements ...</span>
+        <span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<h2 id="mockito-4">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">mockito</span><span class="o">.</span><span class="na">Matchers</span><span class="o">.</span><span class="na">anyInt</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">mockito</span><span class="o">.</span><span class="na">Matchers</span><span class="o">.</span><span class="na">anyString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">mockito</span><span class="o">.</span><span class="na">Matchers</span><span class="o">.</span><span class="na">eq</span><span class="o">;</span>
+<span class="c1">// Other parts of the code ...</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+       <span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+
+        <span class="n">when</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">.</span><span class="na">withdraw</span><span class="o">(</span><span class="n">anyInt</span><span class="o">(),</span> <span class="n">anyString</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">when</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">.</span><span class="na">enter</span><span class="o">(</span><span class="n">eq</span><span class="o">(</span><span class="mi">100</span><span class="o">),</span> <span class="n">anyString</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+        <span class="c1">// Other when(...).thenReturn(...)  and verify(...) calls ...</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>The are no differences here, but I find the <em>mockito</em> version more readable. One additional thing is that neither of the frameworks support mixing the matchers with exact matches, for example:</p>
+
+<h2 id="jmock-4">jMock</h2>
+
+<p>Mind the missing <em>with()</em> call:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+    <span class="c1">// Other oneOf() will() statements ...</span>
+
+    <span class="n">oneOf</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">).</span><span class="na">enter</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+    <span class="n">will</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+
+   <span class="c1">// Other oneOf() will() statements ...</span>
+<span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<p>The following exception will be raised during execution:</p>
+
+<p><em>java.lang.IllegalArgumentException: not all parameters were given explicit matchers: either all parameters must be specified by matchers or all must be specified by values, you cannot mix matchers and values</em></p>
+
+<h2 id="mockito-5">mockito</h2>
+
+<p>Mind the missing <em>eq()</em> call:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+
+        <span class="n">when</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">.</span><span class="na">enter</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="n">anyString</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+        <span class="c1">// Other when(...).thenReturn(...)  and verify(...) calls ...</span></code></pre></div>
+
+<p>The following exception will be raised during execution:</p>
+
+<p><em>org.mockito.exceptions.misusing.InvalidUseOfMatchersException:</em>
+* <em>*Invalid use of argument matchers!</em>
+<em>2 matchers expected, 1 recorded.</em>
+<em>This exception may occur if matchers are combined with raw values:</em>
+<em>//incorrect:</em>
+<em>someMethod(anyObject(), “raw String”);</em>
+<em>When using matchers, all arguments have to be provided by matchers.</em>
+<em>For example:</em>
+<em>//correct:</em>
+<em>someMethod(anyObject(), eq(“String by matcher”));</em>
+<em>org.mockito.exceptions.misusing.InvalidUseOfMatchersException: Invalid use of argument matchers!2 matchers expected, 1 recorded.This exception may occur if matchers are combined with raw values:    //incorrect:    someMethod(anyObject(), “raw String”);When using matchers, all arguments have to be provided by matchers.For example:    //correct:    someMethod(anyObject(), eq(“String by matcher”));</em></p>
+
+<p>The output of <em>mockito</em> provides a bit more information.</p>
+
+<h1 id="number-of-invocations">Number of Invocations</h1>
+
+<p>Sometimes the number of invocations of a certain method is important. The approaches of <em>jMock</em> and <em>mockito</em> are quite the same, except that the number of invocations is used with the <em>verify()</em> method in <em>mockito</em>.</p>
+
+<h2 id="jmock-5">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+           <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">exactly</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="na">of</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">).</span><span class="na">print</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<p>or</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+           <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">atLeast</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="na">of</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">).</span><span class="na">print</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<p>or</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+           <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">never</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">).</span><span class="na">print</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<h2 id="mockito-6">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+
+        <span class="n">verify</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">,</span> <span class="n">times</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">print</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+
+        <span class="c1">// Other verify() calls ...</span></code></pre></div>
+
+<p>or</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+
+        <span class="n">verify</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">,</span> <span class="n">atLeast</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">print</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+
+        <span class="c1">// Other verify() calls ...</span></code></pre></div>
+
+<p>or</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+
+        <span class="n">verify</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">,</span> <span class="n">never</span><span class="o">()).</span><span class="na">print</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+
+        <span class="c1">// Other verify() calls ...</span></code></pre></div>
+
+<p>There are plenty of other possibilities. jMock has <em>allowing()</em> and <em>ignoring()</em> options, which are not available in <em>mockito</em>. On the other hand, <em>mockito</em> has an <em>only()</em> method which makes the code more readable. In <em>jMock,</em> if an unexpected method call is made, a <em>RuntimeException</em> is thrown. In <em>mockito</em> this feature is not available. There is an issue for it with number <a href="http://code.google.com/p/mockito/issues/detail?id=162">162</a>.</p>
+
+<h1 id="consecutive-calls">Consecutive Calls</h1>
+
+<h2 id="jmock-6">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">).</span><span class="na">enter</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="mi">100</span><span class="o">),</span> <span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">onConsecutiveCalls</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="kc">true</span><span class="o">),</span> <span class="n">returnValue</span><span class="o">(</span><span class="kc">false</span><span class="o">),</span>
+                 <span class="n">returnValue</span><span class="o">(</span><span class="kc">false</span><span class="o">)));</span>
+        <span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<h2 id="mockito-7">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// Other when(...).thenReturn(...) calls ...</span>
+        <span class="n">when</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">.</span><span class="na">enter</span><span class="o">(</span><span class="n">eq</span><span class="o">(</span><span class="mi">100</span><span class="o">),</span> <span class="n">anyString</span><span class="o">())).</span><span class="na">thenReturn</span><span class="o">(</span><span class="kc">true</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span></code></pre></div>
+
+<p>No difference, but I find <em>mockito</em> more readable.</p>
+
+<h1 id="verify-call-order">Verify Call Order</h1>
+
+<h2 id="jmock-7">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">PosTerminal</span> <span class="n">posTerminal</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PosTerminal</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">,</span> <span class="n">receiptPrinter</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="n">Sequence</span> <span class="n">sequence</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">sequence</span><span class="o">(</span><span class="s">&quot;account order&quot;</span><span class="o">);</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="c1">// Other oneOf() will() statements ...</span>
+
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">).</span><span class="na">withdraw</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">)),</span>
+                    <span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+            <span class="n">inSequence</span><span class="o">(</span><span class="n">sequence</span><span class="o">);</span>
+
+            <span class="n">atLeast</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="na">of</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">).</span><span class="na">enter</span><span class="o">(</span><span class="n">with</span><span class="o">(</span><span class="mi">100</span><span class="o">),</span> <span class="n">with</span><span class="o">(</span><span class="n">any</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">)));</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">returnValue</span><span class="o">(</span><span class="kc">true</span><span class="o">));</span>
+            <span class="n">inSequence</span><span class="o">(</span><span class="n">sequence</span><span class="o">);</span>
+        <span class="o">}</span> <span class="o">});</span>
+
+        <span class="n">posTerminal</span><span class="o">.</span><span class="na">buyWithCard</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">);</span>
+    <span class="o">}</span></code></pre></div>
+
+<h2 id="mockito-8">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldPrintSuccessfulWithdrawal</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">PosTerminal</span> <span class="n">posTerminal</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">PosTerminal</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">,</span> <span class="n">receiptPrinter</span><span class="o">);</span>
+
+        <span class="n">posTerminal</span><span class="o">.</span><span class="na">buyWithCard</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">);</span>
+
+        <span class="n">InOrder</span> <span class="n">inOrder</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">inOrder</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">,</span> <span class="n">shopAccount</span><span class="o">);</span>
+        <span class="n">inOrder</span><span class="o">.</span><span class="na">verify</span><span class="o">(</span><span class="n">customerAccount</span><span class="o">).</span><span class="na">withdraw</span><span class="o">(</span><span class="n">anyInt</span><span class="o">(),</span> <span class="n">anyString</span><span class="o">());</span>
+        <span class="n">inOrder</span><span class="o">.</span><span class="na">verify</span><span class="o">(</span><span class="n">shopAccount</span><span class="o">).</span><span class="na">enter</span><span class="o">(</span><span class="n">anyInt</span><span class="o">(),</span> <span class="n">anyString</span><span class="o">());</span>
+
+        <span class="n">verify</span><span class="o">(</span><span class="n">receiptPrinter</span><span class="o">).</span><span class="na">print</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>One significant difference here: in case of <em>mockito</em> the involved mocks need to be injected when creating the <em>InOrder</em> (<em>Sequence</em> equivalent) object.
+# Exception Handling</p>
+
+<h2 id="jmock-8">jMock</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">context</span><span class="o">.</span><span class="na">checking</span><span class="o">(</span><span class="k">new</span> <span class="nf">Expectations</span><span class="o">()</span> <span class="o">{</span> <span class="o">{</span>
+            <span class="n">oneOf</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">).</span><span class="na">getAccountByCardNumber</span><span class="o">(</span><span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">);</span>
+            <span class="n">will</span><span class="o">(</span><span class="n">throwException</span><span class="o">(</span><span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">()));</span>
+         <span class="o">}</span> <span class="o">});</span></code></pre></div>
+
+<h2 id="mockito-9">mockito</h2>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">when</span><span class="o">(</span><span class="n">bankConnection</span><span class="o">.</span><span class="na">getAccountByCardNumber</span><span class="o">(</span><span class="s">&quot;1000-0000-0001-0003&quot;</span><span class="o">))</span>
+          <span class="o">.</span><span class="na">thenThrow</span><span class="o">(</span><span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">());</span></code></pre></div>
+
+<p>No difference, other than readability.
+# Setup</p>
+
+<p>In order to make the examples compile and run I had to add the following external libraries.
+## jMock</p>
+
+<ul>
+  <li>
+    <p>jmock-2.5.1.jar</p>
+  </li>
+  <li>
+    <p>jmock-junit4-2.5.1.jar</p>
+  </li>
+  <li>
+    <p>hamcrest-core-1.1.jar</p>
+  </li>
+  <li>
+    <p>hamcrest-library-1.1.jar</p>
+  </li>
+  <li>
+    <p>jmock-legacy-2.5.1.jar</p>
+  </li>
+  <li>
+    <p>cglib-2.1_3-src.jar</p>
+  </li>
+  <li>
+    <p>cglib-nodep-2.1_3.jar</p>
+  </li>
+  <li>
+    <p>objenesis-1.0.jar</p>
+  </li>
+</ul>
+
+<h2 id="mockito-10">mockito</h2>
+
+<ul>
+  <li>mockito-all-1.8.5.jar</li>
+</ul>
+
+<p>Some of the <em>jMock</em> libraries were added after I tried to run my test cases and it took me quite some time to find out the right build path. With <em>mockito,</em> I just had to add one simple jar file.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p><em>jMock</em> and <em>mockito</em> are both very well documented with examples and good practical hints. However, <strong>based on the examples above I find the test cases more readable with **</strong><em>mockito</em><em>*. In my next project I’m definitely going to work with *mockito</em>. One good advice: if you make the same decision, do not mix <em>jMock</em> and <em>mockito</em> in your test code. It will make your code unreadable, and additionally it might not even work: it would be hard to execute a <em>mockito</em> mock related code in a <em>jMock TestRunner</em> (mind the <em>@RunWith</em> annotations).</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2010/07/file-lottery-kata/">File Lottery Kata</a></li><li><a href="/blog/2012/03/cucumber-jvm-mocking/">Cucumber JVM: Mocking</a></li></ul></div>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/dojo" title="dojo">dojo</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/mocking" title="mocking">mocking</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2010/08/jmock-versus-mockito/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/08/jmock-versus-mockito/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2010/08/jmock-versus-mockito/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2010/08/jmock-versus-mockito/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2010/07/file-lottery-kata/" class="basic-alignment left" title="File Lottery Kata">&laquo; File Lottery Kata</a>
+            
+            
+              <a href="/blog/2010/08/agile-corner/" class="basic-alignment right" title="Agile Corner">Agile Corner &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

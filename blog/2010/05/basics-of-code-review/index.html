@@ -1,0 +1,525 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Basics of Code Review &#8211; Zsolt Fabók</title>
+<meta name="description" content="I'm going to keep a workshop about code review for my colleagues so I've collected every idea, practice, suggestion, recommendation into this post. Any comments and suggestions are welcome.### AbstractIn this article, I would like to talk about some code review techniques which I consider useful when changes or bug fixes have to be reviewed in legacy code.<br/><br/>more...">
+<meta name="keywords" content="code review">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Basics of Code Review">
+<meta name="twitter:description" content="I'm going to keep a workshop about code review for my colleagues so I've collected every idea, practice, suggestion, recommendation into this post. Any comments and suggestions are welcome.### AbstractIn this article, I would like to talk about some code review techniques which I consider useful when changes or bug fixes have to be reviewed in legacy code.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Basics of Code Review">
+<meta property="og:description" content="I'm going to keep a workshop about code review for my colleagues so I've collected every idea, practice, suggestion, recommendation into this post. Any comments and suggestions are welcome.### AbstractIn this article, I would like to talk about some code review techniques which I consider useful when changes or bug fixes have to be reviewed in legacy code.<br/><br/>more...">
+<meta property="og:url" content="/blog/2010/05/basics-of-code-review/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2010/05/basics-of-code-review/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Basics of Code Review</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2010-05-13T23:54:40-06:00"><i class="fa fa-calendar-o"></i> May 13, 2010</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=codereview&amp;text=Basics%20of%20Code%20Review&amp;url=/blog/2010/05/basics-of-code-review/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/05/basics-of-code-review/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2010/05/basics-of-code-review/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I’m going to keep a workshop about code review for my colleagues so I’ve collected every idea, practice, suggestion, recommendation into this post.</p>
+
+<p>Any comments and suggestions are welcome.</p>
+
+<h3 id="abstract">Abstract</h3>
+
+<p>In this article, I would like to talk about some code review techniques which I consider useful when changes or bug fixes have to be reviewed in legacy code. I have no intention to quote the existing articles, documents, books, because they are good as they are in their current state. I’m focusing more on the practical parts which help deliver quality product quite fast.</p>
+
+<p>By legacy code, I mean the code base, which has not been developed in agile way, and about which the reviewer does not know every detail. This situation is quite common and requires a different approach than reviewing a code base which currently under development.</p>
+
+<h3 id="before-a-code-review">Before a Code Review</h3>
+
+<h4 id="preparation">Preparation</h4>
+
+<p>After a developer finishes a task, a user story or a bug fix, they should ask somebody for a code review. Developers usually do not like doing code reviews. There are a lot of pros and cons, but let’s assume that the developer would like to deliver quality product and understands the benefits of code review:</p>
+
+<ul>
+  <li>
+    <p>faster feedback on the work done</p>
+  </li>
+  <li>
+    <p>knowledge distribution (the reviewer will learn about the change and may see new techniques or tricks)</p>
+  </li>
+  <li>
+    <p>finding introduced bugs faster and cheaper</p>
+  </li>
+</ul>
+
+<p>In companies where agile has just been introduced, management tends to say that code review is a waste of time, because if you are doing <a href="http://www.extremeprogramming.org/rules/pair.html" title="pair programming">pair programming</a>, you review the code while you are writing it. This is a common mistake, because pair programming does not replace code review. During implementation, two people know about the change. If they ask for a review, a third person will also know about the change. This is one way of knowledge distribution. On the other hand, if two developers introduce a change, and a senior developer says that the change is fine, but there are other ways to do it, ways which the developers were unaware of, they can learn new things. This is another way of knowledge distribution. This view is usually ignored, but it is very important.</p>
+
+<p>Even with knowledge distribution there is no guarantee that the pair finds and implements the right solution. A code review after pair work can give very useful feedback on the performance of the pair. They’ll know what they did was right under the given circumstances. Also, the team introduced another useful feedback loop (first feedback loop during pair programming, second during review, third during continuous integration etc.)</p>
+
+<p>One can argue what will happen if two senior developers make a change together. In this case, the reviewer can learn from their work and bring another perspective into the game. Imagine a case where the seniors have been working on the project for three years. They know every single detail about it. This knowledge is very valuable. On the other hand, they might be unable to think outside the box. A less experienced, but fresh mind can show them something that may make the change more robust, less resource consuming or something even better.</p>
+
+<p>This is not a must, but a recommendation. If the team members are very experienced and they decide not to do code review after pair work, I can understand that. Nevertheless, I recommend doing reviews when somebody is doing solo work. <a href="http://industriallogic.com" title="Joshua Kerievsky">Joshua Kerievsky</a> said once that most of the problems in their code was introduced when somebody did solo work. </p>
+
+<p>For a code review, the developer needs one or more reviewers - I prefer more. The characteristics of a good reviewer candidate:</p>
+
+<p>He or she</p>
+
+<ul>
+  <li>
+    <p>did not contribute to the change</p>
+  </li>
+  <li>
+    <p>has a lot of business knowledge</p>
+  </li>
+  <li>
+    <p>knows the programming language and the code</p>
+  </li>
+  <li>
+    <p>has some testing skills</p>
+  </li>
+</ul>
+
+<p>I agree that people who have these skills are very hard to find, still it is crucial to pick the person most skilled in the fields described above for review. The first three options are obvious, therefore check the fourth. The code written has to be testable. This does not mean only unit testability, but also acceptance testability. Finding a person with such testing skills is even harder. Maybe it’s worth talking to a tester and tell them what the change is about, so that they can give early feedback.</p>
+
+<p>Do not write review request to mailing lists. A social psychology study proves that if a larger group is asked for help, one will have less chance of getting help than asking a small group or an individual. Find the person who fits best, and ask him or her directly. For example, if you have changed code that works with databases, ask the database expert of the team for review. In this particular example, it is very important to check certain aspects like data loss, performance, database size. It is perfectly fine that everyone dares change database related code base, but like with security related matters it’s worth having the expert review the change to avoid unnecessary error reports.</p>
+
+<h4 id="the-first-important-step">The First Important Step</h4>
+
+<p>As a first step, it’s worth checking the following list:</p>
+
+<ul>
+  <li>
+    <p>the continuous integration is green - if not available: the code compiles</p>
+  </li>
+  <li>
+    <p>the code follows the agreed code conventions</p>
+  </li>
+  <li>
+    <p>there are comments in the version control system describing the change</p>
+  </li>
+  <li>
+    <p>unit tests are available</p>
+  </li>
+</ul>
+
+<p>If any of the items are missing, I recommend not to continue the code review, because every hour a developer spends away from development is considered as <a href="/blog/2012/08/waste-in-software-development">waste</a>. A good review takes time - sometimes it takes minutes, but it can take also days -, but there is no need to increase this time unnecessarily, if it can be avoided by following some simple rules. If not everybody is aware of the rules, I suggest having a <a href="http://www.gettingagile.com/2008/05/02/creating-a-team-working-agreement/" title="working agreement">working agreement</a> and making these rules clear for everybody.</p>
+
+<p>Reasons for not continuing without all of the requirements above met:</p>
+
+<ul>
+  <li>
+    <p>The fact that the code does not compile suggests that the developer did not finish his or her work, and the dependencies have not been check for some reason. After performing this check, the code may change, so it will have to be reviewed again, which in the end will render the time spent on the first review wasted.</p>
+  </li>
+  <li>
+    <p>Following the code conventions is one of the <a href="http://www.extremeprogramming.org/rules/standards.html" title="XP techniques">XP techniques</a> worth applying, because it makes comparison much easier. Imagine the situation when you have a piece of code which follows the conventions, but somebody commits some refactoring without the conventions applied. You can spend a lot of time separating the logical differences from the formatting differences. People tend to be stuck checking the formatting differences. That is not really necessary, because tools can do it for them. Therefore it is in everyone’s best interest to review only the logical parts.</p>
+  </li>
+  <li>
+    <p>It is hard to understand legacy code. If somebody changes it, and does not make a note about the contents of the change, the original code becomes more incomprehensible. Not every version control system allows changing the commit messages, but if yours does support it, ask the developer to add the comment.</p>
+  </li>
+  <li>
+    <p>Checking in code without testing is very dangerous and not recommended. If someone checks in a piece of code without test cases, that can suggest that the change wasn’t verified. After testing, the author may change code, so the effort spent on review will become a waste again.</p>
+  </li>
+</ul>
+
+<h3 id="during-the-code-review">During the Code Review</h3>
+
+<h4 id="code-review-methods">Code Review Methods</h4>
+
+<p>There several ways to do code review, but for now, consider only these two:</p>
+
+<ul>
+  <li>
+    <p>the author explains the code to the reviewer and they check the code together - the feedback is immediate</p>
+  </li>
+  <li>
+    <p>the author checks the code alone, and gives feedback after the review</p>
+  </li>
+</ul>
+
+<p>I recommend doing the code review alone. Similar to testing, the author/developer can force the reviewer/tester in one direction so that they miss an important detail. Of course, if the reviewer has questions, he or she shall ask the author, but do not let the author take control over the review session.</p>
+
+<p>There are plenty of ways to find out what has changed and where. It is a common way of working to take the diff/compare tool of the version control system and review the code there. I suggest not doing that. It is a very good thing to have the list of the affected files and the changed areas, but this will narrow down the view of the reviewer to the lines affected by the change. If they do the review with a compare tool, they can check that the change is good, but will have a hard time finding out what is missing; for example an important dependency injection or an exception handler.</p>
+
+<p>If the checklist is complete, the reviewer shall try to understand what the change is about. If it is a change, check the product backlog, if it is a bug fix, check the problem description. Without knowing what the change is about it is very hard to do quality work. Hence, it is better to start the review with the review of the unit test cases. They can tell you about the nature of the change, and you can decide whether the change is correct or not. So always start with the test cases.</p>
+
+<p>If you find something that is not included in the checklist above not stop the review just then, even if it is a major problem. I’ll talk about this later, but the code review has to be performed until the quality of the code satisfies the reviewer and the team. If the code contains 2 major and 4 minor findings, and the reviewer highlights only the first major one and stops the review, an important quality feedback is missed.</p>
+
+<h4 id="separation-of-changes">Separation of Changes</h4>
+
+<p>Usually, a change in the code affects only a few lines. However, agile teams tend to do a lot of refactoring, which is a good thing, but it is a nightmare when it comes to code review. A particular change consists of two things:</p>
+
+<ul>
+  <li>
+    <p>refactored parts</p>
+  </li>
+  <li>
+    <p>the changed parts</p>
+  </li>
+</ul>
+
+<p>If you face some code where the refactored  and the changed parts were checked in together, you have no other option but to talk to the author, so that he or she can help you separate them. If you are lucky, the change affects one file, and the refactoring another twenty. It is not cheating to point out where the change is, so that the reviewer does not waste a lot of time reviewing refactoring that has been done automatically by the editor tool. Therefore, you can check the refactored part later, or not check it at all and let the regression test suite verify it.</p>
+
+<p>Nevertheless, if this is the case, you can have one comment for the author: do not commit refactoring together with the changes. Try to do them separately. It kind of fits into the idea that says write test cases first; refactor the code, so that the change is obvious; do the change and refactor again. Following the commit recommendation above, this means three individual commits: one after the first refactoring, one after the change, and one at the end. With this approach, the reviewer can prioritize his or her review process: change must be checked every time, and if there is little time left, the reviewer can decide whether to check the first refactoring. I would check it as well every time, because this is the change which has been made on the legacy code, and it is very important to make sure that the system continues to work as before. The last refactoring can be verified using the regression test suite. If there aren’t any, you have to review that part as well.</p>
+
+<p><strong>Categorization</strong></p>
+
+<p>Large companies have templates even for code review. Usually these templates contain a category for review findings. They are used for deciding whether to perform the suggestions of the reviewer. Having categories is fine, but treat the review findings as <a href="http://www.extremeprogramming.org/rules/userstories.html" title="user stories">user stories</a> instead. Show the findings to the author and the team, and decide together how to continue. It makes no sense to implement only the major findings or a number of small items. Every code review shall be ended with a discussion between the author and the reviewer(s) - and, optionally, the team. If a finding makes no sense, or ignoring them does not harm the current code base, you can skip it.</p>
+
+<h4 id="practices">Practices</h4>
+
+<h5 id="references">References</h5>
+
+<p>A common mistake I observed is that people are using the version control system’s diff tool or an external tool called by the version control system for code review. They are focusing on the changed part only, which saves some time for them, but can cost a lot later. Have a look at the example below:</p>
+
+<p>original:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">A</span> <span class="o">{</span>
+  <span class="kt">boolean</span> <span class="n">flag</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nf">A</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>the change:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kt">boolean</span> <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span></code></pre></div>
+
+<p>If you check only in the class scope, it is a fine operation. On the other hand, another class has a reference:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">B</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">A</span> <span class="n">a</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">foo</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">flag</span><span class="o">)</span> <span class="o">{</span>
+      <span class="c1">// something</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="c1">// something else</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Using just a compare tool you will miss this impact. The recommendation here is to check the changes in the IDE you are using and check the references as well. If you see a field without the private modifier, be curious and check the references. If you are lucky, the regression test suite will find the problem later, but usually legacy systems do not have a lot of regression test cases.</p>
+
+<h5 id="look-for-common-mistakes">Look for common mistakes</h5>
+
+<p>Have a look at <a href="http://www.codinghorror.com/blog/2009/01/top-25-most-dangerous-programming-mistakes.html" title="Coding Horror, Top 25 Programming Mistakes">Jeff Atwood’s Top 25 list</a>. Look for these problems in the changed code.
+##### Synchronization</p>
+
+<p>If you see a change which affects code protected by the <em>*synchronized **keyword, look for the *wait, notify and notifyAll</em> calls in order to make sure that the change does not introduce a [dead]  lock situation.</p>
+
+<h5 id="abuse-of-design-patterns">Abuse of design patterns</h5>
+
+<p>Design patterns are good, but people sometimes abuse them. Use the right pattern for the right task. Do not solve everything with the factory pattern or with the command pattern. If the change seems to be an introduction of a design pattern, double check the pattern, and make sure that it is implemented properly.</p>
+
+<h5 id="look-for-duplication">Look for duplication</h5>
+
+<p>There is no way that every team member has a deep knowledge of the legacy code base. Therefore it may happen that somebody introduces a utility method or class that already existed. These utility classes have very unique characteristics: no operation on fields, descriptive and general name, used in different places in the changed code. Do a search on the name, or the used method, and there is a big chance that the utility method or class already exists somewhere in the legacy code base.</p>
+
+<p><strong>Dependencies</strong></p>
+
+<p>If a change affects the constructor, it may indicate a dependency change. It is a good place to start the review.
+##### Length and complexity of test cases</p>
+
+<p>As I said before, I like checking test cases first, because they tell a lot about the code. Large and complex test cases indicate large and complex code. If you meet such test cases, it’s worth talking to the author about the change before continuing the review. You may be about to spend a lot of time on a code which may have to be refactored or, in the worst case, is not even be ready. So talk to the author, pair up, solve the problem.</p>
+
+<h5 id="wasting-resources-memory-cpu-disk">Wasting resources (memory, CPU, disk)</h5>
+
+<p>I strongly believe that a lot of resource wasting operations can be found by code review. If the changed code operates on streams or <em>javax.sql</em> classes, check that every stream or connection is handled and closed properly. Look for interesting loops and data structure operations.</p>
+
+<h5 id="conditional-expressions">Conditional expressions</h5>
+
+<p>If a conditional expression has been changed, the first thing I usually do is check the coverage of the branches. It is not part of the standard code review practices, but it helps me find out what is going on, and the possible effects of the change. The next thing is that I check every possible outcome of the expressions. It is important to check for things which may be missing. The test cases can help in this case.</p>
+
+<h5 id="consistency-check">Consistency Check</h5>
+
+<p>Consistency is very important. Let’s have an example; the class solves every possible loop with while. A change requires another loop, and the fixer decides to use a for loop because he feels more comfortable with it. Even if the code works, after a certain amount time, nobody will remember why we have a lot of while loops and only one single for loop. Although it is a small thing, people will spend some time figuring this out. Eventually, they will end up at a particular commit, which does not make too much sense in their current point of view, and it will be hard to refactor the code, because the for has to be changed into a while. This is also a waste. The recommendation here is to be consistent with the class/package even if the author thinks differently. Do the fix, and refactor the class in two different commits.</p>
+
+<h4 id="spent-time">Spent time</h4>
+
+<p>Limit your time spent on review. It is easier said than done, but it is easy to get stuck in a code review. Limit yourself so that you’ll check each and every logical change (see prioritization above), and maybe just a couple of the refactoring or minor changes.</p>
+
+<h4 id="feedback">Feedback</h4>
+
+<p>Follow the life of the reviewed code, so that you can have a feedback on your review. If the acceptance fails on a trivial error, it’s worth sitting down and checking the review way of working.
+### After the Review</p>
+
+<h4 id="list-of-findings">List of Findings</h4>
+
+<p>The result of the code review is a list which contains the findings. It is a good practice to give hints in case of tricky problems. I mentioned above that sending code review invitation to mailing lists is not recommended, but sending the list of findings to the entire team is a good idea. With this approach, everyone can have a look and decide which findings will be implemented - like a small <a href="http://www.mountaingoatsoftware.com/scrum/product-backlog" title="product backlog">product backlog</a>.</p>
+
+<h4 id="the-next-review">The Next Review</h4>
+
+<p>Never have “<em>accepted after change</em>” as an outcome of the review. Nobody guarantees that the findings will be implemented as requested. Also, usually, a major finding means that additional changes will be done besides the existing ones. So I recommend having the review sessions until the current state of the code satisfies the reviewer and the team. If the changes are minor and the team is fine with them, the second review can be a peer review, but try to keep the basic rule: the first review should be done alone.</p>
+
+<h4 id="correction">Correction</h4>
+
+<p>If there are a lot of changes, pair up with the author and do the fixes together. In this case, you need a new reviewer afterwards, but this way you can share the new code base with someone else as well.
+### Intermediate Review</p>
+
+<p>It is a good practice to keep intermediate reviews if the changes seems to be big, or the author developer has the habit of checking in a large set of files. During these reviews, the first checklist should still be applied, because the earlier you find the problems, the cheaper they will be to fix.</p>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/code-review" title="code review">code&nbsp;review</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2010/05/basics-of-code-review/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/05/basics-of-code-review/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2010/05/basics-of-code-review/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2010/05/basics-of-code-review/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2010/05/the-spice-must-flow/" class="basic-alignment left" title="The Spice Must Flow">&laquo; The Spice Must Flow</a>
+            
+            
+              <a href="/blog/2010/06/more-kanban-numbers/" class="basic-alignment right" title="More Kanban Numbers">More Kanban Numbers &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

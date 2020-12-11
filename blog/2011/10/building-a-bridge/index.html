@@ -1,0 +1,419 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Building a Bridge a.k.a Parallel Changes &#8211; Zsolt Fabók</title>
+<meta name="description" content="Several days ago, we had a&nbsp;coding dojo at Digital Natives.<br/><br/>more...">
+<meta name="keywords" content="development, refactoring, dojo, kata, xp, testing, programming, ruby, parallel change, building the bridge">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Building a Bridge a.k.a Parallel Changes">
+<meta name="twitter:description" content="Several days ago, we had a&nbsp;coding dojo at Digital Natives.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Building a Bridge a.k.a Parallel Changes">
+<meta property="og:description" content="Several days ago, we had a&nbsp;coding dojo at Digital Natives.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/10/building-a-bridge/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/10/building-a-bridge/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Building a Bridge a.k.a Parallel Changes</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-10-04T20:22:22-06:00"><i class="fa fa-calendar-o"></i> October 04, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=development,refactoring,dojo,kata,xp,testing,programming,ruby,parallelchange,buildingthebridge&amp;text=Building%20a%20Bridge%20a.k.a%20Parallel%20Changes&amp;url=/blog/2011/10/building-a-bridge/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/10/building-a-bridge/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/10/building-a-bridge/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>Several days ago, we had a <a href="/blog/2010/06/using-kata-for-improvements/">coding dojo</a> at <a href="http://www.digitalnatives.hu/english.html">Digital Natives</a>: we wanted to <strong>reimplement a method without changing its purpose. To do this, we used a technique called building a bridge</strong>, which is also known as <em>parallel change</em>. The technique itself is quite simple, and in this post I’m going to show you how to use it and why.</p>
+
+<p>For example, I have this piece of code, which is presumably part of a larger code base:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="c1"># ...</span>
+  <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">first</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="n">last</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+      <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">prime?</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">counter</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">prime?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">19</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Maybe it is not working very well - its limitation is obvious -, but it is more than enough for now. Let’s say that we decide to change the <em>prime?</em> method. The same method, the same purpose, only the algorithm will be different. So we create a new method called <em>prime_next?</em> and implement that method either with <a href="/blog/tag/tdd/">TDD</a> or in a regular fashion. After it is done, we’ll have something like this:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="c1"># ...</span>
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">prime?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="o">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">19</span><span class="o">].</span><span class="n">include?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="kp">public</span>
+  <span class="k">def</span> <span class="nf">prime_next?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># a fancy algorithm probably based on Fermat&#39;s primality test</span>
+  <span class="k">end</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></div>
+
+<p>When our tests or gut feelings indicate that the new method is complete, we replace the method names, so <em>prime?</em> will be come <em>prime_next?</em> and <em>prime_next?</em> will become <em>prime?</em> (hint: it is easier and safer to switch the actual method names than to change the references. For example, in ruby we don’t have a fancy IDE with the “<em>rename method..</em>.” functionality so it would take some time until all the references are changed, not mentioning the expressions evaluated at runtime).</p>
+
+<p>We run some more tests - or trust our feelings - so that we see whether the new algorithm is working with the rest of the code base. If everything is up and running, we clean up and deliver:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="c1"># ...</span>
+  <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">first</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="n">last</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+      <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">prime?</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">end</span>
+    <span class="n">counter</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">prime?</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># a fancy algorithm probably based on Fermat&#39;s primality test</span>
+  <span class="k">end</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></div>
+
+<p>This was the “<em>how”</em>, but it seems a lot of unnecessary work for a change, doesn’t it? It may seem like that at first, but I prefer to do it, because <strong>it ensures that while I’m working on my changes, I can still work with the rest of the team, and that the code I’m working on is well tested</strong>. Now, let’s see the “<em>why”</em>.</p>
+
+<!--more-->
+<p>There is a reason why this technique is called <em>building a bridge</em>. Have a look at the picture below (source: <a href="http://www.transportation1.org/">http://www.transportation1.org</a>):</p>
+
+<p><img class="center" src="/images/posts/2011-10-04-building-a-bridge/TacomaNB1-07.jpg" width="500" height="375" title="Tacoma Narrows Bridge construction at SR 16 near I-5" /></p>
+
+<p>This is how wise men build a bridge. They start building the <em>new bridge</em> (<code>prime_next?</code>) on the left side next to the <em>old bridge</em> (<em>prime?</em>) on the right, so that the <em>traffic</em> won’t stop until the construction is finished. When it is finished and tested, they stop the <em>traffic</em> for a single moment - compared to the construction time of the <em>new bridge</em> -, connect the <em>new bridge</em>, open the <em>traffic</em> there and close down the <em>old bridge</em>. As easy as pie. Imagine what would happen if they just demolished the <em>old bridge</em> and started working on the <em>new bridge</em>: <em>traffic</em> would be stopped for very long time.</p>
+
+<p>The <em>traffic</em> is the most important element of this metaphor. It represents my workflow inside my team. The moment I change anything inside the <em>prime?</em> method</p>
+
+<ul>
+  <li>
+    <p>I cannot commit that change until it is finished (maybe for days)</p>
+  </li>
+  <li>
+    <p>I have to merge every change the other team members may do on <em>prime?</em></p>
+  </li>
+  <li>
+    <p>I lost the security nest provided by the global test harness</p>
+  </li>
+  <li>
+    <p>No continuous integration, no static code checkers, no external help</p>
+  </li>
+</ul>
+
+<p>and the list goes on. If my changes are separated from the original code base, I can commit, run the test cases, and get feedback on my changes. The only thing I shouldn’t forget is to clean up -  to demolish the <em>old bridge</em>.</p>
+
+<p>There is another angle worth mentioning here: the <a href="http://www.infoq.com/presentations/The-Limited-Red-Society">limited red society</a> from <a href="http://industriallogic.com/company/coaches/index.html" title="Industrial Logic">Joshua Kerievsky</a>. According to <em>Joshua</em>, we should spend as much time in green as possible and limit the time spent in red. This will ensure that we implement the right thing correctly. If I start implementing the <em>prime_next?</em> method, I’ll have the healthy red-green-red-green TDD rhythm until I’m finished, but <strong>the important thing is that the original part of code base will always be green.</strong> The switch between <em>prime?</em> and <em>prime_next?</em> will cause a tiny little time in red at the end, but if I started with the <em>prime?,</em> I would spend <strong>all my time</strong> in red, which is unhealthy, believe me, or believe <em>Joshua</em>.</p>
+
+<p>The <em>building the bridge</em> technique also comes in handy when I want to implement a fake functionality (I used the word functionality on purpose, because it can be a module, a class, or a method. I’m using methods in my examples, because they are short). For example, I had the following method - <em>own_random</em> - faked while I’m doing TDD:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="c1"># ...</span>
+  <span class="k">def</span> <span class="nf">foo</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">result_of_a_lot_of_other_things</span> <span class="o">*</span> <span class="n">own_random</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">own_random</span>
+    <span class="c1"># temporary fake</span>
+    <span class="k">return</span> <span class="mi">3</span>
+  <span class="k">end</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></div>
+
+<p>When I’m done with the other parts of the code, I can start working on the fake method: <em>own_random</em>. More precisely, on its new implementation: <em>own_random_next</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Foo</span>
+  <span class="c1"># ...</span>
+  <span class="k">def</span> <span class="nf">own_random</span>
+    <span class="k">return</span> <span class="mi">3</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">own_random_next</span>
+    <span class="c1"># my excellent new random algorithm</span>
+  <span class="k">end</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Until the new implementation is ready, the test cases which depend on the original <em>own_random</em> implementation will pass, and so will the new test cases of the <em>own_random_next</em> method: I’ll spend only a limited amount of time in red. Well done. The rest of the steps are the same as described before, so if you don’t mind, I won’t repeat them here again.</p>
+
+<p>I really like this technique, because it is easy and pretty straightforward to use, plus it saved me a lot of time in the past. I hope you like it, too.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2010/06/one-step-back-in-testing/">One Step Back In Testing</a></li><li><a href="/blog/2010/06/using-kata-for-improvements/">Using Kata for Improvements</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/refactoring" title="refactoring">refactoring</a></li><li><a href="/blog/tag/dojo" title="dojo">dojo</a></li><li><a href="/blog/tag/kata" title="kata">kata</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li><li><a href="/blog/tag/programming" title="programming">programming</a></li><li><a href="/blog/tag/ruby" title="ruby">ruby</a></li><li><a href="/blog/tag/parallel-change" title="parallel change">parallel&nbsp;change</a></li><li><a href="/blog/tag/building-the-bridge" title="building the bridge">building&nbsp;the&nbsp;bridge</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/10/building-a-bridge/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/10/building-a-bridge/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/10/building-a-bridge/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/10/building-a-bridge/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/09/local-leadership-fail/" class="basic-alignment left" title="Local Leadership Fail">&laquo; Local Leadership Fail</a>
+            
+            
+              <a href="/blog/2011/10/saving-the-ci/" class="basic-alignment right" title="Saving the Continuous Integration">Saving the Continuous Integration &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

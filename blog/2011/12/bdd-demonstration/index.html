@@ -1,0 +1,1368 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>A Step by Step BDD Demonstration with Some Useful Insights &#8211; Zsolt Fabók</title>
+<meta name="description" content="According to Stephen Covey, the seventh habit of highly effective people is sharpening the saw. If you have ever been to an agile workshop or&nbsp;conference, you may have already heard this expression. Software craftsmen sharpen their saw at coding dojos&nbsp;where they talk to each other a talk about new things or do Kata exercises together.<br/><br/>more...">
+<meta name="keywords" content="bdd, development, dojo, kata, xp, testing, rspec, cucumber, bdd, rails">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="A Step by Step BDD Demonstration with Some Useful Insights">
+<meta name="twitter:description" content="According to Stephen Covey, the seventh habit of highly effective people is sharpening the saw. If you have ever been to an agile workshop or&nbsp;conference, you may have already heard this expression. Software craftsmen sharpen their saw at coding dojos&nbsp;where they talk to each other a talk about new things or do Kata exercises together.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Step by Step BDD Demonstration with Some Useful Insights">
+<meta property="og:description" content="According to Stephen Covey, the seventh habit of highly effective people is sharpening the saw. If you have ever been to an agile workshop or&nbsp;conference, you may have already heard this expression. Software craftsmen sharpen their saw at coding dojos&nbsp;where they talk to each other a talk about new things or do Kata exercises together.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/12/bdd-demonstration/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/12/bdd-demonstration/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">A Step by Step BDD Demonstration with Some Useful Insights</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-12-11T20:41:36-07:00"><i class="fa fa-calendar-o"></i> December 11, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=bdd,development,dojo,kata,xp,testing,rspec,cucumber,bdd,rails&amp;text=A%20Step%20by%20Step%20BDD%20Demonstration%20with%20Some%20Useful%20Insights&amp;url=/blog/2011/12/bdd-demonstration/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/12/bdd-demonstration/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/12/bdd-demonstration/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>According to <a href="https://www.stephencovey.com/7habits/7habits-habit7.php">Stephen Covey</a>, the seventh habit of highly effective people is “<em>sharpening the saw”</em>. If you have ever been to an agile workshop or <a href="/blog/2011/09/ale2011/" title="ALE2011">conference</a>, you may have already heard this expression. Software craftsmen <em>sharpen their saw</em> at <a href="/blog/tag/dojo/">coding dojos</a> where they talk to each other a talk about new things or do <a href="/blog/tag/kata/">Kata</a> exercises together. With <em>Kata</em> exercises a software craftsman trains himself to be better at software development. I’ve found two real reasons why people are doing <em>Kata</em> exercises: first, they want to be able to solve certain situations instinctively, and second, they want to make the right decisions when they work with real code base. The second topic is much more interesting to me, so I decided I’d do a <em>Kata</em> exercise and explain the background of every significant decision I make along the way.</p>
+
+<p>I chose the <a href="http://rubyquiz.com/quiz25.html">English numerals</a> exercise that we were doing at <a href="https://github.com/digitalnatives">Digital Natives</a>, with some minor modifications. The original exercise is very simple: the application shall receive a number, for example <em>1997</em>, and it shall return that number in written form, i.e. <em>one thousand nine hundred and ninety-seven</em>. We added two things to the original exercise: the application shall be a <a href="http://rubyonrails.org/">ruby on rails</a> application, and it shall support numbers from 1 up to 1,000,000,000. Besides the implementation I’m going to put more emphasis on the following topics and practices:</p>
+
+<ul>
+  <li>
+    <p>how the <em><a href="/blog/tag/cucumber/">cucumber</a> -&gt; fail -&gt; <a href="/blog/tag/rspec/">rspec</a> -&gt; rspec green -&gt; cucumber green -&gt; refactor</em> cycle works</p>
+  </li>
+  <li>
+    <p>how to implement an algorithm with BDD/TDD</p>
+  </li>
+  <li>
+    <p>how to recognize large steps during development and how to break them down into smaller ones</p>
+  </li>
+  <li>
+    <p>when and how to refactor code and test cases</p>
+  </li>
+</ul>
+
+<p><strong>My first decision is that I will do <a href="/blog/tag/bdd/">BDD</a>/<a href="/blog/tag/tdd">TDD</a> as described in the <a href="http://pragprog.com/book/achbd/the-rspec-book">RSpec Book</a></strong>: my development will be driven by <em>cucumber scenarios</em> and I’ll use <em>rspec</em> for filling in the details and describing the algorithm I’m using for converting the numbers. And moreover, I won’t start the application until it is done - I’m curious whether it is possible to build a web application using BDD and never start the application itself.</p>
+
+<!--more-->
+<p>### The Life Before Twenty-one</p>
+
+<p>My first <em>scenario</em> in the <em>numerals.feature:</em></p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Scenario:</span><span class="nf"> Display a number below 12 in written form</span>
+<span class="k">  Given </span><span class="nf">I am on the main page</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I enter </span><span class="s">10</span><span class="nf"> into my field</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">I press submit</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I see &quot;</span><span class="s">ten</span><span class="nf">&quot; as a result</span></code></pre></div>
+
+<p>Usually, I’m quite lazy with the names of the <em>scenarios. </em>I often add an irrelevant name at first, because** I tend to spend a lot of time with naming and this “habit” consumes a lot of time which is definitely a <a href="/blog/2012/08/waste-in-software-development/">waste</a>.** I just give a name which more or less describes what I want at the moment. Later, when I have more <em>scenarios</em> I’ll come back and refactor the <em>scenario</em> and add a better name.</p>
+
+<p>I need this <em>scenario</em> so that I can set up the environment and have the skeleton of the whole application.</p>
+
+<p>The <code>main_controller.rb</code> looks like this<em>:</em></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@result</span> <span class="o">=</span> <span class="s2">&quot;ten&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>The matching <em>index.html.erb</em>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">&lt;html&gt;
+&lt;head&gt;
+&lt;/head&gt;&lt;body&gt;
+  &lt;%<span class="o">=</span> form_tag <span class="k">do</span> %&gt;
+    &lt;%<span class="o">=</span> text_field_tag :number, nil, <span class="o">{</span>:class <span class="o">=</span>&gt; <span class="s2">&quot;number&quot;</span><span class="o">}</span> %&gt;
+    &lt;%<span class="o">=</span> submit_tag <span class="s2">&quot;Submit&quot;</span>, :class <span class="o">=</span>&gt; <span class="s2">&quot;submit&quot;</span> %&gt;
+  &lt;% end %&gt;
+
+---
+
+  &lt;%<span class="o">=</span> @result %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+<p>And the <em>routes.rb</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Numerals</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="n">main</span><span class="c1">#index</span>
+<span class="k">end</span></code></pre></div>
+
+<p><strong>This was the smallest step I found reasonable for my application</strong>. Now, the <em>cucumber scenario</em> says that it is working and I believe it - remember, I decided not to start the application until it is done or I really-really have to -, so it is time to move forward. According to <a href="http://en.wikipedia.org/wiki/English_numerals">wikipedia</a>, there are numbers which cannot be put together as a combination of other numbers. From 1 to 20 they follow each other in a nice pattern, so I created a new <em>scenario</em> for them:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Scenario Outline:</span><span class="nf"> Display uncomplicated numbers as words</span>
+<span class="k">    When </span><span class="nf">I enter </span><span class="nv">&lt;number&gt;</span><span class="nf"> into my field</span>
+<span class="nf">     </span><span class="k">And </span><span class="nf">I press submit</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I see </span><span class="nv">&lt;word&gt;</span><span class="nf"> as a result</span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> number</span><span class="k"> |</span><span class="nv"> word</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 1</span><span class="k">      |</span><span class="s">&quot;one&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 2</span><span class="k">      |</span><span class="s">&quot;two&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 3</span><span class="k">      |</span><span class="s">&quot;three&quot;</span><span class="k">    |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 4</span><span class="k">      |</span><span class="s">&quot;four&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 5</span><span class="k">      |</span><span class="s">&quot;five&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 6</span><span class="k">      |</span><span class="s">&quot;six&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 7</span><span class="k">      |</span><span class="s">&quot;seven&quot;</span><span class="k">    |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 8</span><span class="k">      |</span><span class="s">&quot;eight&quot;</span><span class="k">    |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 9</span><span class="k">      |</span><span class="s">&quot;nine&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">10</span><span class="k">      |</span><span class="s">&quot;ten&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">11</span><span class="k">      |</span><span class="s">&quot;eleven&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">12</span><span class="k">      |</span><span class="s">&quot;twelve&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">13</span><span class="k">      |</span><span class="s">&quot;thirteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">14</span><span class="k">      |</span><span class="s">&quot;fourteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">15</span><span class="k">      |</span><span class="s">&quot;fifteen&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">16</span><span class="k">      |</span><span class="s">&quot;sixteen&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">17</span><span class="k">      |</span><span class="s">&quot;seventeen&quot;</span><span class="k">|</span>
+<span class="k">      |</span><span class="s">18</span><span class="k">      |</span><span class="s">&quot;eighteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">19</span><span class="k">      |</span><span class="s">&quot;nineteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">20</span><span class="k">      |</span><span class="s"> &quot;twenty&quot;</span><span class="k">  |</span></code></pre></div>
+
+<p>As you can see, it covers my very first <em>scenario</em>, so I’ll get rid of that one right after I have a green bar again - my laziness in naming paid off. The implementation follows the simplicity of the scenario:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">uncomplicated_numbers</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span>   <span class="mi">3</span> <span class="o">=&gt;</span> <span class="s2">&quot;three&quot;</span><span class="p">,</span> <span class="mi">4</span> <span class="o">=&gt;</span> <span class="s2">&quot;four&quot;</span><span class="p">,</span> <span class="mi">5</span> <span class="o">=&gt;</span> <span class="s2">&quot;five&quot;</span><span class="p">,</span>
+      <span class="mi">6</span> <span class="o">=&gt;</span> <span class="s2">&quot;six&quot;</span><span class="p">,</span> <span class="mi">7</span> <span class="o">=&gt;</span> <span class="s2">&quot;seven&quot;</span><span class="p">,</span> <span class="mi">8</span> <span class="o">=&gt;</span> <span class="s2">&quot;eight&quot;</span><span class="p">,</span> <span class="mi">9</span> <span class="o">=&gt;</span> <span class="s2">&quot;nine&quot;</span><span class="p">,</span> <span class="mi">10</span> <span class="o">=&gt;</span> <span class="s2">&quot;ten&quot;</span><span class="p">,</span>
+      <span class="mi">11</span> <span class="o">=&gt;</span> <span class="s2">&quot;eleven&quot;</span><span class="p">,</span>   <span class="mi">12</span> <span class="o">=&gt;</span> <span class="s2">&quot;twelve&quot;</span><span class="p">,</span>  <span class="mi">13</span> <span class="o">=&gt;</span> <span class="s2">&quot;thirteen&quot;</span><span class="p">,</span>  <span class="mi">14</span> <span class="o">=&gt;</span> <span class="s2">&quot;fourteen&quot;</span><span class="p">,</span>
+      <span class="mi">15</span> <span class="o">=&gt;</span> <span class="s2">&quot;fifteen&quot;</span><span class="p">,</span>  <span class="mi">16</span> <span class="o">=&gt;</span> <span class="s2">&quot;sixteen&quot;</span><span class="p">,</span> <span class="mi">17</span> <span class="o">=&gt;</span> <span class="s2">&quot;seventeen&quot;</span><span class="p">,</span> <span class="mi">18</span> <span class="o">=&gt;</span> <span class="s2">&quot;eighteen&quot;</span><span class="p">,</span>
+      <span class="mi">19</span> <span class="o">=&gt;</span> <span class="s2">&quot;nineteen&quot;</span><span class="p">,</span> <span class="mi">20</span> <span class="o">=&gt;</span> <span class="s2">&quot;twenty&quot;</span> <span class="p">}</span>
+    <span class="vi">@result</span> <span class="o">=</span> <span class="n">uncomplicated_numbers</span><span class="o">[</span><span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">to_i</span><span class="o">]</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Now I have a green bar, and possibly a working application, but I’m asking myself - a new technique I learnt this weekend - what will happen when the <em>params[:number]</em> variable is empty? How can it be empty? <strong>The second question is so much better than the first one, because we are doing <a href="/blog/tag/bdd/">BDD</a> and <a href="/blog/2011/12/cucumber-jvm-preparation/" title="Cucumber JVM: Preparation">the <em>how</em> is much more important than the <em>what</em></a>.</strong> Actually, I can write a <em>scenario</em> for this issue and check out what’s going to happen:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Scenario:</span><span class="nf">Do not display anything when the user pressed submit without giving a number</span>
+<span class="k">  Given </span><span class="nf">I am on the main page</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I press submit</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I do not see any errors just the contents of the main page</span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>It fails - what a pity -, but after implementing this, it will work:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+   <span class="n">uncomplicated_numbers</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="c1"># ...</span>
+    <span class="p">}</span>
+    <span class="k">unless</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">blank?</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="n">uncomplicated_numbers</span><span class="o">[</span><span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">to_i</span><span class="o">]</span>
+    <span class="k">else</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>You may have observed that I haven’t written any <em>rspec</em> test cases so far. There is a reason for that: if I started writing <em>rspec</em> test cases now, I would duplicate the testing functionality, because the <em>cucumber scenarios</em> already cover everything I need, so I’m going to leave them out. When I really need them - like for the algorithm - I’ll start writing them, but until then I’m good with <em>cucumber scenarios</em>.</p>
+
+<h3 id="twenty-one-changes-the-game">Twenty-one Changes The Game</h3>
+
+<p>Our next number which our application shall support is 21 (twenty-one):</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Scenario:</span><span class="nf"> Convert a number with a hyphen to a word</span>
+<span class="k">  When </span><span class="nf">I convert </span><span class="s">21</span><span class="nf"> with my converter</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I should get &quot;</span><span class="s">twenty-one</span><span class="nf">&quot;</span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>I created a separate scenario with a very “descriptive” name again, because this is the first number which is written as a combination of two other numbers. This means that it is time to start with the previously mentioned algorithm. The first rspec test case in the <em>main_controller_spec.rb</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;spec_helper&#39;</span>
+
+<span class="n">describe</span> <span class="no">MainController</span> <span class="k">do</span>
+  <span class="n">context</span> <span class="s2">&quot;the concatenates algorithm&quot;</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">&quot;should add an hyphen when the number is between 21 and 99&quot;</span> <span class="k">do</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>After filling out the test case, it looks like this:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should add an hyphen when the number is between 21 and 99&quot;</span> <span class="k">do</span>
+  <span class="n">post</span><span class="p">(</span><span class="ss">:index</span><span class="p">,</span> <span class="p">{</span> <span class="ss">:number</span> <span class="o">=&gt;</span> <span class="mi">21</span> <span class="p">}</span> <span class="p">)</span>
+  <span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/twenty-one/</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>There is nothing wrong with that test case, but it does two things:</p>
+
+<ul>
+  <li>
+    <p>it uses the rails framework for sending the number and returning the result</p>
+  </li>
+  <li>
+    <p>it uses the algorithm for the conversion</p>
+  </li>
+</ul>
+
+<p>I have a <em>cucumber scenario</em> which has already tested the first part, so I don’t see the point in doing the same with <em>rspec</em>. It is a duplication, which I consider waste. Usually, people try to eliminate waste, which implies that the waste had already been there, but now <strong>I can avoid creating waste which is much better</strong>. At the moment, the only thing I can do is stop working on the new <em>scenario and</em> refactor the existing code so that I have a new structure where the <strong>business logic is separated from the rails framework</strong>.</p>
+
+<h4 id="the-first-refactoring">The First Refactoring</h4>
+
+<p>Unfortunately, I cannot do refactoring now, because I have a red <em>cucumber scenario</em> and a red <em>rspec test case</em>, so I <a href="/blog/2010/06/one-step-back-in-testing/" title="One Step Back In Testing">take one step back</a> and make them pending. Now everything is green again, I can start refactoring. When we did the exercise at Digital Natives, we had two rival groups: the first group followed a <a href="https://github.com/digitalnatives/coding-dojo/tree/topdown">top-down</a> approach where the team started like I did: implemented the view, filled out the controller and at the end, moved the business logic out of the framework to the <em>lib</em> folder. The other group followed a <a href="https://github.com/digitalnatives/coding-dojo/tree/bottomup">bottom-up</a> approach: they created the business logic first and built the rails application around it. Now, I need a third approach where I still have the “<em>top</em>” of the application, meaning that the controllers and views are in place, but I have to move the business logic out of the controller and put it under <em>lib</em> - the “<em>bottom</em>” - where it belongs anyway.</p>
+
+<p>So I created a new file under <em>lib</em> with the name <em>numerals_converter.rb</em> and moved the controller’s contents - the business logic - there using the <a href="http://martinfowler.com/refactoring/catalog/moveMethod.html">move method refactoring technique</a><em>:</em></p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">NumeralConverter</span>
+  <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="n">uncomplicated_numbers</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span>
+      <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span>
+      <span class="c1"># ...</span>
+      <span class="mi">19</span> <span class="o">=&gt;</span> <span class="s2">&quot;nineteen&quot;</span><span class="p">,</span>
+      <span class="mi">20</span> <span class="o">=&gt;</span> <span class="s2">&quot;twenty&quot;</span>
+    <span class="p">}</span>
+
+    <span class="n">uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+   <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>The <em>main_controller.rb</em> still has the logic:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;numeral_converter&#39;</span>
+
+<span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="k">unless</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">blank?</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">to_i</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>This is much better, <strong>but two separate things deserve separate tests</strong>. So I refactored the test cases as well and ended up having two features: one for the rails part and one for the business logic.</p>
+
+<p>The <em>numeral_conversion.feature</em> appears (mind that I’m using <em>Background</em> from here on):</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> English numeral converter</span>
+
+<span class="nf">  </span><span class="k">Background:</span><span class="nf"></span>
+<span class="k">    Given </span><span class="nf">I have a converter</span>
+
+<span class="nf">  </span><span class="k">Scenario Outline:</span><span class="nf"> convert uncomplicated numbers to words</span>
+<span class="k">    When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;word&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">       |</span><span class="nv"> number</span><span class="k"> |</span><span class="nv"> word</span><span class="k">      |</span><span class="nf"></span>
+<span class="c">       # ...</span><span class="nf"></span>
+<span class="k">       |</span><span class="s">19</span><span class="k">      |</span><span class="s">&quot;nineteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">       |</span><span class="s">20</span><span class="k">      |</span><span class="s"> &quot;twenty&quot;</span><span class="k">  |</span>
+
+<span class="nf"> </span><span class="k">Scenario:</span><span class="nf"> Convert a number with hyphen to a word</span>
+<span class="nf">   pending</span>
+<span class="k">   When </span><span class="nf">I convert </span><span class="s">21</span><span class="nf"> with my converter</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I should get &quot;</span><span class="s">twenty-one</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>And the <em>user_interface.feature</em>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> Provide a simple form for the user</span>
+<span class="nf">         so that she can use the converter</span>
+
+<span class="nf">  </span><span class="k">Background:</span><span class="nf"></span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Display a number as a word</span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I enter </span><span class="s">10</span><span class="nf"> into my field</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I press submit</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I see it as a word in the result</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Do not display anything when the user pressed</span>
+<span class="nf">            submit without giving a number</span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I press submit</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I do not see any errors just the contents of the main page</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Do not display anything when the user gave something else</span>
+<span class="nf">            than a number</span>
+<span class="k">    Given </span><span class="nf">I am on the main page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I enter something else than a number into my field</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I press submit</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I do not see any errors just the contents of the main page</span></code></pre></div>
+
+<p>There are slight changes in the names of the scenarios and steps but basically nothing has changed. If you closely check the <em>user_interface.feature,</em> you may find a new <em>scenario</em> which tests what happens when the user enters a non-number.</p>
+
+<h4 id="leaving-the-path">Leaving the Path</h4>
+
+<p>Adding that <em>scenario</em> doesn’t seem wise, because I had a clear goal which was finishing the refactoring. The green test cases suggest that everything works, but if I forget to take care of this important step, I’ll be doomed later. Actually, <strong>I think it is a good practice to leave the path when you find something to take care of, if that means this only one thing, and that thing does not lead to another</strong>. I leave the scenario there, and implement the necessary parts in the controller:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="k">unless</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">blank?</span> <span class="o">||</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Numeric</span><span class="p">)</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">to_i</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Now everything works again, it was only one small detour, and I don’t think I’ll have to touch the controller again.</p>
+
+<h4 id="the-devil-is-in-the-details">The Devil is in the Details</h4>
+
+<p>Back to the <em>numerals_convertion.feature</em> and the <em>twenty-one scenario. *Let’s remove the pending and write the *rspec</em> <em>test case</em> - mind that it moved to the <em>numeral_converter_spec.rb</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should add an hyphen when the number is between 21 and 99&quot;</span> <span class="k">do</span>
+  <span class="n">converter</span> <span class="o">=</span> <span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span>
+  <span class="n">converter</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">&quot;twenty-one&quot;</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>Something is still wrong. <strong>When I tried to write the matching code snippet, I had to start writing if’s and creating new methods, but nothing really justified these actions</strong>. The devil is in the details as my former colleague used to say: the test case above tests three things, not one. The word twenty-one consists of three different things:</p>
+
+<ul>
+  <li>
+    <p>a number* (twenty)*</p>
+  </li>
+  <li>
+    <p>a hyphen (-)</p>
+  </li>
+  <li>
+    <p>another number* (one)*</p>
+  </li>
+</ul>
+
+<p>So the algorithm shall find the leading number first, add a hyphen, and finally add the closing number. <strong>These are three different steps, meaning three different test cases</strong>. I deleted the test case which started all the refactoring and added this one to the <em>numeral_conversion_rspec.rb</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">describe</span> <span class="no">NumeralConverter</span> <span class="k">do</span>
+ <span class="n">context</span> <span class="s2">&quot;in case the number is between 21 and 99&quot;</span> <span class="k">do</span>
+   <span class="n">subject</span> <span class="p">{</span><span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span><span class="p">}</span>
+   <span class="n">it</span> <span class="s2">&quot;should find the proper leading uncomplicated number&quot;</span> <span class="k">do</span>
+     <span class="n">converter</span> <span class="o">=</span> <span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span>
+     <span class="n">converter</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^twenty/</span>
+   <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>As you can see, the test case only checks how the converted number should start - the first step in the algorithm. The rest is irrelevant from the point of view of this test case. <strong>Testing that the result ends with <em>-one</em> is the duty of the other test cases!</strong></p>
+
+<p>In the following form the <em>numeral_conversion.rb</em> turns the new <em>rspec test case</em> green:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">NumeralConverter</span>
+    <span class="vc">@@uncomplicated_numbers</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span>
+     <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span>
+     <span class="c1"># ...</span>
+    <span class="mi">19</span> <span class="o">=&gt;</span> <span class="s2">&quot;nineteen&quot;</span><span class="p">,</span>
+    <span class="mi">20</span> <span class="o">=&gt;</span> <span class="s2">&quot;twenty&quot;</span>
+  <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span></code></pre></div>
+
+<p>The <em>rspec</em> is green, but what about the <em>cucumber scenarios?</em></p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % rspec spec --format<span class="o">=</span>progress
+.
+Finished in 2.04 seconds
+<span class="m">1</span> example, <span class="m">0</span> failures, <span class="m">0</span> pending
+~/Code/ruby/dina-coding-dojo/numerals % cucumber --format<span class="o">=</span>progress
+.--.F.F.F.F.F.F.F.F.F...F.F.F.F.F.F.F.F.F....F...............
+<span class="m">24</span> scenarios <span class="o">(</span><span class="m">19</span> failed, <span class="m">5</span> passed<span class="o">)</span>
+<span class="m">77</span> steps <span class="o">(</span><span class="m">19</span> failed, <span class="m">58</span> passed<span class="o">)</span>
+0m0.383s
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p>So my application no longer works, the cucumber is red. It seems that I have to take another detour. I’m not happy. In the latest version of the <em>numeral_conversion.rb, </em>I had to differentiate between the incoming numbers and apply the algorithm only if the input number needed to be assembled. I called these numbers complicated, so those numbers which can “stay” alone are <em>uncomplicated</em>.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">NumeralConverter</span>
+  <span class="vc">@@uncomplicated_numbers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># ...</span>
+  <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+      <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+    <span class="k">else</span>
+     <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+   <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">.</span><span class="n">keys</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Now the “build is back to normal”. The <em>rspec</em> is green and I have only one failing <em>cucumber scenario</em> which started the <em>twenty-one saga</em>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % cucumber --format<span class="o">=</span>progress
+.--..........................................F...............
+
+expected <span class="s2">&quot;twenty-one&quot;</span>
+     got <span class="s2">&quot;twenty&quot;</span>
+
+<span class="m">24</span> scenarios <span class="o">(</span><span class="m">1</span> failed, <span class="m">23</span> passed<span class="o">)</span>
+<span class="m">77</span> steps <span class="o">(</span><span class="m">1</span> failed, <span class="m">76</span> passed<span class="o">)</span>
+0m0.380s
+~/Code/ruby/dina-coding-dojo/numerals %</code></pre></div>
+
+<p>Back to the <em>rspec test cases</em>. The next one:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should add a hyphen after the leading uncomplicated number&quot;</span> <span class="k">do</span>
+  <span class="n">converter</span> <span class="o">=</span> <span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span>
+  <span class="n">converter</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^[a-z]+-/</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>As you can see, this test case does not care about how the number starts. The only thing that matters is that after letters there is a hyphen.</p>
+
+<p>The code:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+  <span class="k">else</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span><span class="o">]</span><span class="si">}</span><span class="s2">-&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>Mind the ‘-‘ at the end of line 6!</p>
+
+<p>And finally the whole context:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">describe</span> <span class="no">NumeralConverter</span> <span class="k">do</span>
+ <span class="n">context</span> <span class="s2">&quot;in case the number is between 21 and 99&quot;</span> <span class="k">do</span>
+   <span class="n">subject</span> <span class="p">{</span><span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span><span class="p">}</span>
+   <span class="n">it</span> <span class="s2">&quot;should find the proper leading uncomplicated number&quot;</span> <span class="k">do</span>
+     <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^twenty/</span>
+   <span class="k">end</span>
+
+   <span class="n">it</span> <span class="s2">&quot;should add a hyphen after the leading uncomplicated number&quot;</span> <span class="k">do</span>
+     <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^[a-z]+-/</span>
+   <span class="k">end</span>
+
+   <span class="n">it</span> <span class="s2">&quot;should concatenates the closing uncomplicated number after the hyphen&quot;</span> <span class="k">do</span>
+     <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^[a-z]+-one$/</span>
+   <span class="k">end</span>
+ <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>And the code:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">NumeralConverter</span>
+  <span class="vc">@@uncomplicated_numbers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># ...</span>
+  <span class="p">}</span>
+  <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+      <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+    <span class="k">else</span>
+      <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">-</span>
+<span class="s2">         </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>I’m happy to announce that we are <span style="color: #339966;">all</span> <span style="color: #339966;">green</span> (<em>cucumber + rspec</em>)!
+### Retrospective</p>
+
+<p>A lot of things have happened since the <em>“twenty-one scenario”</em> appeared on the horizon. Let’s summarize the most important ones:</p>
+
+<ul>
+  <li>
+    <p>Always follow the BDD cycle proposed in the <em>RSpec book</em></p>
+  </li>
+  <li>
+    <p>Run all the test frameworks you are using</p>
+  </li>
+  <li>
+    <p>If you add several lines to your code your test case can most probably be broken down into smaller steps</p>
+  </li>
+  <li>
+    <p>Don’t be afraid to leave your path, but don’t stray too far away from it - I recommend one “<em>detour step</em>”</p>
+  </li>
+  <li>
+    <p>Always refactor your test cases</p>
+  </li>
+  <li>
+    <p>Don’t create waste</p>
+  </li>
+</ul>
+
+<h3 id="continue-with-the-remaining-uncomplicated-numbers">Continue with the Remaining Uncomplicated Numbers</h3>
+
+<p>I see two options now:</p>
+
+<ul>
+  <li>
+    <p>I can jump to the next challenge and implement the logic for 101, or</p>
+  </li>
+  <li>
+    <p>I can cover all the numbers between 21 and 99</p>
+  </li>
+</ul>
+
+<p>I need some rest, so I’ll go with the second one. It looks easier. I simply add the remaining uncomplicated numbers between 21 and 99 to the proper scenario and that’s it.</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Scenario Outline:</span><span class="nf"> convert uncomplicated numbers to words</span>
+<span class="k">    When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;word&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> number</span><span class="k"> |</span><span class="nv"> word</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 1</span><span class="k">      |</span><span class="s">&quot;one&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 2</span><span class="k">      |</span><span class="s">&quot;two&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="c">      # ...</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">19</span><span class="k">      |</span><span class="s">&quot;nineteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">20</span><span class="k">      |</span><span class="s"> &quot;twenty&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">30</span><span class="k">      |</span><span class="s"> &quot;thirty&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">40</span><span class="k">      |</span><span class="s"> &quot;forty&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">50</span><span class="k">      |</span><span class="s"> &quot;fifty&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">60</span><span class="k">      |</span><span class="s"> &quot;sixty&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">70</span><span class="k">      |</span><span class="s"> &quot;seventy&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">80</span><span class="k">      |</span><span class="s"> &quot;eighty&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">90</span><span class="k">      |</span><span class="s"> &quot;ninety&quot;</span><span class="k">  |</span></code></pre></div>
+
+<p>You can imagine the rest.
+### Dealing with the Hundreds</p>
+
+<p>100 is a uncomplicated number so I’ll just add it to the first <em>scenario</em> like I did with 30. Learning from the previous mistakes, I’ll take very small steps. A number between 101 and 999 follows the following structure:</p>
+
+<ol>
+  <li>
+    <p>an uncomplicated number which represents the hundreds (no nineteen hundreds!)</p>
+  </li>
+  <li>
+    <p>then comes an ‘<em>and</em>’</p>
+  </li>
+  <li>
+    <p>and the rest should be handled as described above</p>
+  </li>
+</ol>
+
+<p>The scenario looks like this:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Scenario:</span><span class="nf"> Indicate the hundred between 101 and 999</span>
+<span class="k">  When </span><span class="nf">I convert </span><span class="s">719</span><span class="nf"> with my converter</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I should get &quot;</span><span class="s">seven hundred nineteen</span><span class="nf">&quot;</span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>And the first <em>rspec</em> test case:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">context</span> <span class="s2">&quot;in case the number is between 101 and 999&quot;</span> <span class="k">do</span>
+  <span class="n">it</span> <span class="s2">&quot;should start with the uncomplicated number of the hundreds&quot;</span> <span class="k">do</span>
+    <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">719</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^seven hundred/</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>The code:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred&quot;</span>
+  <span class="k">else</span>
+    <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">-</span>
+<span class="s2">       </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>The rspec is green, but I had a problem before: although the <em>rspec</em> was green, the <em>cucumber</em> was red:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % cucumber --format<span class="o">=</span>progress
+
+.--.............................................................F...............
+<span class="o">(</span>::<span class="o">)</span> failed steps <span class="o">(</span>::<span class="o">)</span>
+
+expected <span class="s2">&quot;seven hundred and nineteen&quot;</span>
+     got <span class="s2">&quot;seven hundred&quot;</span></code></pre></div>
+
+<p>Nice, I’m getting closer. The next <em>rspec</em> test case puts ‘<em>and</em>’ into the picture:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should add &#39;and&#39; after the hundreds&quot;</span> <span class="k">do</span>
+  <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">719</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^[a-z]+ hundred and/</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>No surprises there or in the code (mind the ‘and’ at the end):</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+  <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred and&quot;</span>
+<span class="k">else</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>Finally, the last test case:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should concatenates the rest as described before&quot;</span> <span class="k">do</span>
+  <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">719</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^[a-z]+ hundred and nineteen$/</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>The matching code:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">100</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred and </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">else</span>
+    <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">-</span>
+<span class="s2">       </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>Mind that the new code does exactly what the <em>rspec test case</em> states!</p>
+
+<p>What happens if I want to convert 200?</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># ...</span>
+Scenario: Convert <span class="m">200</span> to two hundred
+  When I convert <span class="m">200</span> with my converter
+  Then I should get <span class="s2">&quot;two hundred&quot;</span>
+<span class="c"># ...</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % cucumber --format<span class="o">=</span>progress
+.--................................................................F...............
+
+<span class="o">(</span>::<span class="o">)</span> failed steps <span class="o">(</span>::<span class="o">)</span>
+
+expected <span class="s2">&quot;two hundred&quot;</span>
+     got <span class="s2">&quot;two hundred and -&quot;</span></code></pre></div>
+
+<p>Oh-oh, something is wrong. There is a clause I forgot, let’s make it right:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should not concatenate anything if there are no tens or ones&quot;</span> <span class="k">do</span>
+  <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/hundred$/</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>And the code:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+   <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">100</span>
+   <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred&quot;</span>
+   <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; and </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+   <span class="n">result</span>
+ <span class="k">else</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<h4 id="matching-the-scenarios-and-the-contexts">Matching the Scenarios and the Contexts</h4>
+
+<p>We are all green now. Before going any further, let’s have a look at the scenario and context names - the range they cover is given in parentheses:</p>
+
+<p>scenarios:</p>
+
+<ul>
+  <li>
+    <p>“Convert uncomplicated numbers to words” (1, 2, … 50, … 100)</p>
+  </li>
+  <li>
+    <p>“Convert a number with hyphen to a word” (21 -&gt; 99)</p>
+  </li>
+  <li>
+    <p>“Indicate the hundred between 101 and 999” (101 -&gt; 999)</p>
+  </li>
+  <li>
+    <p>“Convert 200 to two hundred” (200)</p>
+  </li>
+</ul>
+
+<p>contexts:</p>
+
+<ul>
+  <li>
+    <p>none (1, 2, …, 50, … 100)</p>
+  </li>
+  <li>
+    <p>“in case the number is between 21 and 99” (21 -&gt; 99)</p>
+  </li>
+  <li>
+    <p>“in case the number is between 101 and 999” (101 -&gt; 999)</p>
+  </li>
+</ul>
+
+<p>Quite close, but this is not really maintainable. Later on I’ll want to be able to tell which <em>rspec test cases</em> belong to a certain <em>scenario</em>. I can live with the fact that I have no <em>rspec</em> for the uncomplicated numbers, because the cucumber outline covered them very nicely, and I don’t need a test duplication, but the names I see above do not meet my standards. Hence, the new scenario names are:</p>
+
+<ul>
+  <li>
+    <p>“Convert a complicated number between 21 and 99”</p>
+  </li>
+  <li>
+    <p>“Convert a complicated number with tens and/or ones between 101 and 999”</p>
+  </li>
+  <li>
+    <p>“Convert a complicated number without tens and/or ones between 101 and 999”</p>
+  </li>
+</ul>
+
+<p>Let’s talk a bit about duplication. Every <em>rspec</em> test case I wrote so far is duplication, but <strong>I’ll keep them anyway, because they tell me how the current algorithm works</strong>. If I decide to go in a different direction, I’ll use the existing <em>cucumber scenarios</em>, but different <em>rspec test cases</em>. And nevertheless, they show the progress in my example.</p>
+
+<h3 id="above-thousands">Above Thousands</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>The algorithm seems a bit simpler above 1000, because there are recognizable groups (marked with ‘,’ and ‘</td>
+      <td>’):</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>
+    <p>1,997: one thousand | nine hundred and ninety-seven</p>
+  </li>
+  <li>
+    <p>10,715,302,842: ten billion | seven hundred and fifteen million | three hundred and two thousand | eight hundred and fourty-two</p>
+  </li>
+</ul>
+
+<p>So the steps of the algorithm:</p>
+
+<ol>
+  <li>
+    <p>find a group (for example the thousands)</p>
+  </li>
+  <li>
+    <p>apply the existing logic on this group</p>
+  </li>
+  <li>
+    <p>continue with the next group (for example millions)</p>
+  </li>
+  <li>
+    <p>…</p>
+  </li>
+</ol>
+
+<p>The next <em>scenario</em>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Scenario:</span><span class="nf"> Convert a complicated number above 1001</span>
+<span class="k">  When </span><span class="nf">I convert </span><span class="s">1997</span><span class="nf"> with my converter</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I should get &quot;</span><span class="s">one thousand nine hundred and ninety-seven</span><span class="nf">&quot;</span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>The execution result:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % cucumber --format<span class="o">=</span>progress
+.--.................................................................F...............
+
+<span class="o">(</span>::<span class="o">)</span> failed steps <span class="o">(</span>::<span class="o">)</span>
+
+expected <span class="s2">&quot;one thousand nine hundred and ninety-seven&quot;</span>
+     got <span class="s2">&quot;nineteen hundred and ninety-seven&quot;</span></code></pre></div>
+
+<p>Close enough. The next rspec context:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">context</span> <span class="s2">&quot;in case the number is above 1001&quot;</span> <span class="k">do</span>
+  <span class="n">it</span> <span class="s2">&quot;should group the parts of the number along the thousands&quot;</span> <span class="k">do</span>
+    <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">1997</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^one thousand/</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>It’s enough to test that the result will start with “one thousand” because the other test cases will guarantee that the rest of the name is converted properly.</p>
+
+<p>With the following code I’m all green:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">1000</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">1000</span><span class="o">]</span><span class="si">}</span><span class="s2"> thousand&quot;</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">100</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred&quot;</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; and </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">result</span>
+  <span class="k">else</span>
+    <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">-</span>
+<span class="s2">     </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>It gets uglier, but I have a bigger problem: the scenarios aren’t maintainable any-more, so I’ll refactor them before continuing the coding:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> English numeral converter</span>
+
+<span class="nf">  </span><span class="k">Background:</span><span class="nf"></span>
+<span class="k">    Given </span><span class="nf">I have a converter</span>
+
+<span class="nf">  </span><span class="k">Scenario Outline:</span><span class="nf"> Convert numbers below 20</span>
+<span class="k">    When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;name&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> number</span><span class="k"> |</span><span class="nv"> name</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">  1</span><span class="k">     |</span><span class="s">&quot;one&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s">  2</span><span class="k">     |</span><span class="s">&quot;two&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="nf">      ...</span>
+<span class="k">      |</span><span class="s"> 19</span><span class="k">     |</span><span class="s">&quot;nineteen&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 20</span><span class="k">     |</span><span class="s"> &quot;twenty&quot;</span><span class="k">  |</span>
+
+<span class="nf">  </span><span class="k">Scenario Outline:</span><span class="nf"> Convert numbers between 21 and 99</span>
+<span class="k">    When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;name&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">    |</span><span class="nv"> number</span><span class="k"> |</span><span class="nv"> name</span><span class="k">          |</span><span class="nf"></span>
+<span class="k">    |</span><span class="s"> 21</span><span class="k">     |</span><span class="s"> &quot;twenty-one&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">    |</span><span class="s"> 30</span><span class="k">     |</span><span class="s"> &quot;thirty&quot;</span><span class="k">      |</span><span class="nf"></span>
+<span class="nf">    ...</span>
+<span class="k">    |</span><span class="s"> 90</span><span class="k">     |</span><span class="s"> &quot;ninety&quot;</span><span class="k">      |</span>
+
+<span class="nf">  </span><span class="k">Scenario Outline:</span><span class="nf"> Convert numbers between 100 and 999</span>
+<span class="k">    When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;name&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> number</span><span class="k">   |</span><span class="nv"> name</span><span class="k">                        |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 100</span><span class="k">      |</span><span class="s"> &quot;hundred&quot;</span><span class="k">                   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 200</span><span class="k">      |</span><span class="s"> &quot;two hundred&quot;</span><span class="k">               |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 719</span><span class="k">      |</span><span class="s"> &quot;seven hundred and nineteen&quot;</span><span class="k">|</span><span class="s"></span>
+
+<span class="s">  Scenario Outline: Convert numbers between 1000 and 1000000</span>
+<span class="s">    When I convert </span><span class="nv">&lt;number&gt;</span><span class="s"> with my converter</span>
+<span class="s">    Then I should get </span><span class="nv">&lt;name&gt;</span><span class="s"></span>
+
+<span class="s">    Examples:</span><span class="k"></span>
+<span class="k">      |</span><span class="s"> number</span><span class="k">    |</span><span class="s"> name</span><span class="k">                                        |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 1000</span><span class="k">      |</span><span class="s"> &quot;thousand&quot;</span><span class="k">                                  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> 1997</span><span class="k">      |</span><span class="s"> &quot;one thousand nine hundred and ninety-seven&quot;</span><span class="k">|</span><span class="s"></span></code></pre></div>
+
+<p>What has changed:</p>
+
+<ul>
+  <li>
+    <p>No more “uncomplicated” attribute  in the <em>feature</em> file - I didn’t like it at all</p>
+  </li>
+  <li>
+    <p>Better grouping and better overview</p>
+  </li>
+  <li>
+    <p>Easier to extend</p>
+  </li>
+</ul>
+
+<p>I’ll postpone the refactoring of the class until the <em>scenario</em> is finished. Let’s add the next example:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Examples:</span>
+<span class="k">  |</span><span class="nv"> number</span><span class="k">    |</span><span class="nv"> name</span><span class="k">                                             |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s">  1000</span><span class="k">     |</span><span class="s"> &quot;thousand&quot;</span><span class="k">                                       |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s">  1997</span><span class="k">     |</span><span class="s"> &quot;one thousand nine hundred and ninety-seven&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s"> 19197</span><span class="k">     |</span><span class="s"> &quot;nineteen thousand one hundred and ninety-seven&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>It is still green, add the next one:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Examples:</span>
+<span class="k">  |</span><span class="nv"> number</span><span class="k">    |</span><span class="nv"> name</span><span class="k">                                                           |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s">   1000</span><span class="k">    |</span><span class="s"> &quot;thousand&quot;</span><span class="k">                                                     |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s">   1997</span><span class="k">    |</span><span class="s"> &quot;one thousand nine hundred and ninety-seven&quot;</span><span class="k">                   |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s">  19197</span><span class="k">    |</span><span class="s"> &quot;nineteen thousand one hundred and ninety-seven&quot;</span><span class="k">               |</span><span class="nf"></span>
+<span class="k">  |</span><span class="s"> 403197</span><span class="k">    |</span><span class="s"> &quot;four hundred and three thousand one hundred and ninety-seven&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>Now it fails:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~/Code/ruby/dina-coding-dojo/numerals % cucumber --format<span class="o">=</span>progress
+
+.--........................................-....F...............
+
+<span class="o">(</span>::<span class="o">)</span> failed steps <span class="o">(</span>::<span class="o">)</span>
+
+expected <span class="s2">&quot;four hundred and three thousand one hundred and ninety-seven&quot;</span>
+     got <span class="s2">&quot; thousand one hundred and ninety-seven&quot;</span></code></pre></div>
+
+<p>Good, it is red indeed. The handling of the hundred thousands is not working. The problem is that I didn’t apply the existing algorithm on the thousands. Let’s make it right:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="n">it</span> <span class="s2">&quot;should apply the conversion logic on the thousands group&quot;</span> <span class="k">do</span>
+  <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">403197</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^four hundred and three/</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>The code gets somewhat cleaner, but only a little bit:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">1000</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">number</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span><span class="si">}</span><span class="s2"> thousand&quot;</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">100</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred&quot;</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; and </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">result</span>
+  <span class="k">else</span>
+    <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">-</span>
+<span class="s2">       </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>Now the project is green again.</p>
+
+<h3 id="the-last-scenario">The Last Scenario</h3>
+
+<p>The last thing I have to take care of is the repetition of the “<em>groups</em>”. Let’s add the last <em>scenario</em>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Scenario Outline:</span><span class="nf"> Convert numbers between 1000 and 1000000</span>
+<span class="k">  When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;name&gt;</span><span class="nf"></span>
+
+<span class="nf">  </span><span class="k">Examples:</span>
+<span class="k">    |</span><span class="nv"> number</span><span class="k">   |</span><span class="nv"> name</span><span class="k">       |</span><span class="nf"></span>
+<span class="k">    |</span><span class="s"> 1000000</span><span class="k">  |</span><span class="s"> &quot;million&quot;</span><span class="k">  |</span><span class="nf"></span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>After adding 1,000,000 to the list of number in the <em>NumberConverter</em> class, the <em>scenario</em> above turns green. Let’s add the next candidate:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="c"># ...</span><span class="nf"></span>
+<span class="k">Scenario Outline:</span><span class="nf"> Convert numbers between 1000 and 1000000</span>
+<span class="k">  When </span><span class="nf">I convert </span><span class="nv">&lt;number&gt;</span><span class="nf"> with my converter</span>
+<span class="nf">  </span><span class="k">Then </span><span class="nf">I should get </span><span class="nv">&lt;name&gt;</span><span class="nf"></span>
+
+<span class="nf">  </span><span class="k">Examples:</span>
+<span class="k">    |</span><span class="nv"> number</span><span class="k">   |</span><span class="nv"> name</span><span class="k">          |</span><span class="nf"></span>
+<span class="k">    |</span><span class="s"> 1000000</span><span class="k">  |</span><span class="s"> &quot;million&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">    |</span><span class="s"> 10000000</span><span class="k"> |</span><span class="s"> &quot;ten million&quot;</span><span class="k"> |</span><span class="nf"></span>
+<span class="c"># ...</span><span class="nf"></span></code></pre></div>
+
+<p>It fails of course. The next <em>rspec</em> stays in the last <em>context</em>, because it belongs there based on the algorithm (the steps again: find a group, apply the existing logic and get the next group):</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">context</span> <span class="s2">&quot;in case the number is above 1001&quot;</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+
+  <span class="n">it</span> <span class="s2">&quot;should repeat the conversion on the millions and billions etc&quot;</span> <span class="k">do</span>
+    <span class="n">subject</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">10001001</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">=~</span> <span class="sr">/^ten million one thousand one/</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>It was a bit harder, but the following code produces an all green result:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">uncomplicated_number?</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span><span class="o">]</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+    <span class="n">group_index</span> <span class="o">=</span> <span class="p">(</span><span class="no">Math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+    <span class="n">second_part_as_uncomplicated</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">group_index</span> <span class="o">*</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">the_first_part_of_the_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">/</span> <span class="n">second_part_as_uncomplicated</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="n">second_part_as_uncomplicated</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">the_first_part_of_the_number</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">second_part_as_uncomplicated</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">result</span>
+  <span class="k">elsif</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="mi">100</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">100</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">/</span> <span class="mi">100</span><span class="o">]</span><span class="si">}</span><span class="s2"> hundred&quot;</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot; and </span><span class="si">#{</span><span class="n">convert</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rest</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">result</span>
+  <span class="k">else</span>
+    <span class="n">last_number</span> <span class="o">=</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">number</span> <span class="o">-</span> <span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">-</span>
+<span class="s2">       </span><span class="si">#{</span><span class="vc">@@uncomplicated_numbers</span><span class="o">[</span><span class="n">last_number</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<h3 id="its-alive">It’s Alive!</h3>
+
+<p>The moment I was waiting for:</p>
+
+<p><img class="center" src="/images/posts/2011-12-11-bdd-demonstration/first.png" width="450" height="204" title="Entering a number" /></p>
+
+<p>And the result:<img class="center" src="/images/posts/2011-12-11-bdd-demonstration/second.png" width="450" height="203" title="After conversion" /></p>
+
+<p>Thanks to one of my first decisions that I wouldn’t start the rails application, there is one thing left I have to do. Have a look at the second screenshot. In case of larger numbers <strong>the user may want to see the original number so that she can compare the results</strong>. This means a change in an existing <em>scenario</em> in <em>user_interface.feature</em>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># ...</span>
+<span class="ss">Scenario</span><span class="p">:</span> <span class="no">Display</span> <span class="n">a</span> <span class="n">number</span> <span class="n">as</span> <span class="n">a</span> <span class="n">word</span>
+  <span class="no">Given</span> <span class="n">I</span> <span class="n">am</span> <span class="n">on</span> <span class="n">the</span> <span class="n">main</span> <span class="n">page</span>
+   <span class="no">When</span> <span class="n">I</span> <span class="n">enter</span> <span class="mi">10</span> <span class="n">into</span> <span class="n">my</span> <span class="n">field</span>
+    <span class="no">And</span> <span class="n">I</span> <span class="n">press</span> <span class="n">submit</span>
+   <span class="no">Then</span> <span class="n">I</span> <span class="n">see</span> <span class="n">it</span> <span class="n">as</span> <span class="n">a</span> <span class="nb">name</span> <span class="k">in</span> <span class="n">the</span> <span class="n">result</span>
+    <span class="no">And</span> <span class="n">I</span> <span class="n">see</span> <span class="n">the</span> <span class="n">original</span> <span class="n">number</span> <span class="n">as</span> <span class="n">well</span>
+<span class="c1"># ...</span></code></pre></div>
+
+<p>After creating the proper steps and changing the controller and the view, the user can see the result:</p>
+
+<p><img class="center" src="/images/posts/2011-12-11-bdd-demonstration/third.png" width="450" height="186" title="The final version" /></p>
+
+<p>The change in the controller:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="k">unless</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">blank?</span> <span class="o">||</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Numeric</span><span class="p">)</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="no">NumeralConverter</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">].</span><span class="n">to_i</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="vi">@result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">end</span>
+    <span class="vi">@original_number</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:number</span><span class="o">]</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>The new <em>div</em> in the view:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/head&gt;&lt;body&gt;</span>
+<span class="sr">&lt;%= form_tag do %&gt;</span>
+<span class="sr">  &lt;%= text_field_tag :number, nil, {:class =&gt; &quot;number&quot;} %&gt;</span>
+<span class="sr">  &lt;%= submit_tag &quot;Submit&quot;, :class =&gt; &quot;submit&quot; %&gt;</span>
+<span class="sr">&lt;% end %&gt;</span>
+
+<span class="sr">---</span>
+
+<span class="sr">&lt;%= @original_number %&gt;:</span>
+<span class="sr">   &lt;%= @result %&gt;</span>
+<span class="sr">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/html&gt;</span></code></pre></div>
+
+<p>It’s done and ready for site build.</p>
+
+<h3 id="summary">Summary</h3>
+
+<p>This is one of my longest posts but if you are reading this line then I hope you found the demonstrated ideas and techniques useful. Here are they again, in case you forgot them:</p>
+
+<ul>
+  <li>
+    <p>Write a <em>cucumber scenario</em>, an <em>rspec test case</em>, refactor the code, and refactor the test cases</p>
+  </li>
+  <li>
+    <p>Don’t be afraid to delete code or test case</p>
+  </li>
+  <li>
+    <p>Write maintainable code and test cases</p>
+
+    <ul>
+      <li>
+        <p>Structure the scenarios and rspec context properly</p>
+      </li>
+      <li>
+        <p>Don’t create waste unnecessarily</p>
+      </li>
+    </ul>
+  </li>
+  <li>Write focused test cases</li>
+  <li>Make <strong>a</strong> “<em>detour</em>” when necessary</li>
+  <li>Ask yourself questions so that you validate that you are on the right path</li>
+</ul>
+
+<p>I have every step in a git repository and I tried to commit at the bigger milestones so that you can compare the different stages of the implementation. The repository is: <a href="https://github.com/ZsoltFabok/coding-dojo/tree/bdd_with_cucumber">https://github.com/ZsoltFabok/coding-dojo/tree/bdd_with_cucumber</a> and the code is under the <em>numerals</em> folder:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">61dbbd7 Print out the original number after the user pressed submit
+f731426 Now the application can handle numbers up to 999999999
+3bce615 Now the application can handle numbers up to 999999
+0c962bc Now the application can handle numbers up to 999
+1e6b856 Covered all the numbers between <span class="m">21</span> and 99
+8318d4a After the <span class="s2">&quot;twenty-one&quot;</span> scenario Deleted some unused <span class="nb">test </span>cases
+1b87aac Refactored the code so that the UI and the logic is at different locations and tested differently,
+af76e34 Added guard <span class="k">for</span> faster development Numbers from <span class="m">1</span> till <span class="m">20</span> are covered, and finished at 21
+b2e0549 First state: one green cucumber <span class="nb">test </span>which returns a hard coded result</code></pre></div>
+
+<p>I hope you find this demonstration useful. Happy coding :-)</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2010/06/one-step-back-in-testing/">One Step Back In Testing</a></li><li><a href="/blog/2010/07/file-lottery-kata/">File Lottery Kata</a></li><li><a href="/blog/2011/05/narrow-down-what-to-test/">How to Narrow Down What to Test</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/dojo" title="dojo">dojo</a></li><li><a href="/blog/tag/kata" title="kata">kata</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li><li><a href="/blog/tag/rspec" title="rspec">rspec</a></li><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/rails" title="rails">rails</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/12/bdd-demonstration/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/12/bdd-demonstration/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/12/bdd-demonstration/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/12/bdd-demonstration/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/12/try-the-product-out/" class="basic-alignment left" title="Make the Customer Try Out Your Product">&laquo; Make the Customer Try Out Your Product</a>
+            
+            
+              <a href="/blog/2011/12/cucumber-jvm-more-scenarios/" class="basic-alignment right" title="Cucumber JVM: More Scenarios">Cucumber JVM: More Scenarios &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

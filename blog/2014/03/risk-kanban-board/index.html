@@ -1,0 +1,329 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Risk Kanban Board &#8211; Zsolt Fabók</title>
+<meta name="description" content="A couple of days ago I was talking with a friend about the talk I gave last year during the Lean Kanban Europe tour and I realised that my unusual Kanban board may be able to solve my recent problem.<br/><br/>more...">
+<meta name="keywords" content="kanban, risk, risk management, management, kanban board, wip, cost of delay">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Risk Kanban Board">
+<meta name="twitter:description" content="A couple of days ago I was talking with a friend about the talk I gave last year during the Lean Kanban Europe tour and I realised that my unusual Kanban board may be able to solve my recent problem.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Risk Kanban Board">
+<meta property="og:description" content="A couple of days ago I was talking with a friend about the talk I gave last year during the Lean Kanban Europe tour and I realised that my unusual Kanban board may be able to solve my recent problem.<br/><br/>more...">
+<meta property="og:url" content="/blog/2014/03/risk-kanban-board/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2014/03/risk-kanban-board/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Risk Kanban Board</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2014-03-25T00:00:00+01:00"><i class="fa fa-calendar-o"></i> March 25, 2014</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,risk,riskmanagement,management,kanbanboard,wip,costofdelay&amp;text=Risk%20Kanban%20Board&amp;url=/blog/2014/03/risk-kanban-board/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2014/03/risk-kanban-board/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2014/03/risk-kanban-board/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>A couple of days ago I was talking with a friend about <a href="/blog/2013/10/i-broke-the-wip-limit-slides/">the talk I gave last year during the Lean Kanban Europe tour</a> and I realised that my unusual Kanban board may be able to solve my recent problem: <strong>I want to visualize and easily manage risks</strong>. The board is a horizontally sliced board with four <a href="/blog/2013/09/when-not-to-use-swim-lanes/">horizontal lanes</a> and was originally designed for an operations team (note: for risk management I won’t need <a href="/blog/tag/wip/">WIP limits</a>):</p>
+
+<p><img class="center" src="/images/posts/2014-03-25-risk-kanban-board/risk_kanban_board.png" /></p>
+
+<!-- more -->
+
+<p>Each lane represents a certain severity using the visualization idea from <a href="http://agileconsulting.blogspot.hu/2011/03/using-cost-of-delay-functions-to.html">Jeff Anderson</a>. <strong>The severity (risk) comes from the correlation between time and impact: the later the team handles an issue the higher the impact is.</strong> Moreover, the cost or effort to “handle” a certain level is proportional to the area under the curve:</p>
+
+<p><img class="center" src="/images/posts/2014-03-25-risk-kanban-board/levels_and_cost_of_delay.png" /></p>
+
+<p>Level 1 category has an “infinite impact” and an unknown cost of delay. The problem of this level is that it is completely unpredictable. The costs can be extremely low or extremely high and this high uncertainty forces us to take care of it immediately. For example, the lead developer of the project cannot come to work any more. We can gamble and say that we’ll survive without him or we try to promote somebody else and train very-very fast. <strong>Level 1 doesn’t allow us to do proper risk management and mitigation, it forces us to do something</strong>. So it is better to take actions before a risk turns into level 1, but when it is on level 1, we have to take care of it immediately.</p>
+
+<p>Level 2 category means that at the moment we know something is going to happen and we are aware of the consequences of a late action. For example, we know that the lead developer is leaving the company and we have 30 days to find a new lead. The more we wait with the promotion or the hire, the higher the cost of delay will be; it will be inversely proportional to the insufficient domain knowledge of the new lead developer. In other words: the more we wait the higher the risk reduced quality and delays in the project because of the domain knowledge of the new lead.</p>
+
+<p>As you can see, if a level 2 item is not taken care of in time, it will turn into a level 1 item:</p>
+
+<p><img class="center" src="/images/posts/2014-03-25-risk-kanban-board/level_transformation_2_1.png" /></p>
+
+<p>Level 3 is similar to level 2, but it has a free delay before turning into level 2:</p>
+
+<p><img class="center" src="/images/posts/2014-03-25-risk-kanban-board/level_transformation_3_2.png" /></p>
+
+<p>Which means that there is a period of time when we can ignore the risk, but we cannot do it forever. Following our example, we know that the lead developer will leave the country later this year, so finding a replacement is not an immediate issue, but will be eventually.</p>
+
+<p>Level 4 is a collection for nice to have issues or low risk level items. As I used to say: <em>“this is the place where all the refactoring and code improvement tasks come to die”</em>.</p>
+
+<p>Like the other boards, this one also needs daily updates (the previously mentioned operations team did it twice a day). The risks (work items) have to be reviewed from top-right to bottom-left so that the team talks about the most “painful” risk first. The rest of the risks should be revisited and checked whether they have got closer to a level transformation or need to change level:</p>
+
+<p><img class="center" src="/images/posts/2014-03-25-risk-kanban-board/risk_kanban_board_after_update.png" /></p>
+
+<p>And finally, when a risk is sorted out - or a work item is done -, it gets into the done column. Similarly to other Kanban systems this approach provides measures such as <a href="/blog/2013/07/lead-time/">lead time</a> (time needed to mitigate a risk on a certain level) and <a href="/blog/2014/01/throughput/">throughput</a> (number of risks mitigated) and needs to be continuously improved in order to be an <a href="/blog/2012/09/effective-vs-efficient/">effective system</a>.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2013/02/three-columns/">Be Aware of the Three Columns</a></li><li><a href="/blog/2014/01/why-wip-limits-matter/">One Reason Why WIP limits Matter</a></li><li><a href="/blog/2014/02/wrong-wip-limits-may-kill-your-options/">Wrong WIP Limits Will Kill Your Options</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/risk" title="risk">risk</a></li><li><a href="/blog/tag/risk-management" title="risk management">risk&nbsp;management</a></li><li><a href="/blog/tag/management" title="management">management</a></li><li><a href="/blog/tag/kanban-board" title="kanban board">kanban&nbsp;board</a></li><li><a href="/blog/tag/wip" title="wip">wip</a></li><li><a href="/blog/tag/cost-of-delay" title="cost of delay">cost&nbsp;of&nbsp;delay</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2014/03/risk-kanban-board/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2014/03/risk-kanban-board/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2014/03/risk-kanban-board/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2014/03/risk-kanban-board/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2014/03/speed-or-accuracy/" class="basic-alignment left" title="Fast or Accurate Applications?">&laquo; Fast or Accurate Applications?</a>
+            
+            
+              <a href="/blog/2014/03/no-attributes-in-objects/" class="basic-alignment right" title="No Attributes in Objects">No Attributes in Objects &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

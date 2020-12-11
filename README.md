@@ -1,2 +1,0 @@
-# zsoltfabok.github.io
-website

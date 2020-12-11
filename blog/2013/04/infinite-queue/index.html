@@ -1,0 +1,318 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>About Flows and Infinite Queues &#8211; Zsolt Fabók</title>
+<meta name="description" content="An infinite queue is a column on the Kanban board somewhere between the Queue and Live columns, one that doesn't have a WIP limit and into which one can put many work items as one wants. A column without a WIP limit sounds like a bad practice, because if there is no WIP limit what will ensure that the work items are moving - being pulled - forward.<br/><br/>more...">
+<meta name="keywords" content="kanban, infinite queue, inventory, kaizen, kaikaku, flow">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="About Flows and Infinite Queues">
+<meta name="twitter:description" content="An infinite queue is a column on the Kanban board somewhere between the Queue and Live columns, one that doesn't have a WIP limit and into which one can put many work items as one wants. A column without a WIP limit sounds like a bad practice, because if there is no WIP limit what will ensure that the work items are moving - being pulled - forward.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="About Flows and Infinite Queues">
+<meta property="og:description" content="An infinite queue is a column on the Kanban board somewhere between the Queue and Live columns, one that doesn't have a WIP limit and into which one can put many work items as one wants. A column without a WIP limit sounds like a bad practice, because if there is no WIP limit what will ensure that the work items are moving - being pulled - forward.<br/><br/>more...">
+<meta property="og:url" content="/blog/2013/04/infinite-queue/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2013/04/infinite-queue/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">About Flows and Infinite Queues</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2013-04-30T00:00:00+02:00"><i class="fa fa-calendar-o"></i> April 30, 2013</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,infinitequeue,inventory,kaizen,kaikaku,flow&amp;text=About%20Flows%20and%20Infinite%20Queues&amp;url=/blog/2013/04/infinite-queue/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/04/infinite-queue/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2013/04/infinite-queue/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p><img class="right" src="/images/posts/2013-04-30-infinite-queue/infinite_queue.png" />
+An infinite queue is a column on the Kanban board somewhere between the <em>Queue</em> and <em>Live</em> columns, one that doesn’t have a WIP limit and into which one can put many work items as one wants. A column without a WIP limit sounds like a bad practice, because if there is no WIP limit what will ensure that the work items are moving - being pulled - forward? Nothing really, so having infinite queues may not be a good idea after all. However, there are situations when we need them, <strong>because they have an important purpose: they connect <a href="/blog/tag/flow/">flows</a></strong>. It was said before that an infinite queue cuts the flow into two pieces, but I argue that it connects the two pieces rather than cuts them.</p>
+
+<!-- more -->
+
+<p>Wait a minute. Until now in the previous <a href="/blog/tag/kanban/">kanban related posts</a>, I have been talking about the flow (singular), and now I’m talking about flows (plural). What has changed? Nothing has changed, but until now, I’ve been talking about <a href="/blog/tag/flow/">the flow on the meta level</a> - it was easier, don’t hold it against me -, however that meta flow may consist of other sub-flows. It is not ideal, but this is how it is in the real world. <strong>One goal of the Kanban method is to find these sub-flows, merge them, and then <a href="/blog/2011/05/kanban-on-organisational-level/">optimize the whole</a> by using incremental and evolutionary change.</strong></p>
+
+<p>It is easy to find the contact point of two flows. <strong>The first contact point is where the work items are handed over.</strong> Do you remember the times when the developers had to hand over the features to the test team so that they could do the testing? Of course you do. In this case we were talking about the development flow and the test flow. We don’t talk about handovers between developers and testers any more, but this doesn’t mean that we don’t have this phenomenon: we still hand over work between departments within an organisation. The problem is that the work items tend to disappear during these handovers. Actually, they don’t disappear, they end up in a <strong><a href="/blog/2012/10/hidden-inventory/">hidden inventory</a>, which is actually an invisible infinite queue</strong>. In this case, the first step is to make that queue (inventory) visible.</p>
+
+<p><strong>The second contact point is where the expectations are changing.</strong> For example, most of the teams I know are expected to deliver features continuously, but the customers or release managers expect the deliveries to happen on demand or periodically. In this case we are talking about the development flow and deployment flow. This setup is common in the software domain, for example one can observe the same phenomenon between design and development. In both cases the queue is visible, which is good, but the problem of how the work items are getting out it is still unsolved.</p>
+
+<p><img class="right" src="/images/posts/2013-04-30-infinite-queue/changing_wip.png" />
+The ultimate and best solution is to introduce the WIP limit, because it makes sure that the work items are moving forward (it is not that simple, but good enough for now). However, it is a large step (<a href="/blog/tag/kaikaku/">kaikaku</a>) and we believe in small continuous - evolutionary - steps (<a href="/blog/tag/kaizen/">kaizen</a>). One can ask <em>“why is the WIP limit a large step in the context of infinite queues?”</em> Before answering the question, let me share a story with you. Quite recently, we had a WIP limit of 2 on our deploy column, but our process didn’t allow us to deploy continuously, so we had to wait until it was allowed. Because of the WIP limit the work stopped after several days, which we couldn’t afford, so we increased the WIP limit. We could increase the WIP limit every day until the date of the deploy, so having it became pointless, and eventually we removed it from the column completely. Our deploy column became a visible infinite queue. The mistake we made was that we applied a WIP limit on a flow that we didn’t fully understand and wasn’t under our control. The conclusion here is that <strong>one cannot control (set a WIP limit on) something that one doesn’t understand and has no control over</strong>. Answering the question above: understanding and controlling the flow is clearly not a small step, therefore we cannot use it in this context.</p>
+
+<p>We know so far that an infinite queue doesn’t have a WIP limit, so it is not clear what is actually going to happen to the work items in there and how they are getting out. If the flows have different owners, the absence of the WIP limit is not a big problem: the work must come from somewhere so the people working with the next flow pull from it. The work flows, but there is some <a href="/blog/2012/11/variety-absorbs-variety/">uncertainty</a> concerning relevance, importance and effectiveness. On the other hand, when the two flows have the same owner, the work can actually stop. It is a counter-intuitive statement, but think about it. Developers love to develop code, and they feed the work items into the limitless infinite queue of deployment, but they don’t bother emptying it, so the work items are staying in a “ready to deploy” state until somebody tells them to do the deployment and empty the queue.</p>
+
+<p><img class="right" src="/images/posts/2013-04-30-infinite-queue/date_as_wip.png" />
+If the WIP limit isn’t the best choice to get work items out of the infinite queue, what is? For example, we can use the 4th practice of the Kanban method: <strong>make process policies explicit</strong>. If you think about it, it can solve both situations from above. <strong>It is more <a href="/blog/2012/09/effective-vs-efficient/">effective</a> to set a policy than a hard limit.</strong> Let’s say that the policy states that the queue must be inspected once a month or emptied every two weeks. Sure, these policies are less strict, but in contrast to the WIP limit, they are achievable, and more importantly, they can be improved step by step. Don’t forget that we are in the context of infinite queues - at the connection point of two different flows -, and we have to understand this context step by step (kaizen over kaikaku). So, for example, now we empty the deploy column every two weeks, and when we know more about the process, we’ll improve it, and we’ll use a one week policy.</p>
+
+<p>This is exactly what we did with our deploy column if you still remember the example from above. We have a date instead of the WIP limit and we empty the column (the infinite queue) on the specified day (see the image above). We agreed that next time we’d have a closer date and when we have full understanding and control over the two flows (development and deployment) we’d re-introduce the WIP limit, and that time it would work properly. As you can see the infinite queue is actually helping us understand our process and get control over our flow. And that feels good.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/05/kanban-on-organisational-level/">Kanban on Organisational Level</a></li><li><a href="/blog/2012/10/hidden-inventory/">The Hidden Inventory</a></li><li><a href="/blog/2012/04/see-the-whole-flow-exercise/">See the Whole Flow - An Exercise for Managers to Start a Transition</a></li><li><a href="/blog/2012/05/local-optimization/">When Local Optimization Won't Make a Difference</a></li><li><a href="/blog/2012/11/variety-absorbs-variety/">Only Variety Can Absorb Variety</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/infinite-queue" title="infinite queue">infinite&nbsp;queue</a></li><li><a href="/blog/tag/inventory" title="inventory">inventory</a></li><li><a href="/blog/tag/kaizen" title="kaizen">kaizen</a></li><li><a href="/blog/tag/kaikaku" title="kaikaku">kaikaku</a></li><li><a href="/blog/tag/flow" title="flow">flow</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2013/04/infinite-queue/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/04/infinite-queue/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2013/04/infinite-queue/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2013/04/infinite-queue/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2013/04/speakers-corner/" class="basic-alignment left" title="Improve Your Way of Working With a Speakers' Corner">&laquo; Improve Your Way of Working With a Speakers' Corner</a>
+            
+            
+              <a href="/blog/2013/05/context-and-perspective/" class="basic-alignment right" title="Context and Perspective are Everything">Context and Perspective are Everything &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

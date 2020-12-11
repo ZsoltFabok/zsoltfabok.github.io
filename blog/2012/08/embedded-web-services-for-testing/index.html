@@ -1,0 +1,422 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Embedded Web Services For Testing Web Applications from JUnit &#8211; Zsolt Fabók</title>
+<meta name="description" content="Quite recently, I was working on a Java based web application. Everything went very well until I tried to test it. I was looking for a way to run my selenium based test cases with one click, because the manual deployment to tomcat was starting to be annoying.<br/><br/>more...">
+<meta name="keywords" content="bdd, development, test, java, junit, jetty, tomcat, selenium, eclipse">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Embedded Web Services For Testing Web Applications from JUnit">
+<meta name="twitter:description" content="Quite recently, I was working on a Java based web application. Everything went very well until I tried to test it. I was looking for a way to run my selenium based test cases with one click, because the manual deployment to tomcat was starting to be annoying.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Embedded Web Services For Testing Web Applications from JUnit">
+<meta property="og:description" content="Quite recently, I was working on a Java based web application. Everything went very well until I tried to test it. I was looking for a way to run my selenium based test cases with one click, because the manual deployment to tomcat was starting to be annoying.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/08/embedded-web-services-for-testing/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/08/embedded-web-services-for-testing/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Embedded Web Services For Testing Web Applications from JUnit</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-08-13T00:00:00+02:00"><i class="fa fa-calendar-o"></i> August 13, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=bdd,development,test,java,junit,jetty,tomcat,selenium,eclipse&amp;text=Embedded%20Web%20Services%20For%20Testing%20Web%20Applications%20from%20JUnit&amp;url=/blog/2012/08/embedded-web-services-for-testing/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/08/embedded-web-services-for-testing/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/08/embedded-web-services-for-testing/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>Quite recently, I was working on a Java based web application. Everything went very well until I tried to test it. I was looking for a way to run my <a href="http://seleniumhq.org/">selenium</a> based test cases with one click, because the manual deployment to <a href="http://tomcat.apache.org">tomcat</a> was starting to be annoying. I didn’t manage to find any out of the box solutions so I had to do some extra work which I’ll present using a terribly simple example: one tiny JSP file:</p>
+
+<!-- more -->
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>App<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>App<span class="nt">&lt;/span&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<p>And the desired test case - <code>IntegrationTest.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IntegrationTest</span> <span class="o">{</span>
+  <span class="nd">@BeforeClass</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">tomcat</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="n">tomcat</span><span class="o">.</span><span class="na">deploy</span><span class="o">(</span><span class="s">&quot;spike&quot;</span><span class="o">);</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">HtmlUnitDriver</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">browser</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">tomcat</span><span class="o">.</span><span class="na">getApplicationUrl</span><span class="o">(</span><span class="s">&quot;spike&quot;</span><span class="o">));</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;App&quot;</span><span class="o">,</span> <span class="n">browser</span><span class="o">.</span><span class="na">findElement</span><span class="o">(</span><span class="n">By</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)).</span><span class="na">getText</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@AfterClass</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tearDown</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">browser</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="n">tomcat</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>It’s not necessary to start, stop and deploy the application for each test execution, so I’m doing it only once for the whole suite, hence the <code>@BeforeClass</code> and <code>@AfterClass</code> annotations.</p>
+
+<h3 id="embedded-tomcat">Embedded Tomcat</h3>
+<p>It took me some time until I figured out how to use tomcat in an embedded way. In the <a href="https://github.com/ZsoltFabok/blog.embedded.webservice/commit/953b2a04ec61730838750301a0192436409e0657">first version</a>, I tried to create a war file and deploy it to the base directory of tomcat, but that solution didn’t work, because tomcat has a <a href="http://frank.zinepal.com/embedded-tomcat-class-loading-trickery">very complicated way of handling war files</a> and it was unable to load the jar files from the <code>WEB-INF/lib</code> folder. So that was a dead end, but the following version works just fine, although it is still not the best solution - <code>EmbeddedTomcat.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EmbeddedTomcat</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">Tomcat</span> <span class="n">tomcat</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Tomcat</span><span class="o">();</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// If I don&#39;t want to copy files around then the base directory must be &#39;.&#39;</span>
+      <span class="n">String</span> <span class="n">baseDir</span> <span class="o">=</span> <span class="s">&quot;.&quot;</span><span class="o">;</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">8090</span><span class="o">);</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">setBaseDir</span><span class="o">(</span><span class="n">baseDir</span><span class="o">);</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">getHost</span><span class="o">().</span><span class="na">setAppBase</span><span class="o">(</span><span class="n">baseDir</span><span class="o">);</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">getHost</span><span class="o">().</span><span class="na">setDeployOnStartup</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">getHost</span><span class="o">().</span><span class="na">setAutoDeploy</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">LifecycleException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+      <span class="n">tomcat</span><span class="o">.</span><span class="na">destroy</span><span class="o">();</span>
+      <span class="c1">// Tomcat creates a work folder where the temporary files are stored</span>
+      <span class="n">FileUtils</span><span class="o">.</span><span class="na">deleteDirectory</span><span class="o">(</span><span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="s">&quot;work&quot;</span><span class="o">));</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">LifecycleException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deploy</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">tomcat</span><span class="o">.</span><span class="na">addWebapp</span><span class="o">(</span><span class="n">tomcat</span><span class="o">.</span><span class="na">getHost</span><span class="o">(),</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">appName</span><span class="o">,</span> <span class="s">&quot;src/main/webapp&quot;</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getApplicationUrl</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;http://%s:%d/%s&quot;</span><span class="o">,</span> <span class="n">tomcat</span><span class="o">.</span><span class="na">getHost</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span>
+        <span class="n">tomcat</span><span class="o">.</span><span class="na">getConnector</span><span class="o">().</span><span class="na">getLocalPort</span><span class="o">(),</span> <span class="n">appName</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>As you can see, the current working directory can serve as a base directory, however tomcat creates a temporary folder for the compiled JSP files - <code>work</code> - which has to be removed after testing in order to keep the project clean. The <code>src/main/webapp</code> folder is also hardcoded into the test case, but it is very unlikely that I’ll move the source files around in the near future, so it is fine for the moment.</p>
+
+<p>Let’s talk about versions a little bit. <a href="http://tomcat.apache.org/download-70.cgi">Tomcat 7</a> comes with an <a href="http://www.nic.funet.fi/pub/mirrors/apache.org/tomcat/tomcat-7/v7.0.28/bin/embed/">embedded version</a> which is great. However, the latest version of tomcat - which was 7.0.29 at the time of writing this article -, didn’t work for me. I got a <code>java.lang.OutOfMemoryError: Java heap space</code> error, which I found very strange, because there was no way that running a web service for that tiny little JSP file required that much memory. I could have increased the available memory for eclipse, but that could only have been a short term solution, so I kept digging. It turned out that in 7.0.29 the way the <a href="http://www.mail-archive.com/users@tomcat.apache.org/msg100555.html">ServletContainerInitilizers are scanning for the @HandleTypes annotations has changed</a>, because they cache the result and when you have several classes on your classpath like in this case, you can easily run out of memory. <a href="https://issues.apache.org/bugzilla/show_bug.cgi?id=53535">The problem</a> has already been fixed and will be delivered in 7.0.30 but until then I’m using version 7.0.28.</p>
+
+<h3 id="embedded-jetty">Embedded Jetty</h3>
+<p>I remembered that <a href="http://jetty.codehouse.org">jetty</a> has been offering an embedded solution for a while now, and the code isn’t that complicated - <code>EmbeddedJetty.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EmbeddedJetty</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">Server</span> <span class="n">jetty</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">jetty</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Server</span><span class="o">(</span><span class="mi">8090</span><span class="o">);</span>
+      <span class="n">WebAppContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">WebAppContext</span><span class="o">();</span>
+      <span class="n">context</span><span class="o">.</span><span class="na">setContextPath</span><span class="o">(</span><span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">appName</span><span class="o">);</span>
+      <span class="n">context</span><span class="o">.</span><span class="na">setWar</span><span class="o">(</span><span class="s">&quot;src/main/webapp&quot;</span><span class="o">);</span>
+      <span class="n">context</span><span class="o">.</span><span class="na">setServer</span><span class="o">(</span><span class="n">jetty</span><span class="o">);</span>
+      <span class="n">jetty</span><span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+      <span class="n">jetty</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+      <span class="n">jetty</span><span class="o">.</span><span class="na">setStopAtShutdown</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+     <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">jetty</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getApplicationUrl</span><span class="o">(</span><span class="n">String</span> <span class="n">appName</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;http://%s:%d/%s&quot;</span><span class="o">,</span>
+            <span class="n">jetty</span><span class="o">.</span><span class="na">getConnectors</span><span class="o">()[</span><span class="mi">0</span><span class="o">].</span><span class="na">getHost</span><span class="o">(),</span>
+            <span class="n">jetty</span><span class="o">.</span><span class="na">getConnectors</span><span class="o">()[</span><span class="mi">0</span><span class="o">].</span><span class="na">getPort</span><span class="o">(),</span> <span class="n">appName</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>This code compiled very nicely, but didn’t run. It turned out that the whole content of the <code>jsp-2.1</code> folder had to be on the classpath in order to make it work. After that it worked like a charm. It was a bit slower than the tomcat version (~0.5s) but the difference wasn’t significant.</p>
+
+<p>Although I had lots of trouble with tomcat and I wasted a lot of time with it, I’ll use it instead of jetty. Our production runs on tomcat and it is better to have the same environment in testing and production.</p>
+
+<p>The implementation along with some examples are available on <a href="https://github.com/ZsoltFabok/blog.embedded.webservice">github</a>. There is a <code>launch.cfg</code> folder for the example test cases: <code>IntegrationTestWithTomcat.launch</code> and <code>IntegrationTestWithJetty.launch</code>. The jetty version didn’t work when the <code>tomcat-embed-jasper.jar</code> was on its classpath so I had to have separate runtime classpaths for the two tests. If you want to run the test cases in eclipse, just go to the proper <em>.launch</em> file, right click and run as <em>JUnit Test</em>. Happy testing!</p>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/test" title="test">test</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/junit" title="junit">junit</a></li><li><a href="/blog/tag/jetty" title="jetty">jetty</a></li><li><a href="/blog/tag/tomcat" title="tomcat">tomcat</a></li><li><a href="/blog/tag/selenium" title="selenium">selenium</a></li><li><a href="/blog/tag/eclipse" title="eclipse">eclipse</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/08/embedded-web-services-for-testing/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/08/embedded-web-services-for-testing/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/08/embedded-web-services-for-testing/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/08/embedded-web-services-for-testing/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/08/stand-up-idea-read-up/" class="basic-alignment left" title="A Stand-up Improvement Idea: Read up the Tasks">&laquo; A Stand-up Improvement Idea: Read up the Tasks</a>
+            
+            
+              <a href="/blog/2012/08/the-prioritization-experiment/" class="basic-alignment right" title="The Prioritisation Experiment">The Prioritisation Experiment &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

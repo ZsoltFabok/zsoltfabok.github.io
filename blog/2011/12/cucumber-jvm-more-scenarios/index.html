@@ -1,0 +1,466 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Cucumber JVM: More Scenarios &#8211; Zsolt Fabók</title>
+<meta name="description" content="In my previous post I started to play around with cucumber-jvm to see how it could be used for Java development. Last time I finished with one scenario and now I'm going to move forward with my simple text munger implementation and see how to use cucumber-jvm with multiple scenarios.<br/><br/>more...">
+<meta name="keywords" content="bdd, development, java, cucumber, bdd, eclipse, cucumber-jvm">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Cucumber JVM: More Scenarios">
+<meta name="twitter:description" content="In my previous post I started to play around with cucumber-jvm to see how it could be used for Java development. Last time I finished with one scenario and now I'm going to move forward with my simple text munger implementation and see how to use cucumber-jvm with multiple scenarios.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cucumber JVM: More Scenarios">
+<meta property="og:description" content="In my previous post I started to play around with cucumber-jvm to see how it could be used for Java development. Last time I finished with one scenario and now I'm going to move forward with my simple text munger implementation and see how to use cucumber-jvm with multiple scenarios.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/12/cucumber-jvm-more-scenarios/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/12/cucumber-jvm-more-scenarios/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Cucumber JVM: More Scenarios</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-12-18T22:56:14-07:00"><i class="fa fa-calendar-o"></i> December 18, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=bdd,development,java,cucumber,bdd,eclipse,cucumber-jvm&amp;text=Cucumber%20JVM:%20More%20Scenarios&amp;url=/blog/2011/12/cucumber-jvm-more-scenarios/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/12/cucumber-jvm-more-scenarios/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/12/cucumber-jvm-more-scenarios/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>In my <a href="/blog/2011/12/cucumber-jvm-preparation/" title="Cucumber JVM: Preparation">previous post</a> I started to play around with <a href="https://github.com/cucumber/cucumber-jvm">cucumber-jvm</a> to see how it could be used for Java development. Last time I finished with one scenario and now I’m going to move forward with my simple text munger implementation and see how to use <em>cucumber-jvm</em> with multiple scenarios.</p>
+
+<p>Before doing anything, I installed <a href="http://infinitest.github.com/">infinitest</a> so that I didn’t have run the test cases manually. This really sped up the development. I recommend you to do the same.</p>
+
+<p>I filled out my steps, did a bit of implementation and now this is how the steps look like:</p>
+
+<p><img class="center" src="/images/posts/2011-12-18-cucumber-jvm-more-scenarios/zero.png" width="500" height="298" title="Filled out step definitions" /></p>
+
+<h3 id="quick-detour---playing-around-with-step-definitions">Quick Detour - Playing Around With Step Definitions</h3>
+
+<p>The <em>ruby</em> version of <em>cucumber</em> is quite flexible. For example, <code>Given</code>, <code>When</code> and <code>Then</code> are not bound to the step definitions, so the following works - <code>simple_text_munger.feature</code>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> simple text munger kata</span>
+
+<span class="k">Scenario:</span><span class="nf"> Do nothing with a two-letter word</span>
+<span class="k">   Then </span><span class="nf">I have an instance of my class</span>
+<span class="nf">  </span><span class="k">Given </span><span class="nf">I call my method with &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I receive &quot;</span><span class="s">an</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>The good news is that it also works with <em>cucumber-jvm</em>, and there is more! Sometimes you have to give multiple steps with the same <code>Given</code>, <code>When</code> and <code>Then</code> prefix. In this case you can use the <code>And</code> prefix. So instead of multiple <code>Thens</code> in <code>simple_text_munger.feature</code>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> simple text munger kata</span>
+
+<span class="k">Scenario:</span><span class="nf"> Do nothing with a two-letter word</span>
+<span class="k">   Then </span><span class="nf">I have an instance of my class</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I call my method with &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">an</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>Use one <code>Then</code> with several <code>Ands</code>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> simple text munger kata</span>
+
+<span class="k">Scenario:</span><span class="nf"> Do nothing with a two-letter word</span>
+<span class="k">   Then </span><span class="nf">I have an instance of my class</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">I call my method with &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+<span class="nf">    </span><span class="k">And </span><span class="nf">I receive &quot;</span><span class="s">an</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>These formats are ugly and I don’t recommend using them, but the goal of my posts is to show the capabilities of <em>cucumber-jvm</em>, and so far it has all the features the ruby version has.
+<!--more--></p>
+
+<h3 id="the-next-scenarios">The Next Scenarios</h3>
+
+<p>It’s time to return to the subject at hand and move forward with my implementation. My modified <a href="http://rubyquiz.com/quiz76.html">text munger kata</a> says that* the first and the last letter of a word should be kept and the letters in between need to be reversed.* I have one scenario so far, where I check how my implementation behaves with a two-letter word. So let’s have two more scenarios in the <code>simple_text_munger.feature</code>:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> simple text munger kata</span>
+
+<span class="k">Scenario:</span><span class="nf"> Do nothing with a one-letter word</span>
+<span class="k">  Given </span><span class="nf">I have an instance of my class</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I call my method with &quot;</span><span class="s">a</span><span class="nf">&quot;</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">a</span><span class="nf">&quot;</span>
+
+<span class="k">Scenario:</span><span class="nf"> Do nothing with a two-letter word</span>
+<span class="k">  Given </span><span class="nf">I have an instance of my class</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I call my method with &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+
+<span class="k">Scenario:</span><span class="nf"> Do nothing with a three-letter word</span>
+<span class="k">  Given </span><span class="nf">I have an instance of my class</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I call my method with &quot;</span><span class="s">and</span><span class="nf">&quot;</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">and</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>Nothing else needs to be changed, because I’m still all green:</p>
+
+<p><img class="center" src="/images/posts/2011-12-18-cucumber-jvm-more-scenarios/first1.png" width="500" height="369" title="New scenarios" /></p>
+
+<h3 id="refactoring-the-feature-file">Refactoring the Feature File</h3>
+
+<p>If you check the scenarios above, they are almost the same, only the in and out parameters differ. This is not <a href="http://programmer.97things.oreilly.com/wiki/index.php/Don't_Repeat_Yourself">DRY</a>, so let’s refactor a little bit. After moving the first step into <code>Background</code> - which is executed before each scenario -, our <code>.feature</code> file - <code>simple_text_munger.feature</code> - looks like this:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> simple text munger kata</span>
+
+<span class="nf">  </span><span class="k">Background:</span><span class="nf"></span>
+<span class="k">    Given </span><span class="nf">I have an instance of my class</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Do nothing with a one-letter word</span>
+<span class="k">     When </span><span class="nf">I call my method with &quot;</span><span class="s">a</span><span class="nf">&quot;</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">a</span><span class="nf">&quot;</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Do nothing with a two-letter word</span>
+<span class="k">     When </span><span class="nf">I call my method with &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">an</span><span class="nf">&quot;</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> Do nothing with a three-letter word</span>
+<span class="k">     When </span><span class="nf">I call my method with &quot;</span><span class="s">and</span><span class="nf">&quot;</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">and</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>Looks a bit better, but I’m still not one hundred percent satisfied: the scenarios are the same except the parameters they have. The ruby version of cucumber has a very powerful feature called <strong>Scenario Outline</strong>. This is how I would refactor the scenarios above using this feature:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> simple text munger kata</span>
+
+<span class="nf">  </span><span class="k">Background:</span><span class="nf"></span>
+<span class="k">    Given </span><span class="nf">I have an instance of my class</span>
+
+<span class="nf">  </span><span class="k">Scenario Outline:</span><span class="nf"> Do nothing with words shorter than 4 letters</span>
+<span class="k">    When </span><span class="nf">I call my method with </span><span class="nv">&lt;input&gt;</span><span class="nf"></span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I receive </span><span class="nv">&lt;output&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> input</span><span class="k"> |</span><span class="nv"> output</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;a&quot;</span><span class="k">   |</span><span class="s"> &quot;a&quot;</span><span class="k">    |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;an&quot;</span><span class="k">  |</span><span class="s"> &quot;an&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;and&quot;</span><span class="k"> |</span><span class="s"> &quot;and&quot;</span><span class="k">  |</span></code></pre></div>
+
+<p>And this works just as well with <em>cucumber-jvm</em>:</p>
+
+<p><img class="center" src="/images/posts/2011-12-18-cucumber-jvm-more-scenarios/second1.png" width="500" height="370" title="It still works" /></p>
+
+<p>The table structure from above is also commonly used like this:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Scenario:</span><span class="nf"> do something interesting</span>
+<span class="k">    Given </span><span class="nf">the following users</span>
+<span class="k">      |</span><span class="s"> first_name</span><span class="k"> |</span><span class="s"> last_name</span><span class="k"> |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> John</span><span class="k">       |</span><span class="s"> Doe</span><span class="k">       |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> Jane</span><span class="k">       |</span><span class="s"> Doe</span><span class="k">       |</span></code></pre></div>
+
+<p>And the matching step implementation in Java:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">zsoltfabok</span><span class="o">.</span><span class="na">blog</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">cucumber.annotation.en.Given</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeOtherStepsdef</span> <span class="o">{</span>
+
+    <span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^the following users$&quot;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">the_following_users</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">entry</span><span class="o">&gt;</span> <span class="n">entries</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// iterate through the list and do something</span>
+    <span class="o">}</span>
+
+    <span class="kd">class</span> <span class="nc">Entry</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">first_name</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">last_name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Fortunately, it works just as well with <em>cucumber-jvm</em>. I don’t see a chance to use it with the current example, but I wanted to try it out anyway and see whether it works.</p>
+
+<h3 id="finishing-the-word-processing">Finishing the Word Processing</h3>
+
+<p>The last scenario is when a word has 4 or more letters:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Scenario Outline:</span><span class="nf"> It should munger a word properly</span>
+<span class="k">    When </span><span class="nf">I call my method with </span><span class="nv">&lt;input&gt;</span><span class="nf"></span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I receive </span><span class="nv">&lt;output&gt;</span><span class="nf"></span>
+
+<span class="nf">    </span><span class="k">Examples:</span>
+<span class="k">      |</span><span class="nv"> input</span><span class="k">   |</span><span class="nv"> output</span><span class="k">  |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;a&quot;</span><span class="k">     |</span><span class="s"> &quot;a&quot;</span><span class="k">     |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;an&quot;</span><span class="k">    |</span><span class="s"> &quot;an&quot;</span><span class="k">    |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;and&quot;</span><span class="k">   |</span><span class="s"> &quot;and&quot;</span><span class="k">   |</span><span class="nf"></span>
+<span class="k">      |</span><span class="s"> &quot;spice&quot;</span><span class="k"> |</span><span class="s"> &quot;scipe&quot;</span><span class="k"> |</span></code></pre></div>
+
+<p>I got a red bar:</p>
+
+<p><img class="center" src="/images/posts/2011-12-18-cucumber-jvm-more-scenarios/before_third.png" width="500" height="330" title="Red bar" /></p>
+
+<p>With the following Java code I get all green:</p>
+
+<p><img class="center" src="/images/posts/2011-12-18-cucumber-jvm-more-scenarios/third.png" width="500" height="351" title="All four scenarios are passing" /></p>
+
+<p>At this point my implementation works with a single word, but the exercise requires a sentence as an input. Let’s add a new scenario to the <code>.feature</code> file:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Scenario:</span><span class="nf"> It should process a sentence</span>
+<span class="k">    When </span><span class="nf">I call my method with &quot;</span><span class="s">And the spice must flow</span><span class="nf">&quot;</span>
+<span class="nf">    </span><span class="k">Then </span><span class="nf">I receive &quot;</span><span class="s">And the scipe msut folw</span><span class="nf">&quot;</span></code></pre></div>
+
+<p>I really like what I’ve seen so far, everything I’m using with cucumber for ruby works with <em>cucumber-jvm </em>too, but a wise man told me once that I should go home with a red test case, because it will show me where I finished my work yesterday. You can find the source for this post under the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post/tree/episode_2">episode_2</a> branch of the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post">repository</a> on github. Now, I have a red test case which I’m going to fix it in the <a href="/blog/2012/01/cucumber-jvm-di/" title="Cucumber-JVM: Dependency Injection">next post</a>, where besides the fix I’m going to show how <em>cucumber-jvm</em> works with <a href="http://martinfowler.com/articles/injection.html">dependency injection frameworks</a>. Stay tuned!</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/12/cucumber-jvm-preparation/">Cucumber JVM: Preparation</a></li><li><a href="/blog/2012/01/cucumber-jvm-di/">Cucumber JVM: Dependency Injection</a></li><li><a href="/blog/2012/03/cucumber-jvm-mocking/">Cucumber JVM: Mocking</a></li><li><a href="/blog/2012/09/cucumber-jvm-web-with-spring-mvc/">Cucumber JVM: Web Application with Spring MVC</a></li><li><a href="/blog/2012/09/cucumber-jvm-hooks/">Cucumber JVM: Hooks</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/eclipse" title="eclipse">eclipse</a></li><li><a href="/blog/tag/cucumber-jvm" title="cucumber-jvm">cucumber-jvm</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/12/cucumber-jvm-more-scenarios/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/12/cucumber-jvm-more-scenarios/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/12/cucumber-jvm-more-scenarios/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/12/cucumber-jvm-more-scenarios/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/12/bdd-demonstration/" class="basic-alignment left" title="A Step by Step BDD Demonstration with Some Useful Insights">&laquo; A Step by Step BDD Demonstration with Some Useful Insights</a>
+            
+            
+              <a href="/blog/2012/01/public-speaking/" class="basic-alignment right" title="Public Speaking at SPS 2012 and ACCU 2012">Public Speaking at SPS 2012 and ACCU 2012 &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

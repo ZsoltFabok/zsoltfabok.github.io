@@ -1,0 +1,328 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Never Move Items Back on a Kanban Board &#8211; Zsolt Fabók</title>
+<meta name="description" content="I've been doing Kanban for a while now, and I get the following question almost on a daily basis.<br/><br/>more...">
+<meta name="keywords" content="kanban, visualize workflow, stand-up, hamster effect, parking lot">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Never Move Items Back on a Kanban Board">
+<meta name="twitter:description" content="I've been doing Kanban for a while now, and I get the following question almost on a daily basis.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Never Move Items Back on a Kanban Board">
+<meta property="og:description" content="I've been doing Kanban for a while now, and I get the following question almost on a daily basis.<br/><br/>more...">
+<meta property="og:url" content="/blog/2010/09/never-move-items-back/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2010/09/never-move-items-back/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Never Move Items Back on a Kanban Board</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2010-09-30T14:30:19-06:00"><i class="fa fa-calendar-o"></i> September 30, 2010</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,visualizeworkflow,stand-up,hamstereffect,parkinglot&amp;text=Never%20Move%20Items%20Back%20on%20a%20Kanban%20Board&amp;url=/blog/2010/09/never-move-items-back/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/09/never-move-items-back/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2010/09/never-move-items-back/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I’ve been doing Kanban for a while now, and I get the following question almost on a daily basis: <em>Zsolt, can I move this item back on the board?</em> My answer always starts with “<em>No”,</em> and continues with “<em>why would you like to do that?”</em> In this post, I’m going to describe a couple of cases you may find familiar. A common rule applies in every case: never move an item back, but examine why a particular item is selected, and how to avoid such situations in the future.</p>
+
+<p>In most common cases, the question is asked when a column on the Kanban board is full, and a colleague intends to put a new item in the column, but due to the WIP limit, he can not. After realizing that the column is full, he looks through the current content and finds some items he would like to move back. He finds <strong>abandoned items</strong> in which the team invested only a small amount of work, and are now just there and taking up valuable space from other items. In the <a href="/blog/2010/09/ageing-items-on-the-board/">ageing</a><a href="/blog/2010/09/ageing-items-on-the-board/"> items post</a>, I talked about items which were left on the whiteboard for similar reasons.</p>
+
+<p>Let’s have two different teams. The first team has a 8-10 days long <a href="/blog/2013/07/lead-time">lead time</a>, but their priorities are changing almost on a daily basis, and the second team has a 2-3 days long lead time, and a quite stable priority list. In the case of the first team, the appearance of the <em>abandoned items</em> will be more frequent due to priority changes and resource reallocation. I would recommend them to find a way to shorten the lead time. If an item can leave the system before the priority changes again, it won’t be left on the board. In comparison, this team needs to solve the situation faster than the second team, because the <em>abandoned item</em> was once important for someone, who won’t be happy to get his item quite late or in the worst case, never. However, when it turns out that the item has become obsolete, just throw it away, do not waste effort on finishing it.</p>
+
+<!--more-->
+<p>The situation of the second team is a bit more interesting for me. How can it happen that with such a short lead time and in such a stable situation, an item is left on the board? It is quite certain that the team uses some parts of the column as a parking lot, where they can store items which nobody intends to work on. In this case, I would recommend the second team to make the WIP limit smaller for the column, where the items usually remain for a longer time. Usually documentation or long, no-brainer tasks end up here.</p>
+
+<p>In both cases, the team shall find these items and solve them - except if an item is found to be obsolete. Handle them as technical debt, which needs to be handled as fast as possible. Also, check the way the team does the prioritization: something can be wrong.</p>
+
+<p>My favourite case is when colleagues act like hamsters. I call it the <strong>hamster effect</strong> (there is no connection to Terry Gilliam’s directorial style). It happens usually during the <a href="/blog/2010/12/daily-stand-up-variations/">daily gathering</a> (daily scrum or stand-up meeting), when they take an item (or a task in scrum) and put it in the next phase, saying: “<em>after I’m finished with my current task, I’m going to continue with this one</em>”. Like a <em>hamster</em> which hoards food in its cheek pouches. Of course, they’ll realize that they won’t be finished as fast as they expected, and they’ll want to put the item back. It is much easier to anticipate this scenario than to handle it afterwards. Since this act happens almost always during the meeting, ask the hamster when he can start working on the item. If the answer contains the word “<em>after</em>”, do not let him take the item. This may result in a conflict, but it will pay off in the future. If the item remains where it is, anybody can start working it, can’t they?</p>
+
+<p>If the hoarding has already happened, it is still possible to save the situation without moving the item back. For example, someone else can start working on the item after having a small discussion with the <em>hamster</em>. With this approach, the <em>hamster</em> won’t feel that his precious item is taken away, because he can join later. Asking the <em>hamster</em> to interrupt his current work and start working on this item may sound like a possibility as well, but I don’t recommend it. It is an unnecessary punishment for him and for the team, because due to the context switch, nothing will be finished.</p>
+
+<p><em>(I still find it fascinating why this happens only during the daily gatherings</em> :-))</p>
+
+<p>The next case is when an <strong>item is blocked</strong> by an external impediment. It is tempting to move back the item in this case, but instead, have a parking lot below the column for these items. With this approach, the team will have a clear overview of the impediments and will know where they were stopped. When the impediments are resolved, the items can be put back to their proper column.</p>
+
+<p><img class="center" src="/images/posts/2010-09-30-never-move-items-back/board1.png" width="300" height="262" title="board with parking lots" /></p>
+
+<p>The board above has two items blocked by external impediments: items ‘<em>C</em>’ and ‘<em>D</em>’. After the impediments are resolved, they can go back to their columns even if their WIP limit hurts.</p>
+
+<p>Last but not least, sometimes it turns out that there are <strong>problems with the item</strong>, like bugs, missing feature implementation, architectural issues. This usually happens with items staying in columns <em>Test</em> or <em>Check.</em> The first response is to move the item back to <em>Implementation</em>, fix the problem and do the testing again. This is not a flow, this is a loop. By definition, an item describes a single purpose. If the item were moved back in this case, it would be the enlargement of the item with the fixing. Keep these items separate.</p>
+
+<p>I usually recommend to mark the item as stopped where it is at the moment, leave it there, and start a new highly prioritized item with the single purpose of fixing the problem - somehow it is a guarantee issue for me. The stopped item will block the flow, which will force the team to take the problem seriously. In the worst case, nothing can leave until this issue is fixed. This makes the team very focused. When the fix item leaves the board - it will outrun the problematic item -, the team can go back to the problematic item and continue to work on it. For example, continue the test. It is better to do it like this instead of moving the item back, because nothing guarantees that there won’t be even more problems with it.</p>
+
+<p>Additionally, “<em>fix problem items”</em> can provide nice statistics on how many problems the team has and how much time (lead time) they need to fix these problems. If these numbers reach the threshold of the team, it is worth to have a <em>Fix</em> column after <em>Test</em>. Do not forget to have another <em>Test</em> after the <em>Fix</em>, just to be sure that the problem is solved. If there are several problems with implemented items, the team definitely has quality issues, which need to be solved immediately. Based on my experience this is the most common case.</p>
+
+<p>These are the cases I met so far. If you’ve seen one which is not listed here, do not hesitate to share.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2010/11/the-internal-queue-column/">Internal Queue Columns</a></li><li><a href="/blog/2011/07/third-meetup/">Third Meetup - Open Space</a></li><li><a href="/blog/2011/09/our-detectives-blackboard/">Our Detective's Blackboard</a></li><li><a href="/blog/2010/06/more-kanban-numbers/">More Kanban Numbers</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/visualize-workflow" title="visualize workflow">visualize&nbsp;workflow</a></li><li><a href="/blog/tag/stand-up" title="stand-up">stand-up</a></li><li><a href="/blog/tag/hamster-effect" title="hamster effect">hamster&nbsp;effect</a></li><li><a href="/blog/tag/parking-lot" title="parking lot">parking&nbsp;lot</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2010/09/never-move-items-back/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/09/never-move-items-back/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2010/09/never-move-items-back/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2010/09/never-move-items-back/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2010/09/ageing-items-on-the-board/" class="basic-alignment left" title="Ageing Items on the Board">&laquo; Ageing Items on the Board</a>
+            
+            
+              <a href="/blog/2010/10/about-job-interviews/" class="basic-alignment right" title="About Job Interviews">About Job Interviews &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

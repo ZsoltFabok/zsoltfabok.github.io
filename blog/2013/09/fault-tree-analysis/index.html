@@ -1,0 +1,336 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Fault Tree Analysis &#8211; Zsolt Fabók</title>
+<meta name="description" content="If you are looking for a great tool to conduct a root cause analysis (RCA), or find a problem during a retrospective, try out the Fault Tree Analysis (FTA). It is used to identify causes of failures, weaknesses of a system, or the probability of a certain failure happening.<br/><br/>more...">
+<meta name="keywords" content="fault tree analysis, root cause analysis, rca, fta, management, retrospective">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Fault Tree Analysis">
+<meta name="twitter:description" content="If you are looking for a great tool to conduct a root cause analysis (RCA), or find a problem during a retrospective, try out the Fault Tree Analysis (FTA). It is used to identify causes of failures, weaknesses of a system, or the probability of a certain failure happening.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fault Tree Analysis">
+<meta property="og:description" content="If you are looking for a great tool to conduct a root cause analysis (RCA), or find a problem during a retrospective, try out the Fault Tree Analysis (FTA). It is used to identify causes of failures, weaknesses of a system, or the probability of a certain failure happening.<br/><br/>more...">
+<meta property="og:url" content="/blog/2013/09/fault-tree-analysis/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2013/09/fault-tree-analysis/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Fault Tree Analysis</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2013-09-09T00:00:00+02:00"><i class="fa fa-calendar-o"></i> September 09, 2013</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=faulttreeanalysis,rootcauseanalysis,rca,fta,management,retrospective&amp;text=Fault%20Tree%20Analysis&amp;url=/blog/2013/09/fault-tree-analysis/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/09/fault-tree-analysis/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2013/09/fault-tree-analysis/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p><img class="right" src="/images/posts/2013-09-09-fault-tree-analysis/fta-thumbnail.png" />
+If you are looking for a great tool to conduct a root cause analysis (RCA), or find a problem during a retrospective, try out the <strong>Fault Tree Analysis</strong> (FTA). It is used to identify causes of failures, weaknesses of a system, or the probability of a certain failure happening. I prefer this method over 5-whys and Ishikawa (fishbone) diagram because <strong>it has no limitations regarding the depth and width of the analysis, can find multiple root causes, is repeatable, and anybody can interpret the result</strong>.</p>
+
+<p>The FTA is a deductive (top-down) technique. It starts with defining the problem (the top event), and finding those events that contribute to it. After all the child events have been found, the analysis continues with examining them individually similarly to top event in the previous iteration. This recursive technique ends when the events cannot be broken down (basic or undeveloped events) or it reaches the boundary of the system under analysis.</p>
+
+<!-- more -->
+
+<p>Building the tree isn’t the first step in the process, it is the third actually. The Fault Tree Analysis starts with <strong>defining the top event</strong>. The top event describes the problem or a possible failure we would like to avoid (that’s why we are doing the analysis in the first place). For example, “the build is broken”, “it takes 5 seconds to render the page”, “our retention rate is 5%”, or “<a href="/activities#site_checker">site_checker</a>’s first release attempt failed”.</p>
+
+<p>The next step (the second) is to put the top event into context. For a successful analysis it is crucial to <strong>understand the system</strong> and <strong>set the scope</strong> because otherwise the analysis will enter areas that are unknown to the participants, or they have no influence on it. For example, I’m examining the top event “site_checker’s first release attempt failed”, and in this case, the scope is reduced to myself, my computer and how I’m using my tools. Obviously, gemnasium, nokogiri, or travis are not part of my analysis simply because I have no influence over them.</p>
+
+<p>Now I can <strong>build up the Fault Tree Diagram (FTD)</strong>. It is a logic diagram that contains events that are connected through gates. Have a look at the simplified version of a diagram I created after a recent event:</p>
+
+<p><img class="center" src="/images/posts/2013-09-09-fault-tree-analysis/fta-example.png" /></p>
+
+<p>Without actually knowing what the different shapes mean you can make an educated guess what lead to the top event: one or more of the [basic] events at the bottom.</p>
+
+<p>To be able to interpret the Fault Tree Diagram properly here are the descriptions of the most common events and gates:</p>
+
+<p><img class="center" src="/images/posts/2013-09-09-fault-tree-analysis/fta-symbols.png" /></p>
+
+<p>Constructing the Fault Tree Diagram is not as easy as it looks. <strong>It is hard and very time consuming because we have to think backwards</strong>. Humans naturally thinks forward (e.g. “if I do this and that, then this and that will happen…”). To make it easier there are a couple of recommendations.</p>
+
+<p>First, when you write an event check if it is clear (precisely states what the event is), immediate (closest in time and space), necessary (the parent event cannot result from a grandchild event without the child event), and efficient (if the child event happens the parent event happens in every circumstance). Second, don’t start analysing a child event until all the other child events of the parent event are discovered. Third, try not to connect gates to gates (it’s very unlikely that this is justified). Fourth, work with intermediate event. If you cannot break down an event into more details, check if it is a basic event (a failure in your system), an external event (a failure in another system), or an undeveloped event (you don’t know anything about it), and switch to the appropriate one.</p>
+
+<p>Finally but not least, revise the tree when it is done. Review the events, see if the parent and child events are really connected, and check if it is possible to get to the top event from each of the bottom events (now you can think forward).</p>
+
+<p>The <strong>last step in Fault Tree Analysis is the evaluation of the tree</strong>. If you created the tree for Root Cause Analysis, then the basic events are the root causes you are looking for. In my case the root cause was that I upgraded nokogiri from version 1.5.6 to 1.6.0, when I had no reason to do so, and I forgot to install the latest version under my website and was testing with an old version.</p>
+
+<p>If you created the tree to figure out the possibility of a certain failure happening, the Fault Tree Diagram can help you with that, too. If you know the probability (0 &lt; p &lt; 1) of a [failure] event happening, you can calculate the probability of the top event as well. Under an ‘AND’ gate you have to multiply the probabilities, an under the ‘OR’ gate you have to add them up. Here is an example:</p>
+
+<p><img class="center" src="/images/posts/2013-09-09-fault-tree-analysis/fta-probability.png" /></p>
+
+<p>The diagram above shows the simplified version of my work and release process. <code>P</code> shows the probability that the failure event will happen. For example, it is very unlikely that the test coverage will decrease (<code>p = 0.01</code>), however having a failing build in travis is more likely (<code>p = 0.25</code>) because I’m supporting two ruby versions (1.8 and 1.9) and the third parties I’m using aren’t 100% compatible with both of them (finally the ruby community started to ditch ruby 1.8).</p>
+
+<p>As you can see, the probability of failure at the first release attempt is rather high, 52.57%. If I was able to come up with a better solution to check the latest version with my site before release (the event “not installed” on the diagram), the <code>p = 0.4</code> could go down to <code>p = 0.1</code>, and that would mean the probability of failure drops to 30.04% (<code>p = 0.3004</code>).</p>
+
+<p>I admit that the Fault Tree Analysis is hard and time consuming. The Fault Tree Diagram can be very large and complicated (that’s the reason why I’m sharing only the simplified versions), and different people might set up a different tree under the same top event. But I still think that it provides better results than the other techniques such as the 5-whys and fishbone, but I don’t want to repeat everything I wrote in the beginning. If you have a problem and really would like to do a deep dive into it, give the Fault Tree Analysis a try, you won’t regret it.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/08/code-review-during-retro/">Code Review During Retrospective</a></li><li><a href="/blog/2012/04/see-the-whole-flow-exercise/">See the Whole Flow - An Exercise for Managers to Start a Transition</a></li><li><a href="/blog/2013/04/speakers-corner/">Improve Your Way of Working With a Speakers' Corner</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/fault-tree-analysis" title="fault tree analysis">fault&nbsp;tree&nbsp;analysis</a></li><li><a href="/blog/tag/root-cause-analysis" title="root cause analysis">root&nbsp;cause&nbsp;analysis</a></li><li><a href="/blog/tag/rca" title="rca">rca</a></li><li><a href="/blog/tag/fta" title="fta">fta</a></li><li><a href="/blog/tag/management" title="management">management</a></li><li><a href="/blog/tag/retrospective" title="retrospective">retrospective</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2013/09/fault-tree-analysis/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2013/09/fault-tree-analysis/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2013/09/fault-tree-analysis/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2013/09/fault-tree-analysis/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2013/08/from-cucumber-to-turnip/" class="basic-alignment left" title="Moving From Cucumber to Turnip">&laquo; Moving From Cucumber to Turnip</a>
+            
+            
+              <a href="/blog/2013/09/bermuda-triange-of-transformation/" class="basic-alignment right" title="Lean Agile Scotland 2013 - Bermuda Triangle of Transformations">Lean Agile Scotland 2013 - Bermuda Triangle of Transformations &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

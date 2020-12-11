@@ -1,0 +1,338 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>When Local Optimization Won't Make a Difference &#8211; Zsolt Fabók</title>
+<meta name="description" content="A couple of weeks ago, I mentioned at the office during my measure and manage flow in practice talk&nbsp;that we should invest more in optimizing the whole flow and reduce the effort spend on&nbsp;local optimizations. In retrospect, I didn't spend too much time on explaining why, because it had a very loose connection to the subject of the talk, and I assumed that the audience would understand what I meant anyway.<br/><br/>more...">
+<meta name="keywords" content="improvement, lean, lean thinking, fail, customer, flow, value stream maping, cycle time">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="When Local Optimization Won't Make a Difference">
+<meta name="twitter:description" content="A couple of weeks ago, I mentioned at the office during my measure and manage flow in practice talk&nbsp;that we should invest more in optimizing the whole flow and reduce the effort spend on&nbsp;local optimizations. In retrospect, I didn't spend too much time on explaining why, because it had a very loose connection to the subject of the talk, and I assumed that the audience would understand what I meant anyway.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="When Local Optimization Won't Make a Difference">
+<meta property="og:description" content="A couple of weeks ago, I mentioned at the office during my measure and manage flow in practice talk&nbsp;that we should invest more in optimizing the whole flow and reduce the effort spend on&nbsp;local optimizations. In retrospect, I didn't spend too much time on explaining why, because it had a very loose connection to the subject of the talk, and I assumed that the audience would understand what I meant anyway.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/05/local-optimization/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/05/local-optimization/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">When Local Optimization Won't Make a Difference</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-05-21T01:51:21-06:00"><i class="fa fa-calendar-o"></i> May 21, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=improvement,lean,leanthinking,fail,customer,flow,valuestreammaping,cycletime&amp;text=When%20Local%20Optimization%20Won&#39;t%20Make%20a%20Difference&amp;url=/blog/2012/05/local-optimization/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/05/local-optimization/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/05/local-optimization/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>A couple of weeks ago, I mentioned at the office during my <a href="http://www.slideshare.net/fabokzs/spse2012-measure-and-manage-flow-in-practice">measure and manage flow in practice talk</a> that we should invest more in <a href="/blog/2012/03/visualize-on-the-highest-level/" title="Visualize the Flow on the Highest Possible Level">optimizing the whole flow</a> and reduce the effort spend on <em>local optimizations</em>. In retrospect, I didn’t spend too much time on explaining why, because it had a very loose connection to the subject of the talk, and I assumed that the audience would understand what I meant anyway. Well, I have to admit I was wrong. Since the talk, I’ve participated in several discussions where we just stated that <em>local optimization</em> was bad and I met only one guy who was able to give me an example why it was harmful in his environment. But I think it is not too late to make this right. <strong><em>Local optimization</em> is not a bad thing, but it won’t make any difference</strong> - or will make things worse -** when it is not part of the global improvement initiative**.</p>
+
+<p>This is what I think about local optimization:</p>
+
+<blockquote>
+  <p>First of all, optimization means that an organization does certain improvements, and as a result, its lead time (the time the whole organization needs to finish to develop and deliver a work item) gets shorter. Second,** local optimization means that a team, which is in connection with at least one other team, reduces its cycle time <strong>(the time needed to finish a certain phase in the whole process). Most probably, </strong>this improvement won’t have any effect on the lead time when the other teams have different goals.**</p>
+</blockquote>
+
+<p>This is a common <a href="/blog/tag/flow/">flow</a> in a software development process:</p>
+
+<p><img class="center" src="/images/posts/2012-05-21-local-optimization/flow.png" width="500" height="126" title="A common flow" /></p>
+
+<p>The blue rectangles are the phases in the process. For example, analysis (1), development (2),  testing (3), and integration (4). The width of the rectangle represents the <em>cycle time</em>. Team 1 is working in Phase 1, Team 2 in Phase 2 etc.</p>
+
+<!--more-->
+
+<p>If the different teams have the same goal, the cycle time reduction can have a positive effect on the <a href="/blog/2013/07/lead-time">lead time</a>, but unfortunately it is very common that they don’t. Here are three different scenarios as an example, where the cycle time reduction has no positive effect on the lead time.</p>
+
+<p>First scenario: Team 2 manages to reduce the cycle time in Phase 2<em>. </em>Reduced cycle time means that the work items arrive faster at Phase 3. Since the improvement was done only in Phase 2, <strong>Team 3 cannot operate at the same speed as Team 2</strong>, so the work items pile up between Phase 2 and Phase 3 on the side of Team 3:</p>
+
+<p><img class="center" src="/images/posts/2012-05-21-local-optimization/scenario1.png" width="500" height="128" title="Scenario 1" /></p>
+
+<p>In situations like this, the lead time won’t be shorter, because the <em>valuable time</em> that was previously spent on the work items in Phase 2 are now transformed into <em>waiting time</em> between Phase 2 and Phase 3. Additionally, if the pressure increases on Team 3 due to the increasing amount of waiting work items, they will probably cut down on quality so that they can speed up. Quality reduction means more turn-over in the flow - teams working on later phases or the customer will send back the faulty product -, which may increase the lead time.</p>
+
+<p>For example, this happens when an Agile methodology is introduced only in one team - Team 2 in this example -, and the rest of the organization still operates by following a different methodology. Another example is when Team 3 has to cooperate with more than one team. Even if one of the teams speeds up Team 3 cannot take over their work items, because Team 3 are still busy with the work items from the slower team.
+Team 2 accomplished its goal, however the rest of the organization is not ready to pull the work items as quickly as Team 2 delivers them. So, they keep the deliveries of Team 2 waiting until they can be pulled.</p>
+
+<p>Second scenario: in the previous example, Team 3 might have wanted to pull the new work items, but couldn’t. Unfortunately, there are cases when the** next team is not allowed to pull before the agreed delivery date.** In this case the work items will pile up in Phase 2 on the side of Team 2:</p>
+
+<p><img class="center" src="/images/posts/2012-05-21-local-optimization/scenario2.png" width="500" height="127" title="Scenario 2" /></p>
+
+<p>This is a very common project management mistake. Certain project managers have no trust in teams, so if the work is finished earlier, for them means that it hasn’t been done properly. So they force the teams to use the time left for more - unnecessary - internal re-testing. Honestly, I don’t know what they expect from this additional test phase.
+Moreover, according to them, we cannot deliver earlier to the customer or to other teams/organizations, because either they will expect us to do the same the next time, or they won’t pay as much as we want them to pay, because our contract is based on the time spent on development. The goals are clearly different here: developers want to deliver faster and project managers want to have a good looking project.</p>
+
+<p>Third scenario: Team 3 is more than happy to pull the work items from Team 2 faster, and with them comes all the time saved up by them – <strong>thanks for the additional buffer, Team 2</strong>!</p>
+
+<p><img class="center" src="/images/posts/2012-05-21-local-optimization/scenario3.png" width="500" height="128" title="Scenario 3" /></p>
+
+<p>It is still common that teams have some kind of bonus system. For example, I worked in an organization where the test team’s bonus was in correlation with the number of reported - not necessary valid - defects. So, if a team has better chances to achieve its money-related goal when there is more time available, then the team will take this time no matter what the other teams are doing. It is a bit similar to the previous scenario, but here, instead of project management, Team 3 has its own goals/agenda.</p>
+
+<p>I’m pretty sure that there are other examples out there (if you have any, share with us in the comment section). As you can see, improvements can be made, but they rarely have effect on the whole organization. <a href="/blog/2012/04/see-the-whole-flow-exercise/">Do an organization-wide value stream mapping exercise</a> and try to discover the real goals and priorities. If many different goals are found, work on them until you have just one that is clear for everyone. When you have that, you can start thinking about how to improve your organization and teams in order to achieve it. Good luck!</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2012/03/visualize-on-the-highest-level/">Visualize the Flow on the Highest Possible Level</a></li><li><a href="/blog/2012/04/see-the-whole-flow-exercise/">See the Whole Flow - An Exercise for Managers to Start a Transition</a></li></ul></div>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/lean" title="lean">lean</a></li><li><a href="/blog/tag/lean-thinking" title="lean thinking">lean&nbsp;thinking</a></li><li><a href="/blog/tag/fail" title="fail">fail</a></li><li><a href="/blog/tag/customer" title="customer">customer</a></li><li><a href="/blog/tag/flow" title="flow">flow</a></li><li><a href="/blog/tag/value-stream-maping" title="value stream maping">value&nbsp;stream&nbsp;maping</a></li><li><a href="/blog/tag/cycle-time" title="cycle time">cycle&nbsp;time</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/05/local-optimization/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/05/local-optimization/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/05/local-optimization/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/05/local-optimization/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/05/happy-birthday-2/" class="basic-alignment left" title="Happy Birthday!">&laquo; Happy Birthday!</a>
+            
+            
+              <a href="/blog/2012/05/group-punishment/" class="basic-alignment right" title="Still Suffering from Group Punishment">Still Suffering from Group Punishment &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>One Track Development &#8211; Zsolt Fabók</title>
+<meta name="description" content="A couple of weeks ago, an interesting question appeared on the pm.stackexchange.com site about how to deal with defects across multiple development tracks when the development follows the iterative model. My answer was to introduce one-track in the way of working, and I promised to write a bit more about it.<br/><br/>more...">
+<meta name="keywords" content="one track, customer">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="One Track Development">
+<meta name="twitter:description" content="A couple of weeks ago, an interesting question appeared on the pm.stackexchange.com site about how to deal with defects across multiple development tracks when the development follows the iterative model. My answer was to introduce one-track in the way of working, and I promised to write a bit more about it.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="One Track Development">
+<meta property="og:description" content="A couple of weeks ago, an interesting question appeared on the pm.stackexchange.com site about how to deal with defects across multiple development tracks when the development follows the iterative model. My answer was to introduce one-track in the way of working, and I promised to write a bit more about it.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/07/one-track-development/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/07/one-track-development/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">One Track Development</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-07-16T00:00:00+02:00"><i class="fa fa-calendar-o"></i> July 16, 2012</time></span>
+        
+        
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=onetrack,customer&amp;text=One%20Track%20Development&amp;url=/blog/2012/07/one-track-development/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/07/one-track-development/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/07/one-track-development/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>A couple of weeks ago, an interesting question appeared on the <a href="http://pm.stackexchange.com/q/6037/468">pm.stackexchange.com</a> site about how to deal with defects across multiple development tracks when the development follows the iterative model. <a href="http://pm.stackexchange.com/a/6038/468">My answer was to introduce <strong>one-track</strong> in the way of working</a>, and I promised to write a bit more about it.</p>
+
+<p>The name <em>one-track</em> is a bit misleading. It means that there is only one branch - hence the name <em>one-track</em> - in the version control system, which the deliveries are made from. Of course, there can be other branches as well, but the changes must be merged to this particular branch in order to get them delivered. I’ll refer to this branch as <em>master</em> from now on.</p>
+
+<!-- more -->
+
+<p>We used to work like this:</p>
+
+<p><img class="center" src="/images/posts/2012-07-16-one-track/old_concept.png" /></p>
+
+<p>We were working on the <em>master</em> branch and when we considered the new version ready, we delivered it and branched out from the <em>master</em>. From this very moment, the delivered version lived in its own branch: the small change requests, fixes and changes were done here, while the brand new ideas were developed on the <em>master</em> until the next delivery. This was a business driven concept: we wanted the customer to pay for the new versions, so we needed a model to keep the versions separate.</p>
+
+<p>Maintaining a system like this was very expensive, and the costs were not always visible. Imagine that a critical error had been found in an old, but still supported version. The fix had to be done in every later version, and this meant that the developers had to merge the fix to each branch. I remember that once it took us three weeks to do this merging properly. Additionally, testers had to test the fix in each version, which took days. All this work for free, because fixes are part of the warranty in most of the cases.</p>
+
+<p>Nowadays companies realize that the effort spent on merging and re-testing is a waste, and they have started to introduce <em>one-track</em> in their development processes:</p>
+
+<p><img class="center" src="/images/posts/2012-07-16-one-track/one_track.png" /></p>
+
+<p>In this model the <em>branching out</em> happens when the development starts, so the branches contain features not versions. When the new features and fixes are ready, they are merged back to <em>master</em>. Testers always take the latest revision of <em>master</em> and run their tests on it. In case they don’t like it, developers rollback to the previous revision which was working and continue from there.</p>
+
+<p>With this approach, the customers will get all the features and fixes present in the actual delivery even if they don’t want to. The model doesn’t say that every time when a delivery is made all their customers should get the new versions, but it is recommended. I know two solutions for this issue. Either the company doesn’t care, because it has a business model which has nothing to do with features (e.g. <a href="http://en.wikipedia.org/wiki/Software_as_a_service">SaaS</a>), or the features are developed so that they can be turned on or off on customer request (e.g. licensing).</p>
+
+<p>From the developers’ and testers’ point of view this a great model, because they have to maintain only one track/branch/version. However, from the management perspective there are still a lot of things to do. Most of the customers I worked with had no intention to install our latest version, I still don’t know why. Therefore, the management didn’t see the point in trying to convince them to change to this model. Now, in the age of cost reduction they know that the merging and re-testing is very expensive, so they are trying to find a way to sell the <em>one-track</em> idea to the customers, and fortunately they have made a pretty impressive progress so far.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2012/02/git-blame-line-history/">Learn More About the History of a Line with Git Blame</a></li><li><a href="/blog/2012/06/recover-deleted-files-with-git/">Recover Deleted Files with Git</a></li></ul></div>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/one-track" title="one track">one&nbsp;track</a></li><li><a href="/blog/tag/customer" title="customer">customer</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/07/one-track-development/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/07/one-track-development/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/07/one-track-development/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/07/one-track-development/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/07/conversation-what-do-you-want-to-do/" class="basic-alignment left" title="Conversation: "What Do You Want to Do?"">&laquo; Conversation: "What Do You Want to Do?"</a>
+            
+            
+              <a href="/blog/2012/07/the-customer-is-not-close-to-us/" class="basic-alignment right" title="The Customer is Not Even Close to Us">The Customer is Not Even Close to Us &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

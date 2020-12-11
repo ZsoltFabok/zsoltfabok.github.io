@@ -1,0 +1,318 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>When Expand and Collapse Got Beaten &#8211; Zsolt Fabók</title>
+<meta name="description" content="Today's post is an instructive story about mixing various good patterns and ideas. They are very useful separately, but when one uses them together, they may lead to problems which nobody wants to deal with at all. We found several different defects in a certain feature, and in order to reduce handover costs I collapsed them together to make an umbrella defect (defect1+defect2+.<br/><br/>more...">
+<meta name="keywords" content="kanban, improvement, visualize workflow, continuous integration, lean, programming, expand and collapse, lean thinking, one-track, iron triangle, batch, batch size">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="When Expand and Collapse Got Beaten">
+<meta name="twitter:description" content="Today's post is an instructive story about mixing various good patterns and ideas. They are very useful separately, but when one uses them together, they may lead to problems which nobody wants to deal with at all. We found several different defects in a certain feature, and in order to reduce handover costs I collapsed them together to make an umbrella defect (defect1+defect2+.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="When Expand and Collapse Got Beaten">
+<meta property="og:description" content="Today's post is an instructive story about mixing various good patterns and ideas. They are very useful separately, but when one uses them together, they may lead to problems which nobody wants to deal with at all. We found several different defects in a certain feature, and in order to reduce handover costs I collapsed them together to make an umbrella defect (defect1+defect2+.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/09/expand-and-collapse-got-beaten/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/09/expand-and-collapse-got-beaten/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">When Expand and Collapse Got Beaten</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-09-14T08:34:51-06:00"><i class="fa fa-calendar-o"></i> September 14, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,improvement,visualizeworkflow,continuousintegration,lean,programming,expandandcollapse,leanthinking,one-track,irontriangle,batch,batchsize&amp;text=When%20Expand%20and%20Collapse%20Got%20Beaten&amp;url=/blog/2011/09/expand-and-collapse-got-beaten/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/09/expand-and-collapse-got-beaten/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/09/expand-and-collapse-got-beaten/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>Today’s post is an instructive story about mixing various good patterns and ideas. They are very useful separately, but when one uses them together, they may lead to problems which nobody wants to deal with at all.</p>
+
+<p>We found several different defects in a certain feature, and in order to reduce handover costs I <a href="http://www.infoq.com/news/2011/03/further-value-collapse">collapsed</a> them together to make an “<em>umbrella defect” *(defect1+defect2+…defectN) and put it into our *Queue</em>. When my colleague started to work on it, I was quite happy with the result: less handover costs less <a href="/blog/2010/06/more-kanban-numbers/" title="More Kanban Numbers">context switching</a> and more focus on a faulty feature. It was really nice until our deployment day came. Or <em>Kanban board</em> and version tree looked like this:</p>
+
+<p><img class="right" src="/images/posts/2011-09-14-expand-and-collapse-got-beaten/one_track.png" width="200" height="205" title="One-track" /><img class="size-full" src="/images/posts/2011-09-14-expand-and-collapse-got-beaten/our_kanban_board.png" width="300" height="231" title="Our Kanban Board" /></p>
+
+<p>The mentioned <em>umbrella defect</em> appears as ‘<em>UD</em>’ on the <em>Kanban board</em>, and it covers ‘<em>UD1.1</em>’ and ‘<em>UD1.2</em>’. Based on our <em>Kanban board</em>, there is no impediment to the deployment, but right before the deployment we realized that not everything we wanted to deploy had been tested since we were using <em>one-track</em>. One-track means that we don’t have branches, labels or tags, we just have the trunk where we have our latest version. <em>One-track</em> is an excellent thing, but it seems that it doesn’t work well with <em>collapsing</em>.</p>
+
+<!-- more -->
+<p>So, we have the <em>expand/collapse</em> pattern, and the <em>one-track</em> way of working. In retrospect, the situation could have been solved by keeping the code of ‘<em>UD1.1</em>’ and ‘<em>UD1.2</em>’ locally until the deployment is done, but we have a policy saying that we have to use SVN and we have to commit our code every day so that it’s kept securely and nothing gets lost. Our local version of the <a href="http://en.wikipedia.org/wiki/Project_management_triangle">iron triangle of project management</a> is complete:</p>
+
+<p><img class="center" src="/images/posts/2011-09-14-expand-and-collapse-got-beaten/triangle.png" width="150" height="111" title="Our Iron Triangle" /></p>
+
+<p><img class="left" src="/images/posts/2011-09-14-expand-and-collapse-got-beaten/expand_collapse_on_branch.png" width="200" height="189" title="Expand and Collapse on a Branch" />Each corner of the triangle has its purpose and benefit. <strong>Expand/collapse</strong> is proven to be really helpful. Usually, teams <em>expand</em> a large work item into smaller ones, because it is easier to work with smaller work items than with a large one - small things travel faster and they are easier to handle. When the small items are finished the teams have to <em>collapse</em> them back to the large one. This is the basic idea of <em>expand/collapse - </em>for more information check out the related post on <a href="http://www.infoq.com/news/2011/03/further-value-collapse">infoq</a>. Fortunately, it works backwards as well. <strong>It is wise to collapse very small work items - like defects - into a larger umbrella work item in order to reduce handover costs and context switching</strong>. From the version control system perspective, the <em>expand/collapse</em> should happen on a branch and never on the main trunk.</p>
+
+<p><strong><a href="/blog/2012/07/one-track-development">One-track</a></strong> is a brilliant thing. I used to work with branches and tags. In retrospect, every hour of every day spent handling these was a waste of my time. I watched my colleagues and myself merging defects and small features between five or sometimes six feature branches for years - we were using a centralized version control system. It was a one-man’s job, which took days and weeks. Each branch required its own continuous integration project, not to mention the different deliveries. In <em>one-track,</em> we need only one of everything, and the development is fast, I mean really fast. And <strong>we want to go fast, because we need the feedback fast</strong>. <a href="http://www.threeriversinstitute.org/">Kent Beck</a> mentioned this topic in his “<em>Software G Forces: The Effects of Acceleration</em>” presentation at <a href="http://www.scandevconf.se/2010/">SDC2010</a>: ”<em>for faster delivery, teams should stop working in branches and use one-track</em><strong>“</strong>. <strong>We want to have continuous delivery in the future, so we need the one-track</strong>.</p>
+
+<p>The last corner is the <strong>policies</strong>. We don’t want to lose code, because we cannot afford to reimplement everything in case something gets lost. So <strong>we must commit code into SVN as frequently as possible</strong>. Until we are able to find a better solution - there is nothing wrong with the actual one -, this policy stays, and so does SVN.</p>
+
+<p>No one can keep every corner of an <em>iron triangle</em>. We don’t want to lose data and we don’t want to create branches, so sorry <em>expand/collapse,</em> you have to go. We can live with the handover costs and context switching. <strong>We rather stop what we are doing and shift our focus to the right side of our Kanban board (testing and deployment) when something is finished than work with SVN branches</strong>. The Lean thinking starts to emerge.</p>
+
+<p>As usual, judge our decision in its context. Each project is different. This is really important, because you may be tempted to drop a good pattern because it didn’t work for us. Don’t do that. <strong>The lesson here is to be ready to drop the pattern which holds you back</strong>. It could happen that we’ll be in a situation when we can no longer afford to have only one track. In that case, we won’t hesitate to drop the <em>one-track</em> way of working, which may provide some space for <em>expand/collapse</em>. Maybe.</p>
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2012/03/visualize-on-the-highest-level/">Visualize the Flow on the Highest Possible Level</a></li></ul></div>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/visualize-workflow" title="visualize workflow">visualize&nbsp;workflow</a></li><li><a href="/blog/tag/continuous-integration" title="continuous integration">continuous&nbsp;integration</a></li><li><a href="/blog/tag/lean" title="lean">lean</a></li><li><a href="/blog/tag/programming" title="programming">programming</a></li><li><a href="/blog/tag/expand-and-collapse" title="expand and collapse">expand&nbsp;and&nbsp;collapse</a></li><li><a href="/blog/tag/lean-thinking" title="lean thinking">lean&nbsp;thinking</a></li><li><a href="/blog/tag/one-track" title="one-track">one-track</a></li><li><a href="/blog/tag/iron-triangle" title="iron triangle">iron&nbsp;triangle</a></li><li><a href="/blog/tag/batch" title="batch">batch</a></li><li><a href="/blog/tag/batch-size" title="batch size">batch&nbsp;size</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/09/expand-and-collapse-got-beaten/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/09/expand-and-collapse-got-beaten/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/09/expand-and-collapse-got-beaten/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/09/expand-and-collapse-got-beaten/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/09/our-detectives-blackboard/" class="basic-alignment left" title="Our Detective's Blackboard">&laquo; Our Detective's Blackboard</a>
+            
+            
+              <a href="/blog/2011/09/ale2011/" class="basic-alignment right" title="ALE2011">ALE2011 &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

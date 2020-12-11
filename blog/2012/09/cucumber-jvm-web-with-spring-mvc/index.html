@@ -1,0 +1,497 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Cucumber JVM: Web Application with Spring MVC &#8211; Zsolt Fabók</title>
+<meta name="description" content="It's been a while since the last Cucumber JVM post, and since I've started to work with Java based web applications, it was time to continue the series. Last time I left off, I had a class that could transform an arbitrary sentence such as I like testing into I lkie tnitseg by following the rules of the text munger kata.<br/><br/>more...">
+<meta name="keywords" content="bdd, development, java, cucumber, bdd, eclipse, cucumber-jvm, spring mvc, tomcat">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Cucumber JVM: Web Application with Spring MVC">
+<meta name="twitter:description" content="It's been a while since the last Cucumber JVM post, and since I've started to work with Java based web applications, it was time to continue the series. Last time I left off, I had a class that could transform an arbitrary sentence such as I like testing into I lkie tnitseg by following the rules of the text munger kata.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cucumber JVM: Web Application with Spring MVC">
+<meta property="og:description" content="It's been a while since the last Cucumber JVM post, and since I've started to work with Java based web applications, it was time to continue the series. Last time I left off, I had a class that could transform an arbitrary sentence such as I like testing into I lkie tnitseg by following the rules of the text munger kata.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/09/cucumber-jvm-web-with-spring-mvc/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/09/cucumber-jvm-web-with-spring-mvc/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Cucumber JVM: Web Application with Spring MVC</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-09-06T00:00:00+02:00"><i class="fa fa-calendar-o"></i> September 06, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=bdd,development,java,cucumber,bdd,eclipse,cucumber-jvm,springmvc,tomcat&amp;text=Cucumber%20JVM:%20Web%20Application%20with%20Spring%20MVC&amp;url=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>It’s been a while since <a href="/blog/2012/03/cucumber-jvm-mocking">the last Cucumber JVM post</a>, and since I’ve started to work with Java based web applications, it was time to continue the series. Last time I left off, I had a <a href="/blog/2012/03/cucumber-jvm-mocking">class</a> that could transform an arbitrary sentence such as “<em>I like testing</em>” into “<em>I lkie tnitseg</em>” by following the rules of the <a href="/blog/2011/12/cucumber-jvm-preparation">text munger kata</a>. For building and running my application, I’m going to use <a href="/blog/2012/08/embedded-web-services-for-testing">tomcat</a> and <a href="http://static.springsource.org/spring/docs/current/spring-framework-reference/html/mvc.html">spring MVC</a>, because they are just enough to put together a decent web application.</p>
+
+<!-- more -->
+
+<h3 id="preparation">Preparation</h3>
+
+<p>This is what I want my web application to do:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> web text munger kata</span>
+
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> It should process a sentence</span>
+<span class="k">    Given </span><span class="nf">I am on the home page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I enter the &quot;</span><span class="s">flow flow</span><span class="nf">&quot;</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I press &quot;</span><span class="s">submit</span><span class="nf">&quot;</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I see &quot;</span><span class="s">folw folw</span><span class="nf">&quot; as munged text</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I see &quot;</span><span class="s">flow flow</span><span class="nf">&quot; as the original</span></code></pre></div>
+
+<p>I’ll need two more files besides <code>src/test/resources/web_text_munger.feature</code> from above. First, <code>WebTextMunger_Test.java</code> which is <a href="/blog/2011/12/cucumber-jvm-preparation">supposed to load that <em>feature</em> file and run the scenarios</a>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">Cucumber</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@Cucumber.Options</span><span class="o">(</span><span class="n">features</span><span class="o">=</span><span class="s">&quot;classpath:web_text_munger.feature&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebTextMunger_Test</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Second, <code>WebTextMungerStepsdef.java</code> which contains the <a href="/blog/2011/12/cucumber-jvm-more-scenarios">step definitions</a> using <a href="http://seleniumhq.org/">selenium</a> for browser based testing:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebTextMungerStepsdef</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="n">WebDriver</span> <span class="n">browser</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FireFoxDriver</span><span class="o">();</span>
+
+  <span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^I am on the home page&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">I_am_on_the_home_page</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">browser</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">tomcat</span><span class="o">.</span><span class="na">getApplicationUrl</span><span class="o">(</span><span class="s">&quot;munger&quot;</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="nd">@When</span><span class="o">(</span><span class="s">&quot;^I enter the \&quot;([^\&quot;]*)\&quot;$&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">I_enter_</span><span class="o">(</span><span class="n">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">browser</span><span class="o">.</span><span class="na">findElement</span><span class="o">(</span><span class="n">By</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="s">&quot;text&quot;</span><span class="o">)).</span><span class="na">sendKeys</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Then</span><span class="o">(</span><span class="s">&quot;^I see \&quot;([^\&quot;]*)\&quot; as munged text$&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">I_see_as_munged_text</span><span class="o">(</span><span class="n">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="n">text</span><span class="o">,</span> <span class="n">browser</span><span class="o">.</span><span class="na">findElement</span><span class="o">(</span><span class="n">By</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="s">&quot;munged&quot;</span><span class="o">)).</span><span class="na">getText</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="c1">// More steps</span>
+<span class="o">}</span></code></pre></div>
+
+<h3 id="tomcat">Tomcat</h3>
+
+<p>This test case fails, because there isn’t any web service running. It’s good that I have examples on how to use <a href="/blog/2012/08/embedded-web-services-for-testing">embedded web services in JUnit</a>, so that I can use <code>EmbeddedTomcat</code> from the <code>blog.embedded.webservice</code> project. It runs very nicely, but there are some dependency issues: <code>spring-web</code> comes with the 2.5 version of <code>javax.servlet</code>, but Tomcat 7 does not work well with that version, because it requires at least 3.x. If you have both versions on the classpath - which is the case now -, you have a good chance that nothing will work. In order to avoid this situation you need to exclude the default <code>javax.servlet</code> implementations:</p>
+
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ivy-module</span> <span class="na">version=</span><span class="s">&quot;2.0&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- ... --&gt;</span>
+  <span class="nt">&lt;dependencies&gt;</span>
+    <span class="c">&lt;!-- other dependencies --&gt;</span>
+
+    <span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.apache.tomcat.embed&quot;</span> <span class="na">name=</span><span class="s">&quot;tomcat-embed-core&quot;</span> <span class="na">rev=</span><span class="s">&quot;7.0.28&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.apache.tomcat.embed&quot;</span> <span class="na">name=</span><span class="s">&quot;tomcat-embed-jasper&quot;</span> <span class="na">rev=</span><span class="s">&quot;7.0.28&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.apache.tomcat.embed&quot;</span> <span class="na">name=</span><span class="s">&quot;tomcat-embed-logging-juli&quot;</span> <span class="na">rev=</span><span class="s">&quot;7.0.28&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.apache.tomcat&quot;</span> <span class="na">name=</span><span class="s">&quot;tomcat-jsp-api&quot;</span> <span class="na">rev=</span><span class="s">&quot;7.0.28&quot;</span> <span class="nt">/&gt;</span>
+
+    <span class="c">&lt;!-- the dependency trick --&gt;</span>
+    <span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;javax.servlet.jsp.jstl&quot;</span> <span class="na">name=</span><span class="s">&quot;javax.servlet.jsp.jstl-api&quot;</span> <span class="na">rev=</span><span class="s">&quot;1.2.1&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;exclude</span> <span class="na">org=</span><span class="s">&quot;javax.servlet&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;exclude</span> <span class="na">org=</span><span class="s">&quot;javax.servlet.jsp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;exclude</span> <span class="na">org=</span><span class="s">&quot;javax.el&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+<span class="nt">&lt;/ivy-module&gt;</span></code></pre></div>
+
+<h3 id="spring-mvc">Spring MVC</h3>
+<p>#### The Controller
+Spring offers a very nice way of using the <em>Model View Controller</em> (MVC) pattern. Let’s start with the controller. In order to make it work, the HTTP calls have to go through the so called <code>DispatcherServlet</code>, which has to be set up in the <code>web.xml</code> file:</p>
+
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;web-app&gt;</span>
+  <span class="nt">&lt;servlet&gt;</span>
+  <span class="nt">&lt;servlet-name&gt;</span>munger<span class="nt">&lt;/servlet-name&gt;</span>
+  <span class="nt">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="nt">&lt;/servlet-class&gt;</span>
+  <span class="nt">&lt;load-on-startup&gt;</span>1<span class="nt">&lt;/load-on-startup&gt;</span>
+  <span class="nt">&lt;/servlet&gt;</span>
+
+  <span class="nt">&lt;servlet-mapping&gt;</span>
+  <span class="nt">&lt;servlet-name&gt;</span>munger<span class="nt">&lt;/servlet-name&gt;</span>
+    <span class="nt">&lt;url-pattern&gt;</span>/<span class="nt">&lt;/url-pattern&gt;</span>
+  <span class="nt">&lt;/servlet-mapping&gt;</span>
+<span class="nt">&lt;/web-app&gt;</span></code></pre></div>
+
+<p>I want all the requests go through that servlet, that’s why I’m having the <code>&lt;url-pattern&gt;/&lt;/url-pattern&gt;</code> as it is. When an HTTP call arrives at the <code>DispatcherServlet</code>, it tries to find the proper controller among the registered ones that can process that request using one of its <em>actions</em>. The controller registration is done by adding the <code>@Controller</code> annotation to the class, and the actions are marked by the <code>@RequestMapping</code> annotation - <code>MungerController.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">zsoltfabok</span><span class="o">.</span><span class="na">blog</span><span class="o">.</span><span class="na">web</span><span class="o">.</span><span class="na">controller</span><span class="o">;</span>
+
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MungerController</span> <span class="o">{</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">show</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="s">&quot;index&quot;</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;/munge&quot;</span><span class="o">,</span> <span class="n">method</span><span class="o">=</span><span class="n">RequestMethod</span><span class="o">.</span><span class="na">POST</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">munge</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="s">&quot;text&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">text</span><span class="o">,</span> <span class="n">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="cm">/* key */</span><span class="o">,</span> <span class="cm">/* value */</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">&quot;index&quot;</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>So, when a POST request on the ‘<em>/munger/munge</em>’ URI arrives, first it is sent to the <code>DispatcherServlet</code>, which is looking for a matching <code>@RequestMapping</code>, and will find the <code>munge()</code> method from above. It will call the method and pass the <code>text</code> parameter from the request to the method as an argument - <code>@RequestParam("text")</code>. The method does something and when it is done it returns the name of the view that has to be rendered in response to the request - <code>"index"</code> in this case - along with the attributes the view can use: <code>model.addAttribute(/* key */, /* value */)</code>. In case of a different URI or request method the <code>DispatcherServlet</code> will generate an error message and will render a 404 page. An exception, of course, is the ‘<em>/</em>’ URI which is mapped in the controller (<code>show()</code>).</p>
+
+<p>In order to be able to use the controller, I’ll need a so-called <code>&lt;servlet_name&gt;-servlet.xml</code> file, which is very similar to an <code>applicationContext.xml</code>. That file must be named after the name of the servlet and must be in the <code>WEB-INF</code> folder right next to <code>web.xml</code>, otherwise it won’t work (this is how <a href="http://static.springsource.org/spring/docs/current/spring-framework-reference/html/mvc.html">Spring MVC works</a>):</p>
+
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+    <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+    <span class="na">xmlns:p=</span><span class="s">&quot;http://www.springframework.org/schema/p&quot;</span>
+    <span class="na">xmlns:context=</span><span class="s">&quot;http://www.springframework.org/schema/context&quot;</span>
+    <span class="na">xmlns:mvc=</span><span class="s">&quot;http://www.springframework.org/schema/mvc&quot;</span>
+    <span class="na">xsi:schemaLocation=</span><span class="s">&quot;</span>
+<span class="s">        http://www.springframework.org/schema/beans</span>
+<span class="s">        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span>
+<span class="s">        http://www.springframework.org/schema/context</span>
+<span class="s">        http://www.springframework.org/schema/context/spring-context-3.0.xsd</span>
+<span class="s">        http://www.springframework.org/schema/mvc</span>
+<span class="s">        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd&quot;</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;mvc:annotation-driven</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">&quot;com.zsoltfabok.blog&quot;</span> <span class="nt">/&gt;</span>
+
+  <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;viewResolver&quot;</span>
+    <span class="na">class=</span><span class="s">&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;prefix&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;value&gt;</span>/WEB-INF/views/<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;suffix&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;value&gt;</span>.jsp<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;/beans&gt;</span></code></pre></div>
+
+<p>Additionally, it also defines how the view files are found. If I’m returning <code>"index"</code> from my controller, it will look for a file in the <code>/WEB-INF/views</code> folder with the name <code>"index"</code> with the extension <code>.jsp</code>.</p>
+
+<h4 id="the-view">The View</h4>
+<p>The view is pretty simple:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="err">&lt;</span>%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot; %&gt;
+<span class="err">&lt;</span>%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot; %&gt;
+<span class="err">&lt;</span>%@ page isELIgnored=&quot;false&quot; %&gt;
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>App<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">name=</span><span class="s">&quot;input&quot;</span> <span class="na">action=</span><span class="s">&quot;munge&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+      your text:
+      <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">&quot;text&quot;</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;text&quot;</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">&quot;submit&quot;</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Submit&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+    <span class="nt">&lt;c:if</span> <span class="na">test=</span><span class="s">&quot;${munged != null}&quot;</span><span class="nt">&gt;</span>
+      munged:<span class="ni">&amp;nbsp;</span><span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;munged&quot;</span><span class="nt">&gt;</span>${munged}<span class="nt">&lt;/span&gt;</span><span class="ni">&amp;nbsp;</span>
+      <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;original&quot;</span><span class="nt">&gt;</span>(${original})<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/c:if&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<p>The <strong>id attributes</strong> are very important here, because <strong>I’m using them to find certain elements on the page when running the steps</strong> (for example: <code>browser.findElement(By.id("munged")).getText()</code>). I could have used some CSS selector or classes, but at that moment I felt that the id based approach is enough.</p>
+
+<p>You may wonder what the <code>&lt;%@ page isELIgnored="false" %&gt;</code> line does. No matter what I did with this file, the <code>&lt;c:if /&gt;</code> part wasn’t evaluated until I added that line. In case your are interested in the problem in more detail, have a look a this <a href="http://stackoverflow.com/questions/1529184/jsps-not-displaying-objects-from-model-in-spring">stackoverflow question and answer</a>. The previously mentioned model values can be reached from the <code>&lt;c:&gt;</code> nodes using the <code>${name}</code> format. Note that using this format outside <code>&lt;c:&gt;</code> nodes will simply render to <code>${name}</code>.</p>
+
+<h4 id="the-model-and-the-business-logic">The Model and the Business Logic</h4>
+<p>In Spring MVC the model has nothing to do with databases and business logic as in <a href="/blog/tag/rails">Ruby on Rails</a>. It is simply used to transfer data between the view and the controller. However, it was very easy to connect the <a href="/blog/2012/01/cucumber-jvm-di">existing business logic</a> to the controller by simply adding an annotated private reference to the controller - <code>MungerController.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MungerController</span> <span class="o">{</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="n">SimpleTextMunger</span> <span class="n">munger</span><span class="o">;</span>
+
+  <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;/munge&quot;</span><span class="o">,</span> <span class="n">method</span><span class="o">=</span><span class="n">RequestMethod</span><span class="o">.</span><span class="na">POST</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">munge</span><span class="o">(</span><span class="nd">@RequestParam</span><span class="o">(</span><span class="s">&quot;text&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">text</span><span class="o">,</span> <span class="n">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&quot;munged&quot;</span><span class="o">,</span> <span class="n">munger</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">text</span><span class="o">));</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">&quot;original&quot;</span><span class="o">,</span> <span class="n">text</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">&quot;index&quot;</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>When the controller needs a reference to the <em>business logic</em> it will simply instantiate the <code>munger</code> - along with its dependencies - and call the <code>execute(String)</code> method. I really like this approach: now the controller is thin and the <em>business logic</em> is clearly separated from the representation layout (view) and usage (controller).</p>
+
+<h3 id="connecting-the-dots">Connecting the Dots</h3>
+<p>Now, I have the test scenario, I have an embedded web service and the application itself. Putting them together can easily be done with some additional steps:</p>
+
+<div class="highlight"><pre><code class="language-cucumber" data-lang="cucumber"><span class="k">Feature:</span><span class="nf"> web text munger kata</span>
+<span class="nf">  </span><span class="k">Scenario:</span><span class="nf"> It should process a sentence</span>
+<span class="k">    Given </span><span class="nf">the embedded tomcat is running      # NEW</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">the application is deployed         # NEW</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I am using Firefox for testing      # NEW</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I am on the home page</span>
+<span class="nf">     </span><span class="k">When </span><span class="nf">I enter the &quot;</span><span class="s">flow flow</span><span class="nf">&quot;</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I press &quot;</span><span class="s">submit</span><span class="nf">&quot;</span>
+<span class="nf">     </span><span class="k">Then </span><span class="nf">I see &quot;</span><span class="s">folw folw</span><span class="nf">&quot; as munged text</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I see &quot;</span><span class="s">flow flow</span><span class="nf">&quot; as the original</span>
+<span class="nf">      </span><span class="k">And </span><span class="nf">I close the browser                 # NEW (VERY BAD, DO NOT DO THIS HERE!)</span></code></pre></div>
+
+<p>Although this is working, it is not a nice solution. <strong>Starting the web service, the deployment and the browser have nothing to do with the scenario or the business case it describes</strong>, hence they shouldn’t be there like this. Cucumber has a nice feature called <em>hooks</em> which are used to execute something before and after the scenarios. Hooks are exactly the right place where the web service startup, the deployment and the browser startup should be. I’m going to write more about <em>hooks</em> in the next post of this series, but until that you can find the source for this post under the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post/tree/episode_5">episode_5</a> branch of the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post">repository</a> on github.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/12/cucumber-jvm-preparation/">Cucumber JVM: Preparation</a></li><li><a href="/blog/2011/12/cucumber-jvm-more-scenarios/">Cucumber JVM: More Scenarios</a></li><li><a href="/blog/2012/03/cucumber-jvm-mocking/">Cucumber JVM: Mocking</a></li><li><a href="/blog/2012/01/cucumber-jvm-di/">Cucumber JVM: Dependency Injection</a></li><li><a href="/blog/2012/09/cucumber-jvm-hooks/">Cucumber JVM: Hooks</a></li></ul></div>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/eclipse" title="eclipse">eclipse</a></li><li><a href="/blog/tag/cucumber-jvm" title="cucumber-jvm">cucumber-jvm</a></li><li><a href="/blog/tag/spring-mvc" title="spring mvc">spring&nbsp;mvc</a></li><li><a href="/blog/tag/tomcat" title="tomcat">tomcat</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/09/cucumber-jvm-web-with-spring-mvc/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/08/javascript-foreach/" class="basic-alignment left" title="Javascript: use the forEach Method and Do not Bother with Scopes">&laquo; Javascript: use the forEach Method and Do not Bother with Scopes</a>
+            
+            
+              <a href="/blog/2012/09/internal-stackexchange/" class="basic-alignment right" title="It Would be Nice to Have an Internal StackExchange Service">It Would be Nice to Have an Internal StackExchange Service &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

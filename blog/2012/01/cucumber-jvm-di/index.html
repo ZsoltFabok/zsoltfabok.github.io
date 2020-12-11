@@ -1,0 +1,511 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Cucumber JVM: Dependency Injection &#8211; Zsolt Fabók</title>
+<meta name="description" content="Last time I finished with a failing test case which drove the development to a phase where I had to deal with a sentence instead of a word.&nbsp;The fix was not a big deal, but I ended up with a method in SimpleTextMunger which did three things.<br/><br/>more...">
+<meta name="keywords" content="bdd, development, java, cucumber, bdd, eclipse, cucumber-jvm, spring">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Cucumber JVM: Dependency Injection">
+<meta name="twitter:description" content="Last time I finished with a failing test case which drove the development to a phase where I had to deal with a sentence instead of a word.&nbsp;The fix was not a big deal, but I ended up with a method in SimpleTextMunger which did three things.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cucumber JVM: Dependency Injection">
+<meta property="og:description" content="Last time I finished with a failing test case which drove the development to a phase where I had to deal with a sentence instead of a word.&nbsp;The fix was not a big deal, but I ended up with a method in SimpleTextMunger which did three things.<br/><br/>more...">
+<meta property="og:url" content="/blog/2012/01/cucumber-jvm-di/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2012/01/cucumber-jvm-di/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Cucumber JVM: Dependency Injection</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2012-01-28T11:04:57-07:00"><i class="fa fa-calendar-o"></i> January 28, 2012</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=bdd,development,java,cucumber,bdd,eclipse,cucumber-jvm,spring&amp;text=Cucumber%20JVM:%20Dependency%20Injection&amp;url=/blog/2012/01/cucumber-jvm-di/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/01/cucumber-jvm-di/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2012/01/cucumber-jvm-di/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p><a href="/blog/2011/12/cucumber-jvm-more-scenarios/" title="Cucumber JVM: More Scenarios">Last time</a> I finished with a failing test case which drove the development to a phase where I had to deal with a sentence instead of a word. The fix was not a big deal, but I ended up with a method in <code>SimpleTextMunger</code> which did three things:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// ...</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">(</span><span class="n">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">StringBuilder</span> <span class="n">mungedSentence</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">();</span>
+  <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">word</span> <span class="o">:</span> <span class="n">sentence</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">mungedSentence</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">mungeAWord</span><span class="o">(</span><span class="n">word</span><span class="o">)).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">mungedSentence</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">mungeAWord</span><span class="o">(</span><span class="n">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// ... prior content of the execute(String) method</span>
+<span class="o">}</span></code></pre></div>
+
+<ol>
+  <li>
+    <p>convert the sentence into words</p>
+  </li>
+  <li>
+    <p>munge a word</p>
+  </li>
+  <li>
+    <p>collect the munged words and create the new sentence</p>
+  </li>
+</ol>
+
+<p>The first and the third one belong together because they work with a sentence, so I created two classes - <code>SentenceHelper</code> and <code>Munger</code> -, which are used by the <code>SimpleTextMunger.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTextMunger</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">(</span><span class="n">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">SentenceHelper</span> <span class="n">sentenceHelper</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SentenceHelper</span><span class="o">();</span>
+    <span class="n">Munger</span> <span class="n">munger</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Munger</span><span class="o">();</span>
+
+    <span class="n">List</span> <span class="n">words</span> <span class="o">=</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">sentence</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">words</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="n">words</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">munger</span><span class="o">.</span><span class="na">munge</span><span class="o">(</span><span class="n">words</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="n">words</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Munger</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">munge</span><span class="o">(</span><span class="n">String</span> <span class="n">word</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// the same as before</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">SentenceHelper</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">List</span> <span class="nf">split</span><span class="o">(</span><span class="n">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">join</span><span class="o">(</span><span class="n">List</span> <span class="n">words</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>One day, I’d like to write unit tests, mocks - you know, the whole package -, so I must move those two new statements out of the scope of the execute method. I’m just going to hack a solution together using <a href="http://www.springsource.org/">spring</a> to see whether it works or not. I can do it now, because all the <em>scenarios</em> are green.</p>
+
+<p>This is the best thing about <em>scenarios</em> and <a href="/blog/2011/12/bdd-demonstration/" title="A Step by Step BDD Demonstration with Some Useful Insights">BDD</a>, that <strong>I can do experimenting, <a href="http://www.extremeprogramming.org/rules/spike.html" title="XP Spike">spiking</a>, refactoring or anything else without changing the test cases</strong>. Try to do it with unit tests: the moment you move something, the mocks will turn red and you have to do a lot of unnecessary work by fixing them.</p>
+
+<!--more-->
+
+<p>Here is the code - it is ugly -, but it works (if you are new to <em>spring</em>, please have a look at its <a href="http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/">documentation</a> first):</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">(</span><span class="n">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+
+  <span class="n">AbstractApplicationContext</span> <span class="n">factory</span> <span class="o">=</span>
+         <span class="k">new</span> <span class="nf">ClassPathXmlApplicationContext</span><span class="o">(</span>
+            <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="o">{</span><span class="s">&quot;/applicationContext.xml&quot;</span><span class="o">});</span>
+  <span class="n">SentenceHelper</span> <span class="n">sentenceHelper</span> <span class="o">=</span>
+         <span class="o">(</span><span class="n">SentenceHelper</span><span class="o">)</span> <span class="n">factory</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&quot;sentenceHelper&quot;</span><span class="o">);</span>
+  <span class="n">Munger</span> <span class="n">munger</span> <span class="o">=</span> <span class="o">(</span><span class="n">Munger</span><span class="o">)</span> <span class="n">factory</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">&quot;munger&quot;</span><span class="o">);</span>
+
+  <span class="n">List</span> <span class="n">words</span> <span class="o">=</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">sentence</span><span class="o">);</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">words</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">words</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">munger</span><span class="o">.</span><span class="na">munge</span><span class="o">(</span><span class="n">words</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+  <span class="o">}</span>
+
+  <span class="k">return</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="n">words</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
+
+<p>The <code>applicationContext.xml</code> is very simple: has nothing more than a <code>component-scan</code> directive:</p>
+
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;beans</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+  <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+  <span class="na">xmlns:context=</span><span class="s">&quot;http://www.springframework.org/schema/context&quot;</span>
+  <span class="na">xsi:schemaLocation=</span>
+    <span class="s">&quot;http://www.springframework.org/schema/beans</span>
+<span class="s">     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
+<span class="s">     http://www.springframework.org/schema/context</span>
+<span class="s">     http://www.springframework.org/schema/context/spring-context.xsd&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">&quot;com.zsoltfabok.blog&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/beans&gt;</span></code></pre></div>
+
+<p>It looks better after a couple of small changes, <code>SimpleTextMunger.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTextMunger</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">SentenceHelper</span> <span class="n">sentenceHelper</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Munger</span> <span class="n">munger</span><span class="o">;</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">public</span> <span class="nf">SimpleTextMunger</span><span class="o">(</span><span class="n">SentenceHelper</span> <span class="n">sentenceHelper</span><span class="o">,</span>
+                          <span class="n">Munger</span> <span class="n">munger</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">sentenceHelper</span> <span class="o">=</span> <span class="n">sentenceHelper</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">munger</span> <span class="o">=</span> <span class="n">munger</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">execute</span><span class="o">(</span><span class="n">String</span> <span class="n">sentence</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">List</span> <span class="n">words</span> <span class="o">=</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">sentence</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">words</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="n">words</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">munger</span><span class="o">.</span><span class="na">munge</span><span class="o">(</span><span class="n">words</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sentenceHelper</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="n">words</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Now the code doesn’t compile, because the <code>SimpleTextMungerStepsdef.java</code> uses a default constructor, but after the following change, the code compiles, the test cases run and they are green - <code>SimpleTextMungerStepsdef.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^I have an instance of my class$&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">I_have_an_instance_of_my_class</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">munger</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SimpleTextMunger</span><span class="o">(</span><span class="k">new</span> <span class="nf">SentenceHelper</span><span class="o">(),</span> <span class="k">new</span> <span class="nf">Munger</span><span class="o">());</span>
+<span class="o">}</span></code></pre></div>
+
+<p>It is really good that the code is cleaner now, on the other hand it has nothing to do with <em>spring</em>: with the change above I got rid of the <code>factory.getBean()</code> calls, which I have to bring back somehow. <em>Spring</em> has a nice utility called <code>SpringJUnit4ClassRunner</code> which does all the <code>ApplicationContext</code> and <code>factory.getBean()</code> calls in the background. It should be used like in <code>com/zsoltfabok/blog/spring/SimpleTextMungerTest.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">SpringJUnit4ClassRunner</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@ContextConfiguration</span><span class="o">(</span><span class="n">locations</span> <span class="o">=</span> <span class="o">{</span> <span class="s">&quot;/applicationContext.xml&quot;</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTextMungerTest</span> <span class="o">{</span>
+  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="n">SimpleTextMunger</span> <span class="n">simpleTextMunger</span><span class="o">;</span>
+
+  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldMungeASimpleWord</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;wrod&quot;</span><span class="o">,</span> <span class="n">simpleTextMunger</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="s">&quot;word&quot;</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>This test case runs, and it is green. Somehow I should integrate this structure into my <em>feature</em> - <code>SimpleTextMunger_Test.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@RunWith</span><span class="o">(</span><span class="n">Cucumber</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="nd">@Cucumber.Options</span><span class="o">(</span><span class="n">features</span><span class="o">=</span><span class="s">&quot;classpath:simple_text_munger.feature&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTextMunger_Test</span> <span class="o">{</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Now I have a small problem with the <a href="http://junit.sourceforge.net/javadoc/org/junit/runner/RunWith.html">@RunWith</a> annotation. <code>@RunWith</code> tells <em><a href="http://junit.org">JUnit</a></em> to run the test cases in a special environment, and unfortunately there can be only one of these environments.</p>
+
+<p>I thought that there had to be a way to solve this issue, so I had a look at the <a href="https://github.com/cucumber/cucumber-jvm/blob/master/spring/src/main/java/cucumber/runtime/java/spring/SpringFactory.java">source of the <em>SpringFactory</em></a> and it looked like the functionality I needed was already there:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpringFactory</span> <span class="kd">implements</span> <span class="n">ObjectFactory</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">AbstractApplicationContext</span> <span class="n">applicationContext</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="n">StaticApplicationContext</span> <span class="n">stepContext</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Collection</span><span class="o">&gt;</span> <span class="n">stepClasses</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&gt;();</span>
+
+  <span class="kd">static</span> <span class="o">{</span>
+    <span class="n">applicationContext</span> <span class="o">=</span>
+      <span class="k">new</span> <span class="nf">ClassPathXmlApplicationContext</span><span class="o">(</span>
+          <span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&quot;cucumber.xml&quot;</span><span class="o">});</span>
+      <span class="n">applicationContext</span><span class="o">.</span><span class="na">registerShutdownHook</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span></code></pre></div>
+
+<p>So the only thing I have to do is create a <code>cucumber.xml</code> and make it visible for the test cases:</p>
+
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;beans</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+  <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+  <span class="na">xmlns:context=</span><span class="s">&quot;http://www.springframework.org/schema/context&quot;</span>
+  <span class="na">xsi:schemaLocation=</span>
+    <span class="s">&quot;http://www.springframework.org/schema/beans</span>
+<span class="s">     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span>
+<span class="s">     http://www.springframework.org/schema/context</span>
+<span class="s">     http://www.springframework.org/schema/context/spring-context-3.0.xsd&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">&quot;cucumber.runtime.java.spring&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;context:annotation-config/&gt;</span>
+
+    <span class="nt">&lt;import</span> <span class="na">resource=</span><span class="s">&quot;classpath*:/applicationContext.xml&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/beans&gt;</span></code></pre></div>
+
+<p>The <code>SpringFactory</code> loads the <code>ClassPathXmlApplicationContext</code> using the <code>cucumber.xml</code> - which is an <code>applicationContext.xml</code> by the way -, and loads every available <code>applicationContext.xml</code>:</p>
+
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;beans&gt;</span>
+  <span class="nt">&lt;context:component-scan</span> <span class="na">base-package=</span><span class="s">&quot;cucumber.runtime.java.spring&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;context:annotation-config</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;import</span> <span class="na">resource=</span><span class="s">&quot;classpath*:/applicationContext.xml&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/beans&gt;</span></code></pre></div>
+
+<p>So technically it does all the work I need. Let’s change the <em>step definitions</em> - <code>SimpleTextMungerStepsdef.java</code>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTextMungerStepsdef</span> <span class="o">{</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="n">SimpleTextMunger</span> <span class="n">munger</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">result</span><span class="o">;</span>
+
+  <span class="nd">@Given</span><span class="o">(</span><span class="s">&quot;^I have an instance of my class$&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">I_have_an_instance_of_my_class</span><span class="o">()</span> <span class="o">{</span>
+  <span class="o">}</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span></code></pre></div>
+
+<p>After adding the <code>@Autowired</code> annotation and removing the content of the <code>I_have_an_instance_of_my_class</code> <em>step</em>, my <em>feature</em> executes just fine. Although the <em>step</em>, is empty I’m going to leave it like that for now, because it makes the <em>scenarios</em> readable, and I also may need this <em>step</em> in the future.</p>
+
+<p>So far so good, because <a href="https://github.com/cucumber/cucumber-jvm">cucumber-jvm</a> covers every aspect I need when I’m working with Java code. In the next post I’m going to see how <em>cucumber-jvm</em> works with <a href="/blog/2012/03/cucumber-jvm-mocking/">mocking</a> frameworks. Until thatyou can find the source for this post under the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post/tree/episode_3">episode_3</a> branch of the <a href="https://github.com/ZsoltFabok/cucumber-jvm-post">repository</a> on github. Stay tuned!</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/12/cucumber-jvm-preparation/">Cucumber JVM: Preparation</a></li><li><a href="/blog/2011/12/cucumber-jvm-more-scenarios/">Cucumber JVM: More Scenarios</a></li><li><a href="/blog/2012/03/cucumber-jvm-mocking/">Cucumber JVM: Mocking</a></li><li><a href="/blog/2012/09/cucumber-jvm-web-with-spring-mvc/">Cucumber JVM: Web Application with Spring MVC</a></li><li><a href="/blog/2012/09/cucumber-jvm-hooks/">Cucumber JVM: Hooks</a></li></ul></div>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/development" title="development">development</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/cucumber" title="cucumber">cucumber</a></li><li><a href="/blog/tag/bdd" title="bdd">bdd</a></li><li><a href="/blog/tag/eclipse" title="eclipse">eclipse</a></li><li><a href="/blog/tag/cucumber-jvm" title="cucumber-jvm">cucumber-jvm</a></li><li><a href="/blog/tag/spring" title="spring">spring</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2012/01/cucumber-jvm-di/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2012/01/cucumber-jvm-di/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2012/01/cucumber-jvm-di/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2012/01/cucumber-jvm-di/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2012/01/kano-for-customer-satisfaction/" class="basic-alignment left" title="Increase Customer Satisfaction with the Kano Model">&laquo; Increase Customer Satisfaction with the Kano Model</a>
+            
+            
+              <a href="/blog/2012/02/sps-2012-discount/" class="basic-alignment right" title="Software Passion Summit 2012, 10% Discount for Followers">Software Passion Summit 2012, 10% Discount for Followers &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

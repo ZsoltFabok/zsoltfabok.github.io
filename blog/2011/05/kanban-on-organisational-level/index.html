@@ -1,0 +1,464 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Kanban on Organisational Level &#8211; Zsolt Fabók</title>
+<meta name="description" content="A couple of days ago, I talked to the head of an organisation, who was having a hard time to get an overview of the current work of her organisation, and struggling to have enough manpower in order to deliver products in time. This is a common problem, I had talked to other leaders who had the same issue, and in fact I was in a similar situation before myself.<br/><br/>more...">
+<meta name="keywords" content="kanban, change management, improvement, scrum, visualize workflow, stand-up, lean">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Kanban on Organisational Level">
+<meta name="twitter:description" content="A couple of days ago, I talked to the head of an organisation, who was having a hard time to get an overview of the current work of her organisation, and struggling to have enough manpower in order to deliver products in time. This is a common problem, I had talked to other leaders who had the same issue, and in fact I was in a similar situation before myself.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kanban on Organisational Level">
+<meta property="og:description" content="A couple of days ago, I talked to the head of an organisation, who was having a hard time to get an overview of the current work of her organisation, and struggling to have enough manpower in order to deliver products in time. This is a common problem, I had talked to other leaders who had the same issue, and in fact I was in a similar situation before myself.<br/><br/>more...">
+<meta property="og:url" content="/blog/2011/05/kanban-on-organisational-level/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2011/05/kanban-on-organisational-level/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Kanban on Organisational Level</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2011-05-16T08:13:13-06:00"><i class="fa fa-calendar-o"></i> May 16, 2011</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=kanban,changemanagement,improvement,scrum,visualizeworkflow,stand-up,lean&amp;text=Kanban%20on%20Organisational%20Level&amp;url=/blog/2011/05/kanban-on-organisational-level/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/05/kanban-on-organisational-level/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2011/05/kanban-on-organisational-level/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>A couple of days ago, I talked to the head of an organisation, who was having a hard time to get an overview of the current work of her organisation, and struggling to have enough manpower in order to deliver products in time. This is a common problem, I had talked to other leaders who had the same issue, and in fact I was in a similar situation before myself. As a solution, we introduced <a href="/blog/tag/kanban/" title="Kanban related articles by me">Kanban</a> on the organisation level.</p>
+
+<h2 id="the-problems">The Problems</h2>
+
+<p>Before jumping into the middle, let’s have a look at the problems which triggered this introduction in my case:</p>
+
+<ul>
+  <li>
+    <p>Missing overview of the ongoing work items</p>
+  </li>
+  <li>
+    <p>Not enough manpower to deliver</p>
+  </li>
+</ul>
+
+<p><em>Why is it hard to get an overview?</em> It is a very good question indeed. Usually the head of an organisation - later on in this article I’m going to refer to her as <em>leader</em> -, has to deal with several things during the day, and it is very easy to lose track of the recent events, which may change on hourly or daily basis. Usually she only gets back into the picture when something turns south, but usually by then it is already too late.</p>
+
+<p>In a healthy organisation, everybody is working on something, but for <em>how long</em>, <em>when will it be finished</em>, <em>how much effort has been spent on it</em>? These are also very good questions, and usually one has to dig quite deep in the organisation to find the answers. These answers are crucial for acquiring new work items into the organisation. Unfortunately, they are very often incorrect, and takes time to get them, so <em>leader</em>s take new work items based on inaccurate data, and then the organisation becomes <em><a href="/blog/2012/08/waste-in-software-development/">overburden</a></em>.</p>
+
+<p>I truly believe that using a Kanban system can help solve such problems. Let’s see how.</p>
+
+<!--more-->
+
+<h2 id="kanban-board-on-the-top-of-the-organisation">Kanban [board] on the Top of the Organisation</h2>
+
+<p>Let’s have a look at the top three principles of Kanban:</p>
+
+<ul>
+  <li>
+    <p>Visualize the workflow - <em>what is the current status of the organisation</em></p>
+  </li>
+  <li>
+    <p>Limit the work in progress (WIP) - <em>how much work the organisation can do</em></p>
+  </li>
+  <li>
+    <p>Measure and optimize <a href="/blog/2013/07/lead-time">lead time</a> - <em>how fast the organisation goes</em></p>
+  </li>
+</ul>
+
+<p>Perfect, it seems that <strong>the <em>visualize the workflow</em> principle can solve our missing overview problem</strong>, and somehow the <em>limit the WIP</em> correlates with the lack of manpower issue. It seems that the <em>lead time measurement</em> is irrelevant at the moment, but actually it isn’t. <strong><em>WIP limit</em>s and <em>lead time</em>s have an indirect effect on the resource availability: they can solve our manpower problem</strong>.</p>
+
+<p>The following board structure demonstrates the <em>visualize the workflow</em> and <em>limit the WIP</em> principles in case of an organisation:</p>
+
+<p><img class="center" src="/images/posts/2011-05-16-kanban-on-organisational-level/organisational-level-kanban-board.png" width="500" height="375" title="organisational level kanban board" /></p>
+
+<p>When the <em>leader</em> looks at the top Kanban board, it is obvious which team is working on which work item at the moment, and more importantly she can also see which phase these items are in. Mind the green numbers on the top each column, these are the <em>WIP limit</em>s. They limit the number of the items in a particular column. Limitation ensures that an organisation or a team does not get <a href="/blog/2012/08/waste-in-software-development">overburdened</a>. By <a href="/blog/2010/06/more-kanban-numbers/" title="More Kanban Numbers">applying <em>WIP limit</em> on teams</a>, the overburdening can more likely be avoided.</p>
+
+<p>Let’s review the top board, and assume that the customer needs item ‘<em>E</em>’ to be started as soon as possible. ‘<em>Phase 1</em>’ has one item, so we have a free space for item ‘<em>E</em>’, and the <em>leader</em> needs find a team that can start working on it. According to the board, ‘<em>Team 3</em>’ finished item ‘<em>D</em>’, so they are free, and they can start working on ‘<em>E</em>’.</p>
+
+<p>In theory it seems pretty straightforward, but reality usually differs from theory. It may happen that ‘<em>Team 3</em>’ has no idea how to handle item ‘<em>E</em>’, and only ‘<em>Team 1</em>’ is only capable of handling it. <strong>This is the point where the <em>lead time</em> comes into the picture.</strong> If the board contains information on how long a particular item has been staying in a column, and it is also known how much time for example ‘<em>Team 1</em>’ needs to finish a work item like item ‘<em>A</em>’, then the <em>leader</em> can have a rough idea when item ‘<em>A</em>’ will be finished. If this is within a reasonable time frame, the customers usually accept it, but when it is not or the customer is not satisfied with the answer, then <strong>the Kanban system revealed an important deficiency</strong>: the exclusive knowledge of ‘<em>Team 1</em>’ is a threat to the organisation.</p>
+
+<p>It is very rare that an organisation can say no to a customer and tell her to come back later when the organisation (internally ‘<em>Team 1</em>’) can take the work item. In real life, ‘<em>Team 1</em>’ will take item ‘<em>E</em>’, but there are things which can be done in order to reduce damage. ’<em>Team 3</em>’ is free to help out ‘<em>Team 1</em>’ finish the remaining work related to item ‘<em>A</em>’. Nevertheless, keep a <a href="/blog/tag/retrospective/">retrospective</a> and find a way to solve similar situations later.</p>
+
+<h2 id="how-to-use-the-system">How To Use The System</h2>
+
+<p>Let’s assume that a new work item arrives - item ‘<em>G</em>’ - to the organisation. It can be a feature, a bug, or some kind of enhancement. A very important thing is that <strong>on the organisational level, keep every work item as it is, do not split or merge them</strong>. The customer or the other organisation who gave the work item does not care about the details, and for the big picture it is enough to track the original work items.</p>
+
+<p>When item ‘<em>G</em>’ can be started, it starts two lives: one on the top board, and one on the board of the team, which is working on it:</p>
+
+<p><img class="center" src="/images/posts/2011-05-16-kanban-on-organisational-level/organisational-level-kanban-board-usage.png" width="500" height="375" title="organisational level kanban board usage" /></p>
+
+<p>‘<em>Team 2</em>’ starts working on item ‘<em>G</em>’ and handles it according to its internal methodology - in this case ‘<em>Team 2</em>’ uses Kanban as well - and splits it into items ‘<em>G1</em>’ and ‘<em>G2</em>’.</p>
+
+<p>Finishing an item is also pretty straightforward. ‘<em>Team 3</em>’ has just finished item ‘<em>B1</em>’, which means that the whole item ‘<em>B</em>’ is done, so it can be moved into the ‘<em>Done</em>’ column of ‘<em>Phase 2</em>’ on the top board. When item ‘<em>B</em>’ can be continued, another team can take it and work on it in ‘<em>Phase 3</em>’.</p>
+
+<h2 id="finding-bottlenecks">Finding Bottlenecks</h2>
+
+<p>The <strong>agile or lean methods</strong> won’t help a starting organisation deliver faster, or in better quality. They <strong>will expose bottlenecks and problems</strong>. Let’s have an example how.</p>
+
+<p>It is very common that one single person is responsible for a very specific task. In the example above ‘<em>Team 3</em>’ is not a team, but a regular guy, who is responsible for translating the texts of the user interface.</p>
+
+<p><img class="center" src="/images/posts/2011-05-16-kanban-on-organisational-level/organisational-level-kanban-board-example.png" width="500" height="375" title="organisational level kanban board example" /></p>
+
+<p>Items cannot enter ‘<em>Phase 3</em>’ until everything is ready on the user interface, and this includes the translation. Unfortunately, ‘Team 3’ cannot work more then they currently do - it is physically impossible -, so the whole system is blocked, ‘<em>Team 1</em>’ and ‘<em>Team 2</em>’ became idle. ‘<em>Phase 1</em>’ and ‘Phase 2’ are full, item ‘<em>F</em>’ cannot enter. Even if the <em>WIP limit</em> of ‘<em>Phase 1</em>’ were increased, it wouldn’t help much. The whole flow is blocked in the middle, and in order to earn money, the organisation is supposed to finish items, which is not possible at the moment according to Kanban.</p>
+
+<p>There isn’t any methodology capable of providing a general solution for such problems. Usually, ‘<em>Team 3</em>’ feels bad about the situation and works in their free time in order to finish at least one item, so that the work can be continued either with item ‘<em>A</em>’ or item ‘<em>B</em>’. This isn’t the right solution. <strong>With the Kanban approach every information and tool is available, but one should look at it from the correct angle.</strong> Here are some possible explanations and solutions:</p>
+
+<ul>
+  <li>
+    <p>Increase the <a href="/blog/2014/01/throughput">throughput</a> of ‘<em>Team 3</em>’ by hiring new people, or train ‘<em>Team 2</em>’ or ‘<em>Team 1</em>’ so that they can help out occasionally</p>
+  </li>
+  <li>
+    <p>Maybe ‘<em>Team 3</em>’ could have handled the situation, but ‘<em>Team 2</em>’ and ‘<em>Team 1</em>’ finished almost at the same time. So set the priorities and <em>WIP limits</em> (‘Phase 2’ -&gt; 2), so that they work is kind of shifted</p>
+  </li>
+</ul>
+
+<h2 id="retrospective">Retrospective</h2>
+
+<p>Let’s consider a real life experience. Several months ago, my former boss and I introduced this system in our organisation, and we had serious problems with it so we had to re-think the whole concept. Here are our problems in retrospect:</p>
+
+<ul>
+  <li>
+    <p>We put every possible task on the <em>organisational board</em>, for example management related work items, which blocked us immediately</p>
+  </li>
+  <li>
+    <p>We had a middle-sized organisation with approximately 40 people, but only 10 of us knew how to work with a Kanban system</p>
+  </li>
+  <li>
+    <p>We had a hard time setting the <em>WIP limit</em>s</p>
+  </li>
+  <li>
+    <p>We had an organisational level <a href="/blog/2010/12/daily-stand-up-variations/" title="Daily Stand-up Variations">stand-up</a> twice a week with everybody right after lunch</p>
+  </li>
+  <li>
+    <p>Only the two of us cared about it</p>
+  </li>
+</ul>
+
+<p>What we did differently in the next time (because we tried again):</p>
+
+<ul>
+  <li>
+    <p>We focused only on work items</p>
+  </li>
+  <li>
+    <p>Explained the process to everybody</p>
+  </li>
+  <li>
+    <p>Had a smaller stand-up before the <a href="/blog/2010/12/daily-stand-up-variations/" title="Daily Stand-up Variations">stand-up</a>s of the other teams</p>
+  </li>
+  <li>
+    <p>We focused only on the <em>visualize the workflow</em> principle</p>
+  </li>
+</ul>
+
+<p>Our first board was filled with small management related work items like creating reports, handling impediments etc. There was hardly any place for actual work items. The teams couldn’t help with them, and they took away precious free slots of our board, so we decided to get rid of them.</p>
+
+<p>This approach was better than the first one. We were able to react faster to changes, management was able to see through the ongoing projects, we could skip a couple of meetings because the information sharing during these <a href="/blog/2010/12/daily-stand-up-variations/" title="Daily Stand-up Variations">stand-up</a> meetings was enough to do our daily work.</p>
+
+<p>A friend of mine pointed out that there is a contradiction between the example above and the last retrospective finding. This is because we didn’t reach the point where we knew, how much work we can do in parallel. The everyday arguments about <em>WIP limit</em>s were so frustrating that we decided to postpone the decision on <em>WIP limit</em>s. Although I knew and still know that this decision was wrong, I decided to accept the group’s decision.</p>
+
+<h2 id="would-like-to-try-it-out">Would Like to Try It Out?</h2>
+
+<p>If you got interested in this approach, here are the steps I recommend to do:</p>
+
+<ol>
+  <li>
+    <p>Have a physical board, which displays the most important development phases of your organisation</p>
+  </li>
+  <li>
+    <p>Set some <em>WIP limit</em>s - you can change them later, of course</p>
+  </li>
+  <li>
+    <p>Collect the actual status of your teams and put it on the board, do not split and leave management related work out</p>
+  </li>
+  <li>
+    <p>Have a daily <a href="/blog/2010/12/daily-stand-up-variations/" title="Daily Stand-up Variations">stand-up</a> meeting in front of this board. Invite at least one person from each team, and discuss every work item from right to left, top to bottom</p>
+  </li>
+  <li>
+    <p>Discuss the daily issues, look for bottlenecks and try to find solutions</p>
+  </li>
+  <li>
+    <p>After this session the different teams can have their own <a href="/blog/2010/12/daily-stand-up-variations/" title="Daily Stand-up Variations">stand-up</a> meetings where they can talk about the issues found during the first stand-up meeting</p>
+  </li>
+  <li>
+    <p>When a team makes progress, update the team’s local board and also the top board so that everybody can recognize that something has changed</p>
+  </li>
+  <li>
+    <p>Start measuring how much time your organisation needs to get an item from the left side of the board to the right</p>
+  </li>
+  <li>
+    <p>Gather your team representatives and try to find a way to shorten this time</p>
+  </li>
+</ol>
+
+<p>This is a very good basis for introduction. Kanban is adaptive enough to be used in any kind of organisation. The teams can work with different methodologies like <a href="/blog/tag/scrum/">Scrum</a>, <a href="/blog/tag/XP/">XP</a>, waterfall, <a href="http://www.dsdm.org/">DSDM</a> or according to company specific processes.</p>
+
+<div class="related-articles"><h5>You may also find interesting:<small class="pull-right">(<a href="/blog/">View all posts</a>)</small></h5><ul><li><a href="/blog/2011/02/xp-with-kanban-instead-of-scrum/">XP with Kanban instead of Scrum</a></li><li><a href="/blog/2010/11/kanban-nightmares/">Kanban Nightmares</a></li><li><a href="/blog/2010/11/the-internal-queue-column/">Internal Queue Columns</a></li><li><a href="/blog/2012/03/visualize-on-the-highest-level/">Visualize the Flow on the Highest Possible Level</a></li></ul></div>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/kanban" title="kanban">kanban</a></li><li><a href="/blog/tag/change-management" title="change management">change&nbsp;management</a></li><li><a href="/blog/tag/improvement" title="improvement">improvement</a></li><li><a href="/blog/tag/scrum" title="scrum">scrum</a></li><li><a href="/blog/tag/visualize-workflow" title="visualize workflow">visualize&nbsp;workflow</a></li><li><a href="/blog/tag/stand-up" title="stand-up">stand-up</a></li><li><a href="/blog/tag/lean" title="lean">lean</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2011/05/kanban-on-organisational-level/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2011/05/kanban-on-organisational-level/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2011/05/kanban-on-organisational-level/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2011/05/kanban-on-organisational-level/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2011/05/weekly-cw18/" class="basic-alignment left" title="Weekly - CW18">&laquo; Weekly - CW18</a>
+            
+            
+              <a href="/blog/2011/05/weekly-cw19-and-cw20/" class="basic-alignment right" title="Weekly - CW19 and CW20">Weekly - CW19 and CW20 &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

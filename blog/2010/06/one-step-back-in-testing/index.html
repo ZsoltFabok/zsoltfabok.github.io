@@ -1,0 +1,430 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>One Step Back In Testing &#8211; Zsolt Fabók</title>
+<meta name="description" content="There are several advantages and disadvantages of&nbsp;Test Driven Development. In this post, I have no intention of repeating any of these, instead, I'd like to show a way to use TDD effectively while changing legacy code.### The ProblemHave a look at this legacy code:This code does not do much; it accepts two words separated with a space, and returns true/false depending on whether the words are equal or not.<br/><br/>more...">
+<meta name="keywords" content="tdd, refactoring, dojo, java, testing">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="One Step Back In Testing">
+<meta name="twitter:description" content="There are several advantages and disadvantages of&nbsp;Test Driven Development. In this post, I have no intention of repeating any of these, instead, I'd like to show a way to use TDD effectively while changing legacy code.### The ProblemHave a look at this legacy code:This code does not do much; it accepts two words separated with a space, and returns true/false depending on whether the words are equal or not.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="One Step Back In Testing">
+<meta property="og:description" content="There are several advantages and disadvantages of&nbsp;Test Driven Development. In this post, I have no intention of repeating any of these, instead, I'd like to show a way to use TDD effectively while changing legacy code.### The ProblemHave a look at this legacy code:This code does not do much; it accepts two words separated with a space, and returns true/false depending on whether the words are equal or not.<br/><br/>more...">
+<meta property="og:url" content="/blog/2010/06/one-step-back-in-testing/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2010/06/one-step-back-in-testing/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">One Step Back In Testing</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2010-06-17T01:54:11-06:00"><i class="fa fa-calendar-o"></i> June 17, 2010</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=tdd,refactoring,dojo,java,testing&amp;text=One%20Step%20Back%20In%20Testing&amp;url=/blog/2010/06/one-step-back-in-testing/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/06/one-step-back-in-testing/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2010/06/one-step-back-in-testing/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>There are several advantages and disadvantages of <a href="/blog/tag/tdd">Test Driven Development</a>. In this post, I have no intention of repeating any of these, instead, I’d like to show <strong>a</strong> <strong>way</strong> to use TDD effectively while changing legacy code.</p>
+
+<h3 id="the-problem">The Problem</h3>
+
+<p>Have a look at this legacy code:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">zsoltfabok</span><span class="o">.</span><span class="na">dojo</span><span class="o">.</span><span class="na">legacy</span><span class="o">.</span><span class="na">stepback</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Comparator</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">same</span><span class="o">(</span><span class="n">String</span> <span class="n">string</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">char</span><span class="o">[]</span> <span class="n">data</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">();</span>
+        <span class="kt">char</span><span class="o">[]</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="kt">char</span><span class="o">[]</span> <span class="n">second</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="kt">boolean</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">data</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">data</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="n">second</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="n">data</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">];</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">first</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">data</span><span class="o">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">second</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">first</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">second</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+                <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">first</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">first</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">==</span> <span class="n">second</span><span class="o">[</span><span class="n">j</span><span class="o">])</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                    <span class="k">else</span> <span class="o">{</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+                        <span class="k">break</span><span class="o">;</span>
+                    <span class="o">}</span>
+            <span class="k">else</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>This code does not do much; it accepts two words separated with a space, and returns true/false depending on whether the words are equal or not. This works quite well, but imagine that we are asked to enhance it, so that the comparison is not case sensitive any more. As a first step, have some test cases in order to preserve the original behaviour:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ComparatorTest</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">Comparator</span> <span class="n">comparator</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Comparator</span><span class="o">();</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldReturnTrueForTheSameWords</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">assertTrue</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">same</span><span class="o">(</span><span class="s">&quot;word word&quot;</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldReturnFalseForDifferentWords</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">assertFalse</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">same</span><span class="o">(</span><span class="s">&quot;ward word&quot;</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>There can be more, but for now, they are enough (check the screencast and the source repository for the whole test suite). TDD and the <strong>green</strong> bar, among other things, make you/me confident that the upcoming changes won’t affect the already implemented behaviour. This is the most important thing in it for me. Now back to the legacy code. Have the test case, which will drive the change:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldReturnTrueForTheSameButDifferentlyCasedWords</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">assertTrue</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">same</span><span class="o">(</span><span class="s">&quot;wORd word&quot;</span><span class="o">));</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>After having this test case on board, which turns the bar <strong>red</strong>, the following will happen:</p>
+
+<ul>
+  <li>
+    <p>introducing the change (implementation of the non case sensitive comparison)</p>
+  </li>
+  <li>
+    <p>massive refactoring (nobody doubts it I assume)</p>
+  </li>
+</ul>
+
+<p>Such a huge work may take “<em>hours</em>” even for that small piece of code above (I admit that in this case it won’t take hours). Obviously, you cannot commit it, cannot ship it to the customer, you cannot show it to others besides your pair, etc. until the change is not done.</p>
+
+<h3 id="ideas-for-solving-the-problem">Ideas for Solving the Problem</h3>
+
+<p>The TDD mantra says <em>red-green-refactor</em>, <em>red-green-refactor</em>,… but is does not say anything about the time spent in each phase, a factor that I consider very important. For example, staying too long in green and refactor means less or no progress, staying too long in red means losing control over the code, causing quality and feature degradation. In order to avoid these cases I’ll take two ideas:</p>
+
+<ul>
+  <li>
+    <p>very small and focused steps (<a href="http://www.threeriversinstitute.org/" title="Kent Beck">Kent Beck</a>, <a href="http://www.amazon.com/Extreme-Programming-Explained-Embrace-Change/dp/0321278658" title="Extreme Programming Explained 2nd Edition">Extreme Programming Explained 2nd Edition</a>)</p>
+  </li>
+  <li>
+    <p>spend limited time in red (<a href="http://industriallogic.com/company/coaches/index.html" title="Industrial Logic">Joshua Kerievsky</a>, <a href="http://www.infoq.com/presentations/The-Limited-Red-Society" title="The Limited Red Society">The Limited Red Society</a>)</p>
+  </li>
+</ul>
+
+<p>The small steps help to make progress in green, and the limited time in red helps to stay on the right track. <strong>If you realize after some minutes that you are doing changing and refactoring in one step, you may do your last step back, and perform only one of them</strong>. I prefer doing the refactoring first, because the green code is <strong>shippable</strong>, <strong>shareable</strong>, and nevertheless I feel more <strong>secure</strong>, because the test cases prevent me from introducing bugs in the existing functionality. So a third item to the list:</p>
+
+<ul>
+  <li>take a step back: do the refactoring first and the change afterwards</li>
+</ul>
+
+<p>One can argue that only the change has value to the customer so that shall be done first and refactoring afterwards. In my point of view, this statement highly depends on the definition of value. If the customer got the code, the value wouldn’t only mean the functionality but quality as well. However, I admit that there are cases when the change comes first and refactoring afterwards.</p>
+
+<h3 id="ignoring-test-cases">Ignoring Test Cases</h3>
+
+<p>One way of stepping back is to ignore the new test case. Do not delete it, just <strong>@Ignore</strong> it:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Ignore</span><span class="o">(</span><span class="s">&quot;Introduces new functionality, but I must refactor first&quot;</span><span class="o">)</span>
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldReturnTrueForTheSameButDifferentlyCasedWords</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">assertTrue</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">same</span><span class="o">(</span><span class="s">&quot;wORd word&quot;</span><span class="o">));</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>An ignored test case is similar to a <em>TODO</em> note, but a bit more effective. You know that the test case is there, because Eclipse shows the number of ignored test cases. Now everything is green again, you spent less time in red, but need a smaller step. Do the refactoring now. The first test cases make sure that nothing is going to be broken, and with wise refactoring, the introduction of the change will be fast and easy.</p>
+
+<p>When the refactoring is done, remove the <strong>@Ignore</strong> tag, and introduce the change. You can apply this technique as many times as you want.</p>
+
+<p>Don’t get me wrong, there is nothing wrong with such test cases, on the contrary: they are very good test cases. They not only drive the implementation, but also point out that the code base needs refactoring.</p>
+
+<h3 id="write-test-cases-with-temporarily-wrong-assertion">Write Test Cases With Temporarily Wrong Assertion</h3>
+
+<p>The example above introduces something new, but sometimes an already existing functionality has to be fixed. Imagine that the customer complains that the method does not work if the input contains trailing spaces. Now, the test case looks like this:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldReturnTrueInCaseOfSameWordsButWithTrailingSpaces</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">assertTrue</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">same</span><span class="o">(</span><span class="s">&quot;word word &quot;</span><span class="o">));</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>Another way of stepping back is to change the assertion here like this:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldReturnTrueInCaseOfSameWordsButWithTrailingSpaces</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">assertFalse</span><span class="o">(</span><span class="n">comparator</span><span class="o">.</span><span class="na">same</span><span class="o">(</span><span class="s">&quot;word word &quot;</span><span class="o">));</span>
+    <span class="o">}</span></code></pre></div>
+
+<p>This test case provides more safety, because this is how the legacy code works, isn’t it? As soon as the refactoring is done, do not forget to change back to the original test case.</p>
+
+<h3 id="example">Example</h3>
+
+<p>In the following screencast I demonstrate how to use these techniques while working with the example legacy code.</p>
+
+<object id="single2" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="570" height="387" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="name" value="single2" /><param name="bgcolor" value="undefined" /><param name="flashvars" value="file=http://zsoltfabok.com/screencasts/stepback.flv" /><param name="src" value="http://zsoltfabok.com/screencasts/player.swf" /><param name="wmode" value="transparent" /><param name="allowfullscreen" value="true" /><embed id="single2" type="application/x-shockwave-flash" width="570" height="387" src="http://zsoltfabok.com/screencasts/player.swf" allowfullscreen="true" wmode="transparent" flashvars="file=http://zsoltfabok.com/screencasts/stepback.flv" bgcolor="undefined" name="single2" />&lt;/embed&gt;</object>
+
+<p>The source code of the example is available on <a href="https://github.com/ZsoltFabok/dojo.legacy.stepback" title="source code on github">github</a>.</p>
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/tdd" title="tdd">tdd</a></li><li><a href="/blog/tag/refactoring" title="refactoring">refactoring</a></li><li><a href="/blog/tag/dojo" title="dojo">dojo</a></li><li><a href="/blog/tag/java" title="java">java</a></li><li><a href="/blog/tag/testing" title="testing">testing</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2010/06/one-step-back-in-testing/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/06/one-step-back-in-testing/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2010/06/one-step-back-in-testing/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2010/06/one-step-back-in-testing/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2010/06/handle-additional-resources/" class="basic-alignment left" title="Handling Additional Resources">&laquo; Handling Additional Resources</a>
+            
+            
+              <a href="/blog/2010/06/using-kata-for-improvements/" class="basic-alignment right" title="Using Kata for Improvements">Using Kata for Improvements &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>

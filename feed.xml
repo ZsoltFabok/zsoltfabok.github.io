@@ -1,0 +1,1045 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">Zsolt Fabók</title>
+<generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="/feed.xml" />
+<link rel="alternate" type="text/html" href="" />
+<updated>2020-12-11T22:55:16+01:00</updated>
+<id>/</id>
+<author>
+  <name>Zsolt Fabók</name>
+  <uri>/</uri>
+  
+</author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Spring-Boot Configuration Properties]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2017/04/sprint-boot-configuration/" />
+  <id>/blog/2017/04/sprint-boot-configuration</id>
+  <published>2017-04-09T00:00:00+02:00</published>
+  <updated>2017-04-09T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I wanted to switch in my &lt;a href=&quot;https://github.com/ZsoltFabok/microservices&quot;&gt;spring-boot microservices project&lt;/a&gt; from hard coded values to configurable ones:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;JsonNode&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;restTemplate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;postForObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;http://localhost:8081/login&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ObjectNode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The easiest way to configure anything in spring-boot is through &lt;code&gt;application.properties&lt;/code&gt;. By default, spring-boot looks for the &lt;code&gt;application.properties&lt;/code&gt; in the &lt;code&gt;/config&lt;/code&gt; folder first, so I placed one there with the desired value in it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/microservices/webservice % cat src/main/resources/config/application.properties 
+
+services.authservice.url&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://localhost:8081/
+
+~/microservices/webservice %&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There are two ways to access configuration values in spring-boot: using the &lt;code&gt;@Value&lt;/code&gt; annontation or with &lt;em&gt;structured objects&lt;/em&gt;. I’m going to use the &lt;em&gt;structured objects&lt;/em&gt;, because the &lt;code&gt;@Value&lt;/code&gt; annotation can be cubersome to use when it comes to types (and it is also a bit hard to mock it in testing):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;zsoltfabok&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;webservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.context.properties.ConfigurationProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.stereotype.Component&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@ConfigurationProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;services&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ServicesProperties&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Authservice&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authservice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Authservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Authservice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Authservice&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getAuthservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setAuthservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Authservice&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;authservice&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;ServiceProperties&lt;/code&gt; is bounded to all the variables that start with the word &lt;code&gt;services&lt;/code&gt;. The &lt;code&gt;authservice&lt;/code&gt; is a sub level property and as such spring-boot reaches it with a static sub class. &lt;strong&gt;Mind that the getters and setters must much the configuration name&lt;/strong&gt;. For example, in my case the &lt;code&gt;getAuthService()&lt;/code&gt; and &lt;code&gt;setAuthService()&lt;/code&gt; methods did nothing, and when I asked for the value, the system returned &lt;code&gt;null&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In order to use the class above I had to do two things. First, tell spring-boot to load it with the &lt;code&gt;@EnableConfigurationProperties&lt;/code&gt; annotation:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@SpringBootApplication&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@EnableConfigurationProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ServicesProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Application&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;SpringApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Application&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Second, inject it into my contoller (that’s why the properties file is annotated with &lt;code&gt;@Component&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@RequestMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/login&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@Controller&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ServicesProperties&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;servicesProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Using the property:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authserviceUrl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;servicesProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAuthservice&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;JsonNode&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;restTemplate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;postForObject&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;authserviceUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ObjectNode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Since it is autowired, mocking it in testing is also easy:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;nd&quot;&gt;@RunWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SpringRunner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@WebMvcTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LoginController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoginControllerTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@MockBean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;answer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Answers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;RETURNS_DEEP_STUBS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ServicesProperties&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;servicesProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Before&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;authserviceUrl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;url&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;when&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;servicesProperties&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getAuthService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;thenReturn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;authserviceUrl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;answer=Answers.RETURNS_DEEP_STUBS&lt;/code&gt; tells mockito to allow to mock chain of methods. Otherwise, I had to create a mock for &lt;code&gt;ServicesProperties&lt;/code&gt; and another one for the &lt;code&gt;ServicesProperties.Authservice&lt;/code&gt;.&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2017/04/sprint-boot-configuration/&quot;&gt;Spring-Boot Configuration Properties&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on April 09, 2017.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Rsync for Windows]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2017/03/windows-rsync/" />
+  <id>/blog/2017/03/windows-rsync</id>
+  <published>2017-03-21T00:00:00+01:00</published>
+  <updated>2017-03-21T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I really needed &lt;a href=&quot;https://linux.die.net/man/1/rsync/&quot;&gt;rsync&lt;/a&gt; for Windows, but I didn’t want to bother with installing cygwin, because it is cubersome to use and I’m already using &lt;a href=&quot;http://cmder.net/&quot;&gt;cmder&lt;/a&gt;. I found &lt;a href=&quot;https://www.itefix.net/content/cwrsync-free-edition/&quot;&gt;wdRsync&lt;/a&gt; which seemed a good option:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/Downloads &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -O https://www.itefix.net/dl/cwRsync_5.5.0_x86_Free.zip
+   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+ &lt;span class=&quot;m&quot;&gt;100&lt;/span&gt; 3404k  &lt;span class=&quot;m&quot;&gt;100&lt;/span&gt; 3404k    &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;     &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  2036k      &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  0:00:01  0:00:01 --:--:-- 2095k
+~/Downloads/ &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls
+cwRsync_5.5.0_x86_Free.zip
+~/Downloads &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The setup was not that hard (I’m using the &lt;code&gt;/c/Applications&lt;/code&gt; folder instead of the &lt;code&gt;/c/Program Files&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/Downloads &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;unzip cwRsync_5.5.0_x86_Free.zip -d /c/Applications/cwRsync_5.5.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It does work locally:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/Downloads/rsync_test &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;rsync -av from/ to/
+sending incremental file list
+created directory to
+./
+a/
+a/first.txt
+a/b/
+a/b/second.txt
+                                                   
+sent &lt;span class=&quot;m&quot;&gt;261&lt;/span&gt; bytes  received &lt;span class=&quot;m&quot;&gt;94&lt;/span&gt; bytes  710.00 bytes/sec
+total size is &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  speedup is 0.00&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Remote over &lt;code&gt;ssh&lt;/code&gt; works, too:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/Downloads/rsync_test &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;rsync -av -e ssh from/ &lt;span class=&quot;s2&quot;&gt;&amp;quot;zsolt@192.168.1.2:/tmp/to/&amp;quot;&lt;/span&gt;
+sending incremental file list
+created directory to
+./
+a/
+a/first.txt
+a/b/
+a/b/second.txt
+                                                   
+sent &lt;span class=&quot;m&quot;&gt;261&lt;/span&gt; bytes  received &lt;span class=&quot;m&quot;&gt;94&lt;/span&gt; bytes  1010.00 bytes/sec
+total size is &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  speedup is 0.00&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There are cases when it does not work:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/Downloads/rsync_test &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;rsync -av -e ssh from/ &lt;span class=&quot;s2&quot;&gt;&amp;quot;zsolt@192.168.1.2:/tmp/to/&amp;quot;&lt;/span&gt;
+dup&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; in/out/err failed
+rsync: connection unexpectedly closed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; bytes received so far&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;sender&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+rsync error: error in rsync protocol data stream &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;code 12&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at io.c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;226&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;sender&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3.1.2&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This happens because of an &lt;code&gt;ssh&lt;/code&gt; incompatibility. &lt;code&gt;cwRsync&lt;/code&gt; comes with an &lt;code&gt;ssh&lt;/code&gt; version (see &lt;code&gt;cwRsync/bin&lt;/code&gt;), and &lt;code&gt;rsync&lt;/code&gt; works just fine with it. If you have issue above, use it instead of the &lt;code&gt;ssh&lt;/code&gt; that comes with your shell or OS. Instead of &lt;strong&gt;-e ssh&lt;/strong&gt; use &lt;strong&gt;-e /c/Applications/cwRsync_5.5.0/bin/ssh&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~/Downloads/rsync_test &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;rsync -av -e /c/Applications/cwRsync_5.5.0/bin/ssh
+from/ &lt;span class=&quot;s2&quot;&gt;&amp;quot;zsolt@192.168.1.2:/tmp/to/&amp;quot;&lt;/span&gt;
+
+sending incremental file list
+
+sent &lt;span class=&quot;m&quot;&gt;166&lt;/span&gt; bytes  received &lt;span class=&quot;m&quot;&gt;14&lt;/span&gt; bytes  360.00 bytes/sec
+total size is &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;  speedup is 0.00&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2017/03/windows-rsync/&quot;&gt;Rsync for Windows&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 21, 2017.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Agicon - One Does Not Simply Improves without Visualisation]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2016/03/agicon/" />
+  <id>/blog/2016/03/agicon</id>
+  <published>2016-03-30T00:00:00+02:00</published>
+  <updated>2016-03-30T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I gave a talk at the Agicon 2016 conference about Kanban, focusing mostly on visualisation and how it can help to improve different kind of organisations from startups to large enterprises. You can find the slides here:&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/3ZVZoXaqNj8Pj3&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/kanban-visualisation&quot; title=&quot;Kanban visualisation&quot; target=&quot;_blank&quot;&gt;Kanban visualisation&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;and some references you may find interesting:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2014/04/schedule-portfolio-board/&quot;&gt;Schedule Portfolio Kanban&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2014/03/risk-kanban-board/&quot;&gt;Risk Kanban Board&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2013/11/the-kanban-board-is-a-mirror/&quot;&gt;The Kanban Board is a Mirror&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;See the Whole Flow - An Exercise for Managers to Start a Transition&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2013/04/infinite-queue/&quot;&gt;About Flows and Infinite Queues&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2013/02/three-columns/&quot;&gt;Be Aware of the Three Columns&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2012/10/hidden-inventory/&quot;&gt;The Hidden Inventory&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog//2012/03/visualize-on-the-highest-level/&quot;&gt;Visualize the Flow on the Highest Possible Level&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2011/05/kanban-on-organisational-level/&quot;&gt;Kanban on Organisational Level&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2011/01/visualize-wf-dod/&quot;&gt;Visualize Workflow With DoD Line&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2010/11/the-internal-queue-column/&quot;&gt;Internal Queue Columns&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2010/10/internal-done-columns/&quot;&gt;Internal Done Columns&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;/blog/2010/09/ageing-items-on-the-board/&quot;&gt;Ageing Items on the Board&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://leankanban.com/case-studies&quot;&gt;Kanban Case Studies&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2016/03/agicon/&quot;&gt;Agicon - One Does Not Simply Improves without Visualisation&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 30, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Ericsson Hungary MMGW - Devops and AWS Introduction]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2016/02/ericsson-devops/" />
+  <id>/blog/2016/02/ericsson-devops</id>
+  <published>2016-02-26T00:00:00+01:00</published>
+  <updated>2016-02-26T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I gave an introductional and motivational talk about devops and AWS to folks at Ericsson Hungary MMGW divison.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2016/02/ericsson-devops/&quot;&gt;Ericsson Hungary MMGW - Devops and AWS Introduction&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on February 26, 2016.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Debrecen Tech and Startup Meetup - What Scrum, Kanban, and Lean Have Ever Done for Us?]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2015/12/debrecen-meetup/" />
+  <id>/blog/2015/12/debrecen-meetup</id>
+  <published>2015-12-14T00:00:00+01:00</published>
+  <updated>2015-12-14T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I gave my last talk at the &lt;a href=&quot;http://www.meetup.com/DebTech/events/227265768/&quot;&gt;Debrecen Tech and Startup Meetup&lt;/a&gt; for a local community about how Scrum, Kanban, and Lean can help small or startup companies achieve their success. Scrum, Kanban, and Lean are very good at improving processes, which we need for fast delivery, and Agile/Lean UX to find the right product to deliver, so I put emphasis on these parts.&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/bZjjK2TIilBKfB&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/what-scrum-kanban-lean-ever-done-for-us&quot; title=&quot;What Scrum Kanban Lean Ever Done for Us&quot; target=&quot;_blank&quot;&gt;What Scrum Kanban Lean Ever Done for Us&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;and some references you may find interesting:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/2012/08/waste-in-software-development/&quot;&gt;Waste in software development&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/2014/01/the-purpose-of-agile/&quot;&gt;The agile way of working&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/2013/11/broke-the-wip-limit-twice/&quot;&gt;Kanban introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/2014/01/why-wip-limits-matter/&quot;&gt;Why WIP limit matters&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/2013/02/when-will-it-be-done/&quot;&gt;Basic forecasting with Kanban&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/2013/12/flow-efficiency/&quot;&gt;Flow Efficiency&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://zsoltfabok.com/blog/tag/scrum/&quot;&gt;Scrum posts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thank you very much for coming, I really appreciate it, and Merry Christmas!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2015/12/debrecen-meetup/&quot;&gt;Debrecen Tech and Startup Meetup - What Scrum, Kanban, and Lean Have Ever Done for Us?&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on December 14, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Agilia Conference 2016]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2015/12/agilia-conference-2016/" />
+  <id>/blog/2015/12/agilia-conference-2016</id>
+  <published>2015-12-01T00:00:00+01:00</published>
+  <updated>2015-12-01T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;The next &lt;a href=&quot;http://agiliaconference.com/&quot;&gt;Agilia Conference&lt;/a&gt; is around the corner with exceptional speakers such as Tom Gilb, Scott W. Ambler, Łukasz Węgrzyn, and Pierre E. Neis.&lt;/p&gt;
+
+&lt;p&gt;Aguarra - the organizer of the conference - is keen on bringing great variety of speakers to its events. For example, last year they had &lt;a href=&quot;http://agiliaconference.com/agilia-conference-2015/speakers/mario-almondo/&quot;&gt;Mario Almondo&lt;/a&gt; who is a COO and the Technical Directory of the Ferrari Formula-1 team. He talked about how they collaborate at Ferrari to deliver an excellent performance from race to race. How cool is that? Moreover, “Mr. Beyond Budgeting” &lt;a href=&quot;http://agiliaconference.com/agilia-conference-2015/speakers/bjarte-bogsnes/&quot;&gt;Bjarte Bogsnes&lt;/a&gt; was there as well, and gave his brilliant talk about how to run a big company without the burden of yearly budgets.&lt;/p&gt;
+
+&lt;p&gt;It seems Aguarra keeps its good habit and invited &lt;a href=&quot;http://agiliaconference.com/agilia-conference-2016/speakers/lukasz-wegrzyn/&quot;&gt;Łukasz Węgrzyn&lt;/a&gt;, who is a laywer, and will talk about a very important topic: the legal point of view of projects and how to do contracts for agile projects. This talk alone might be worth you time and money, because several companies struggle to find the right way of writing a good contract.&lt;/p&gt;
+
+&lt;p&gt;Last but not least, Scott W. Ambler will deliver a &lt;a href=&quot;http://agiliaconference.com/agilia-conference-2016/speakers/scott-w-ambler/&quot;&gt;keynote on Disciplined Agile Delivery&lt;/a&gt; - DAD - which is an IT process decision framework for delivering sophisticated agile solutions in the enterprise (I hope it is the complete opposite of SAFE).&lt;/p&gt;
+
+&lt;p&gt;Agilia Conference seems to be a good event to attend to. The main conference is on the 5th and 6th of April, and there will be workshops on the 4th, 7th, and 8th of April 2016. See you there!&lt;/p&gt;
+
+&lt;h3 id=&quot;magyar-verzi&quot;&gt;Magyar verzió&lt;/h3&gt;
+&lt;p&gt;Már nem kell sokat várni a következő Agilia Konferenciára, ami olyan kivételes előadókat vonultat fel, mint Tom Gilb, Scott W. Ambler, Łukasz Węgrzyn, és Pierre E. Neis.&lt;/p&gt;
+
+&lt;p&gt;Aguarra - a konferencia szervezője - híres arról, hogy nagyon különböző előadókat hív meg a rendezvényeire. Például, tavaly Mario Almondot, aki COO és technikai igazgató a Ferrari Forma 1-es csapatánál. Előadásában arról beszélt, hogy hogyan dolgoznak együtt a Ferrarinál, hogy versenyről versenyre tudják szállítani az eredményeket. Ez azért nem semmi. Többek között ott volt még Bjarte Bogsnes, aki a “Beyond Budgeting” mozgatórugója, és előadta, hogy hogyan lehet nagy cégeket éves költségvetés nélkül működtetni.&lt;/p&gt;
+
+&lt;p&gt;Úgy tűnik Aguarra folytatja jó szokását, és meghívta Łukasz Węgrzynt, aki egy ügyvéd, és fontos témáról fog előadni: hogyan kell jogilag jó szerződéseket kötni agilis projektekre. Lehet csak ez az előadás megéri a pénzt s időt, mert sok cég küzd azzal, hogy jó szerződést írjon.&lt;/p&gt;
+
+&lt;p&gt;Végül, de nem utolsó sorban, Scott W. Ambler a DAD-ről (Disciplined Agile Delivery) fog beszélni, ami egy a nagyvállalatok számára kifejlesztett döntéshozó keretrendszer (remélem nem olyan lesz mint a SAFE).&lt;/p&gt;
+
+&lt;p&gt;Ezek alapján, jó kis esemény lesz ez a konferencia. Az előadások április 5-én és 6-án, a workshopok 4-én, 7-én, és 8-án lesznek. Ott találkozunk!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2015/12/agilia-conference-2016/&quot;&gt;Agilia Conference 2016&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on December 01, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Agile, Lean and UX is Coming]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2015/11/agile-lean-ux-is-coming/" />
+  <id>/blog/2015/11/agile-lean-ux-is-coming</id>
+  <published>2015-11-04T00:00:00+01:00</published>
+  <updated>2015-11-04T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;This time I was talking about the basics of Agile and Lean methodologies and how to apply the UX principles in them. Here are the slides:&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/7fgAFegRc6vXaV&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/agile-lean-ux-is-coming&quot; title=&quot;Agile, Lean UX is Coming&quot; target=&quot;_blank&quot;&gt;Agile, Lean UX is Coming&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;and some references you may find interesting:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Taiichi Ohno and the Toyota Production System (&lt;a href=&quot;http://www.amazon.com/Toyota-Production-System-Beyond-Large-Scale/dp/0915299143&quot;&gt;book reference&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Waste (&lt;a href=&quot;http://zsoltfabok.com/blog/2012/08/waste-in-software-development/&quot;&gt;blog post&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Flow Efficiency, work of Niklas Modig (&lt;a href=&quot;http://www.amazon.co.uk/This-Lean-Resolving-Efficiency-Paradox/dp/919803930X&quot;&gt;book reference&lt;/a&gt;) and slides from Hakan Forss (&lt;a href=&quot;https://hakanforss.wordpress.com/2012/09/14/lean-lego-the-red-brick-cancer/&quot;&gt;blog post&lt;/a&gt;). More about flow efficiency: &lt;a href=&quot;http://zsoltfabok.com/blog/2013/12/flow-efficiency/&quot;&gt;how to measure it&lt;/a&gt; and &lt;a href=&quot;http://zsoltfabok.com/blog/2013/12/flow-efficiency/&quot;&gt;when it is not so useful&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;The agile way of working (&lt;a href=&quot;http://zsoltfabok.com/blog/2014/01/the-purpose-of-agile/&quot;&gt;blog post&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Scrum (don’t do Scrum if possible. If you want to, here are some &lt;a href=&quot;http://zsoltfabok.com/blog/tag/scrum/&quot;&gt;good posts&lt;/a&gt; about it.)&lt;/li&gt;
+  &lt;li&gt;Kanban by David Anderson (&lt;a href=&quot;http://zsoltfabok.com/blog/2013/10/i-broke-the-wip-limit-slides/&quot;&gt;slides&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Value stream mapping (&lt;a href=&quot;http://zsoltfabok.com/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;blog post about how to do it&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Cynefin by Dave Snowden (&lt;a href=&quot;http://zsoltfabok.com/blog/2013/06/cynefin-for-the-first-time/&quot;&gt;blog post&lt;/a&gt; and &lt;a href=&quot;http://cognitive-edge.com/&quot;&gt;further reading&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thank you very much for coming, I really appreciate it!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2015/11/agile-lean-ux-is-coming/&quot;&gt;Agile, Lean and UX is Coming&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on November 04, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Philosophies of Building the Workplace]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2015/04/philosophies-of-building-the-workplace/" />
+  <id>/blog/2015/04/philosophies-of-building-the-workplace</id>
+  <published>2015-04-24T00:00:00+02:00</published>
+  <updated>2015-04-24T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I gave my second talk at the Budapest University of Technology and Economics to psychology students about the philosophies we use to build and improve a workplace. I covered a wide range of topics (Taylor, Kanban, staff liquidity, cynefin, etc.) and promised the students to share some references and further reading materials. Here you go, and thank you very much for coming I really appreciate it!&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/cGeKKWB88t1&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/philosophies-of-building-the-workplace&quot; title=&quot;Philosophies of Building the Workplace&quot; target=&quot;_blank&quot;&gt;Philosophies of Building the Workplace&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- more --&gt;
+
+&lt;h3 id=&quot;intro&quot;&gt;Intro&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What the goal of the organisation or workplace&lt;/li&gt;
+  &lt;li&gt;Empowerment (&lt;a href=&quot;http://www.libri.hu/konyv/empowerment-a-felelosseg-hatalma.html&quot;&gt;book reference&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Tribal leadership (&lt;a href=&quot;http://www.triballeadership.net/book&quot;&gt;book reference&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;processes&quot;&gt;Processes&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Frederick Taylor, Henri Fayol and Max Weber&lt;/li&gt;
+  &lt;li&gt;Taiichi Ohno and the Toyota Production System (&lt;a href=&quot;http://www.amazon.com/Toyota-Production-System-Beyond-Large-Scale/dp/0915299143&quot;&gt;book reference&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Waste (&lt;a href=&quot;http://zsoltfabok.com/blog/2012/08/waste-in-software-development/&quot;&gt;blog post&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Flow Efficiency, work of Niklas Modig (&lt;a href=&quot;http://www.amazon.co.uk/This-Lean-Resolving-Efficiency-Paradox/dp/919803930X&quot;&gt;book reference&lt;/a&gt;) and slides from Hakan Forss (&lt;a href=&quot;https://hakanforss.wordpress.com/2012/09/14/lean-lego-the-red-brick-cancer/&quot;&gt;blog post&lt;/a&gt;). More about flow efficiency: &lt;a href=&quot;http://zsoltfabok.com/blog/2013/12/flow-efficiency/&quot;&gt;how to measure it&lt;/a&gt; and &lt;a href=&quot;http://zsoltfabok.com/blog/2013/12/flow-efficiency/&quot;&gt;when it is not so useful&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;The agile way of working (&lt;a href=&quot;http://zsoltfabok.com/blog/2014/01/the-purpose-of-agile/&quot;&gt;blog post&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Scrum (don’t do Scrum if possible. If you want to, here are some &lt;a href=&quot;http://zsoltfabok.com/blog/tag/scrum/&quot;&gt;good posts&lt;/a&gt; about it.)&lt;/li&gt;
+  &lt;li&gt;Kanban by David Anderson (&lt;a href=&quot;http://zsoltfabok.com/blog/2013/10/i-broke-the-wip-limit-slides/&quot;&gt;slides&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Value stream mapping (&lt;a href=&quot;http://zsoltfabok.com/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;blog post about how to do it&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Staff liquidity by Chris Matts (&lt;a href=&quot;http://zsoltfabok.com/blog/2014/01/why-wip-limits-matter/&quot;&gt;blog post&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Cynefin by Dave Snowden (&lt;a href=&quot;http://zsoltfabok.com/blog/2013/06/cynefin-for-the-first-time/&quot;&gt;blog post&lt;/a&gt; and &lt;a href=&quot;http://cognitive-edge.com/&quot;&gt;further reading&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Beyond Budgeting by Bjarte Bogsnes (&lt;a href=&quot;http://zsoltfabok.com/blog/2012/05/group-punishment/&quot;&gt;metion in a blog post&lt;/a&gt; and &lt;a href=&quot;http://bbrt.org/&quot;&gt;further reading&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;people&quot;&gt;People&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Social sciences make a difference (&lt;a href=&quot;https://speakerdeck.com/fabokzs/ace2013-social-sciences-make-a-difference&quot;&gt;slides&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2015/04/philosophies-of-building-the-workplace/&quot;&gt;Philosophies of Building the Workplace&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on April 24, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Teaser Talk about Development at the University]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2015/03/teaser-talk-about-development-at-the-university/" />
+  <id>/blog/2015/03/teaser-talk-about-development-at-the-university</id>
+  <published>2015-03-02T00:00:00+01:00</published>
+  <updated>2015-03-02T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I’ve recently given a teaser talk about software development at the Budapest University of Technology and Economics. The audience was great and thank you for coming folks, I really appreciate it!&lt;/p&gt;
+
+&lt;p&gt;I wasn’t talking much about programming, because nowadays a programmer or software developer is expected to know and do testing, and keep in mind two things: quality and user satisfaction.&lt;/p&gt;
+
+&lt;p&gt;Here are the slides:&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/yhDXzOBnflXENS&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/introduction-to-software-development-55132588&quot; title=&quot;Introduction to Software Development&quot; target=&quot;_blank&quot;&gt;Introduction to Software Development&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I also presented this older material from &lt;a href=&quot;http://zsoltfabok.com/speaking#xp2013&quot;&gt;XP2013&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/D6mwMf5nhpWRrj&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/xp2013-narrow-down-what-to-test&quot; title=&quot;[xp2013] Narrow Down What to Test&quot; target=&quot;_blank&quot;&gt;[xp2013] Narrow Down What to Test&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are some more useful links below.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2010/06/one-step-back-in-testing/&quot;&gt;One Step Back In Testing&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2011/05/narrow-down-what-to-test/&quot;&gt;How to Narrow Down What to Test&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/08/embedded-web-services-for-testing/&quot;&gt;Embedded Web Services For Testing Web Applications from JUnit&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/01/the-purpose-of-agile/&quot;&gt;The Purpose of Agile Software Development&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2015/03/teaser-talk-about-development-at-the-university/&quot;&gt;Teaser Talk about Development at the University&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 02, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Visualize Information Flow in Value Stream Mapping]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/05/visualize-information-in-value-stream-mapping/" />
+  <id>/blog/2014/05/visualize-information-in-value-stream-mapping</id>
+  <published>2014-05-23T00:00:00+02:00</published>
+  <updated>2014-05-23T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/05/flow-efficiency-is-not-always-useful/&quot;&gt;When I met Mary and Tom Poppendieck&lt;/a&gt; we not only talked about &lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;flow efficiency&lt;/a&gt; but about the entity that actually flows through the system. According to Mary it can only be a deriverable: a customer request, a feature or a product, but not a patch or a bug fix. The more I think about it and the more I look at my current and previous projects, the more certain I am that she is wrong. My point is that we cannot focus only on deliverables in case of a flow: if we do, we won’t be able to see the big picture. I still believe that a value stream mapping should contain all kinds of things that appear in the flow, and therefore &lt;strong&gt;I’d say that the entity that flows and shall be mapped in value stream mapping exercises is the information&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I added &lt;a href=&quot;/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;information flow to the value stream mapping exercises&lt;/a&gt; because a long time ago we tried to improve the flow of a certain organisation but none of our efforts was successful. The reason was that the flow of customer requests and features covered only the 30% of the whole flow. The other 70% was communication, office politics, site politics, bug fixes etc. If you think about it, these work with information - even the features and bug fixes can be seen as some kind of information -, so it make sense to add them to the value stream map. With this approach we were able to see the whole, and finally it made sense why our efforts on feature flow improvement were unsuccessful: there was insufficient communication, therefore decisions were based on assumptions.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2012-04-17-see-the-whole-flow-exercise/second_task.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After we did the usual value stream mapping we added the information flow. It turned out that delivery management was out of the loop: no information went in and no information went out (no feedback loops). This means that they assumed certain important details just by looking at the package, and never gave feedback on it (practically, if there was an error they fixed it, but never pushed upstream). This was not visible on the usual value stream map but was immediately visible on an &lt;strong&gt;information stream map&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;And this is something you can try. Do a usual value stream mapping and then add the information flow and see if the information flow follows the value (eg. features) flow. If not, or in a worst case there are information flow without feature flows you found a good place for improvements.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;See the Whole Flow - An Exercise for Managers to Start a Transition&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/06/cynefin-for-the-first-time/&quot;&gt;My First Time With Cynefin&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;Flow Efficiency&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/05/flow-efficiency-is-not-always-useful/&quot;&gt;Flow Efficiency Based Improvements Aren&#39;t Always Useful&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/05/visualize-information-in-value-stream-mapping/&quot;&gt;Visualize Information Flow in Value Stream Mapping&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on May 23, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Flow Efficiency Based Improvements Aren't Always Useful]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/05/flow-efficiency-is-not-always-useful/" />
+  <id>/blog/2014/05/flow-efficiency-is-not-always-useful</id>
+  <published>2014-05-21T00:00:00+02:00</published>
+  <updated>2014-05-21T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;Yesterday, I met &lt;a href=&quot;http://www.poppendieck.com/&quot;&gt;Mary and Tom Poppendieck&lt;/a&gt; and over a nice beer we were talking about various topics but we spent most of our time talking about &lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;flow efficiency&lt;/a&gt; (ratio of the value added activities to waiting). When I was riding my bicycle home I was still thinking about our conversation and presented examples. Despite the fact that I think the current right move is to favour flow efficiency over resource efficiency, &lt;strong&gt;I think it only works in the simple domain of &lt;a href=&quot;https://twitter.com/snowded&quot;&gt;Dave Snowden&lt;/a&gt;’s &lt;a href=&quot;/blog/2013/06/cynefin-for-the-first-time/&quot;&gt;cynefin&lt;/a&gt; framework, where the connection between cause and effect is obvious to all&lt;/strong&gt;. Here, simple means that the process is clear to everybody who is involved even if it is a long process.  If you think about car manufacturing from where the concept of flow efficiency originates, you can see that it’s in the simple domain: every detail of the process is well known to all workers involved. However, in knowledge work and in software development, that is not necessarily true.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;According to Dave Snowden, most of the knowledge workers are in the complex (connection between cause and effect is clear only in retrospect) and complicated (connection between cause and effect requires expert knowledge) domains, and in these domains the flow is not as visible and controllable as in the simple domain. Without having the proper - and not expert - view on the flow it is extremely difficult to improve the flow efficiency. This is a minor thing compared to the fact that in the complex and complicated domains we don’t even know for sure the connection between cause and effect (that’s why Snowden suggests to probe and analyze) and we add flow efficiency changes on top of that.&lt;/p&gt;
+
+&lt;p&gt;For example, we see that there is a buffer between two teams (buffer means waiting time). One way to improve flow efficiency is to merge the two teams or at least make them interact more frequently. This looks like a good idea, however there is no guarantee that it is going to work. What if the teams simply cannot communicate more or they cannot work together which slows them down and the waiting time increases?&lt;/p&gt;
+
+&lt;p&gt;Nevertheless, improving the flow efficiency is a good idea but knowing in which domain of the cynefin framework we are in is crucial. I had improved the flow efficiency of various teams in the past but in retrospect they were in the simple domain. I failed with my last team because we were in the complex domain and despite the huge effort we put into flow efficiency improvement nothing has changed. We should have moved to the complicated domain first where the connection between cause and effect are clearer and do the flow efficiency improvement as an experiment that we can analyse. My point is: &lt;strong&gt;don’t start with the flow efficiency improvement until you understand your flow and you have control over it&lt;/strong&gt; (having a &lt;a href=&quot;/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;value stream map&lt;/a&gt; is a good start but knowing is different from understanding).&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;See the Whole Flow - An Exercise for Managers to Start a Transition&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/06/cynefin-for-the-first-time/&quot;&gt;My First Time With Cynefin&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;Flow Efficiency&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/05/visualize-information-in-value-stream-mapping/&quot;&gt;Visualize Information Flow in Value Stream Mapping&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/05/flow-efficiency-is-not-always-useful/&quot;&gt;Flow Efficiency Based Improvements Aren&#39;t Always Useful&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on May 21, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[London Lean Kanban Day 2014 - The Road to a Fairly Predictable System]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/04/road-to-a-fairly-predictable-system/" />
+  <id>/blog/2014/04/road-to-a-fairly-predictable-system</id>
+  <published>2014-04-28T00:00:00+02:00</published>
+  <updated>2014-04-28T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I see agile software development methodologies (Scrum and XP) and modern management methods (Kanban) as tools for predictability. The development organisation would like to know what is coming and whether it will be the right thing to do. On the other side, the management would like to know when the new features can hit the market. Both want predictability but in a different way. We are on the road to a fairly predictable system that can accurately tell us what the next right thing to do will be and also when it is going to be ready. In my talk, I’ll share my experiences with you, focusing on practices - from portfolio Kanban to risk management - we do to be more predictable.&lt;/p&gt;
+
+&lt;p&gt;Here are the slides:&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/E5w8h01wOygOje&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/agile-adria-croatia-2014-the-road-to-a-fairly-predictable-system&quot; title=&quot;[Agile Adria Croatia 2014] The Road to a Fairly Predictable System&quot; target=&quot;_blank&quot;&gt;[Agile Adria Croatia 2014] The Road to a Fairly Predictable System&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/04/road-to-a-fairly-predictable-system/&quot;&gt;London Lean Kanban Day 2014 - The Road to a Fairly Predictable System&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on April 28, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Schedule Portfolio Kanban]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/04/schedule-portfolio-board/" />
+  <id>/blog/2014/04/schedule-portfolio-board</id>
+  <published>2014-04-07T00:00:00+02:00</published>
+  <updated>2014-04-07T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;As a project manager one of my current tasks is risk management, and I have to focus especially on schedule risk. Therefore I was looking for something that can show me quickly the current status of the project and this kind of risk. I started to use a portfolio Kanban board that covers the whole project, but my board is different from &lt;a href=&quot;http://brodzinski.com/2013/08/portfolio-visualization.html&quot;&gt;Pawel Brodzinski’s resource oriented board&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-04-07-schedule-portfolio-board/schedule_portfolio_board.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I’m using an old idea from &lt;a href=&quot;https://groups.yahoo.com/neo/groups/kanbandev/conversations/messages/10101&quot;&gt;Chris Matts&lt;/a&gt; - a work item is put into a column that tells us when the it is supposed to be ready -, and the idea of &lt;a href=&quot;/blog/2011/05/kanban-on-organisational-level/&quot;&gt;organisational level Kanban boards&lt;/a&gt;. If this is week 13, team yellow is doing fine, whereas teams red and blue are in trouble.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Besides the nice overview the board points to the most problematic parts of the project regarding schedule risk: the oldest item (team red’s work item in week 11) and the team with the highest number of delayed work items (team blue).&lt;/p&gt;
+
+&lt;p&gt;The completeness attribute tells me something else: a work item with a 3/5 completeness (&lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;number of done items / number of planned items&lt;/a&gt;) won’t be finished this week if today is Friday, however a 2/3 might be finished. Moreover, team red has started to work on something that is supposed to be ready by week 15, but they haven’t finished their week 12 commitment. Team yellow might be delayed later: so far - in 3 weeks - they finished 6 of their work items (1/1+2/2 from done, 2/3 from week 13) and they committed to deliver 8 by week 14. That is very unlikely to happen.&lt;/p&gt;
+
+&lt;p&gt;These numbers are not accurate enough but they are a good basis of a discussion. Looking at the assigned team’s &lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;lead time&lt;/a&gt; and &lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;throughput&lt;/a&gt; can tell us more about the situation (more about this in a later post). Information about the completeness should automatically come from the assigned team’s board:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-04-07-schedule-portfolio-board/schedule_portfolio_board_with_team_board.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It is still early to say much more about this approach. I have two urgent things to solve. First, I cannot see &lt;a href=&quot;/blog/2013/08/visualise-and-manage-team-dependency/&quot;&gt;dependencies between teams&lt;/a&gt; which would be important. Second, somehow I need to gather more data from teams and show it to them on the portfolio level, such as &lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;lead time&lt;/a&gt;, &lt;a href=&quot;/blog/2013/12/takt-time/&quot;&gt;takt time&lt;/a&gt; and &lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;throughput&lt;/a&gt;, which would provide a good basis for predictions.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2011/05/kanban-on-organisational-level/&quot;&gt;Kanban on Organisational Level&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/04/see-the-whole-flow-exercise/&quot;&gt;See the Whole Flow - An Exercise for Managers to Start a Transition&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/03/visualize-on-the-highest-level/&quot;&gt;Visualize the Flow on the Highest Possible Level&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/08/visualise-and-manage-team-dependency/&quot;&gt;Visualize and Manage Team Dependency&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/04/schedule-portfolio-board/&quot;&gt;Schedule Portfolio Kanban&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on April 07, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Agile Adria Croatia 2014 - The Road to a Fairly Predictable System]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/04/road-to-a-fairly-predictable-system/" />
+  <id>/blog/2014/04/road-to-a-fairly-predictable-system</id>
+  <published>2014-04-06T00:00:00+02:00</published>
+  <updated>2014-04-06T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I see agile software development methodologies (Scrum and XP) and modern management methods (Kanban) as tools for predictability. The development organisation would like to know what is coming and whether it will be the right thing to do. On the other side, the management would like to know when the new features can hit the market. Both want predictability but in a different way. At Prezi, we are on the road to a fairly predictable system that can accurately tell us what the next right thing to do will be and also when it is going to be ready. We are far from a perfect system, we had our ups and downs, but after every down we are more up than before.&lt;/p&gt;
+
+&lt;div class=&quot;oembed rich&quot;&gt;&lt;iframe src=&quot;https://www.slideshare.net/slideshow/embed_code/key/E5w8h01wOygOje&quot; width=&quot;427&quot; height=&quot;356&quot; frameborder=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; scrolling=&quot;no&quot; style=&quot;border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;&quot; allowfullscreen=&quot;&quot;&gt; &lt;/iframe&gt; &lt;div style=&quot;margin-bottom:5px&quot;&gt; &lt;strong&gt; &lt;a href=&quot;https://www.slideshare.net/fabokzs/agile-adria-croatia-2014-the-road-to-a-fairly-predictable-system&quot; title=&quot;[Agile Adria Croatia 2014] The Road to a Fairly Predictable System&quot; target=&quot;_blank&quot;&gt;[Agile Adria Croatia 2014] The Road to a Fairly Predictable System&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.slideshare.net/fabokzs&quot;&gt;Zsolt Fabok&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/04/road-to-a-fairly-predictable-system/&quot;&gt;Agile Adria Croatia 2014 - The Road to a Fairly Predictable System&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on April 06, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[No Attributes in Objects]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/03/no-attributes-in-objects/" />
+  <id>/blog/2014/03/no-attributes-in-objects</id>
+  <published>2014-03-31T00:00:00+02:00</published>
+  <updated>2014-03-31T00:00:00+02:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;I just realised that I rarely define attributes in my classes (the &lt;a href=&quot;/blog/tag/dependency-injection/&quot;&gt;dependency injection&lt;/a&gt; references are exceptions) and I’m passing everything as a parameter. So instead of this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Foo&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;attr_accessor&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:list&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_something&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;action_1&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;action_2&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;action1&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;action_2&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;b&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I have this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Foo&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_something&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;action_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;action_2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#   self. means that this is a class level method (static in Java)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;action_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;action_2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;b&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Similarly to my &lt;a href=&quot;/blog/2014/03/spike-and-a-new-workflow/&quot;&gt;spike workflow&lt;/a&gt; I realised what I’m unintentionally doing after actually having done it. I switched to this method because of the &lt;a href=&quot;http://www.linfo.org/unix_philosophy.html&quot;&gt;Unix philosophy&lt;/a&gt;: &lt;em&gt;“The Unix philosophy emphasizes building short, simple, clear, modular, and extendable code that can be easily maintained and repurposed by developers other than its creators.”&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;More precisely: I switched to this method because I was struggling with the Unix philosophy. When I’m writing code I don’t know what the shortest and simplest entity in my code is so I put everything into a class and when it is done, I may refactor it into smaller classes. This refactoring work is very hard when I have tightly coupled methods, but when I have methods that are not coupled by attributes (except dependency injection references) then it is easy. In the code above I can simply move &lt;code&gt;action_1&lt;/code&gt; and &lt;code&gt;action_2&lt;/code&gt; anywhere I want:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Foo&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# I have an attribute here: @actions&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@actions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;actions&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_something&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@actions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@actions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action_2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# ----&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Actions&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;action_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;action_2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;b&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;action_1&lt;/code&gt; and &lt;code&gt;action_2&lt;/code&gt; methods are no longer class level methods (no &lt;code&gt;.self&lt;/code&gt;) because it is easier to code dependency injection with object level methods.&lt;/p&gt;
+
+&lt;p&gt;I do this even if my class has an actual “state”:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Foo&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;attr_accessor&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:last_element&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;attr_accessor&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:list&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_iterate&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;last_element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;action_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@last_element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;action_1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last_element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;last_element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;last_element&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Anyway, this is the first time a large refactoring is no longer a difficult and long process. Furthermore, there are no more surprises in my methods: I know what is going to happen just by looking at the method definition.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2011/01/the-refactoring-only-constraint/&quot;&gt;The Refactoring only Constraint&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2011/12/cucumber-jvm-more-scenarios/&quot;&gt;Cucumber JVM: More Scenarios&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/03/cucumber-jvm-mocking/&quot;&gt;Cucumber JVM: Mocking&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/12/gemfile-path-reference/&quot;&gt;Path Reference in Gemfile&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/03/speed-or-accuracy/&quot;&gt;Fast or Accurate Applications?&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/03/no-attributes-in-objects/&quot;&gt;No Attributes in Objects&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 31, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Risk Kanban Board]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/03/risk-kanban-board/" />
+  <id>/blog/2014/03/risk-kanban-board</id>
+  <published>2014-03-25T00:00:00+01:00</published>
+  <updated>2014-03-25T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;A couple of days ago I was talking with a friend about &lt;a href=&quot;/blog/2013/10/i-broke-the-wip-limit-slides/&quot;&gt;the talk I gave last year during the Lean Kanban Europe tour&lt;/a&gt; and I realised that my unusual Kanban board may be able to solve my recent problem: &lt;strong&gt;I want to visualize and easily manage risks&lt;/strong&gt;. The board is a horizontally sliced board with four &lt;a href=&quot;/blog/2013/09/when-not-to-use-swim-lanes/&quot;&gt;horizontal lanes&lt;/a&gt; and was originally designed for an operations team (note: for risk management I won’t need &lt;a href=&quot;/blog/tag/wip/&quot;&gt;WIP limits&lt;/a&gt;):&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-25-risk-kanban-board/risk_kanban_board.png&quot; /&gt;&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Each lane represents a certain severity using the visualization idea from &lt;a href=&quot;http://agileconsulting.blogspot.hu/2011/03/using-cost-of-delay-functions-to.html&quot;&gt;Jeff Anderson&lt;/a&gt;. &lt;strong&gt;The severity (risk) comes from the correlation between time and impact: the later the team handles an issue the higher the impact is.&lt;/strong&gt; Moreover, the cost or effort to “handle” a certain level is proportional to the area under the curve:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-25-risk-kanban-board/levels_and_cost_of_delay.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Level 1 category has an “infinite impact” and an unknown cost of delay. The problem of this level is that it is completely unpredictable. The costs can be extremely low or extremely high and this high uncertainty forces us to take care of it immediately. For example, the lead developer of the project cannot come to work any more. We can gamble and say that we’ll survive without him or we try to promote somebody else and train very-very fast. &lt;strong&gt;Level 1 doesn’t allow us to do proper risk management and mitigation, it forces us to do something&lt;/strong&gt;. So it is better to take actions before a risk turns into level 1, but when it is on level 1, we have to take care of it immediately.&lt;/p&gt;
+
+&lt;p&gt;Level 2 category means that at the moment we know something is going to happen and we are aware of the consequences of a late action. For example, we know that the lead developer is leaving the company and we have 30 days to find a new lead. The more we wait with the promotion or the hire, the higher the cost of delay will be; it will be inversely proportional to the insufficient domain knowledge of the new lead developer. In other words: the more we wait the higher the risk reduced quality and delays in the project because of the domain knowledge of the new lead.&lt;/p&gt;
+
+&lt;p&gt;As you can see, if a level 2 item is not taken care of in time, it will turn into a level 1 item:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-25-risk-kanban-board/level_transformation_2_1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Level 3 is similar to level 2, but it has a free delay before turning into level 2:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-25-risk-kanban-board/level_transformation_3_2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Which means that there is a period of time when we can ignore the risk, but we cannot do it forever. Following our example, we know that the lead developer will leave the country later this year, so finding a replacement is not an immediate issue, but will be eventually.&lt;/p&gt;
+
+&lt;p&gt;Level 4 is a collection for nice to have issues or low risk level items. As I used to say: &lt;em&gt;“this is the place where all the refactoring and code improvement tasks come to die”&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Like the other boards, this one also needs daily updates (the previously mentioned operations team did it twice a day). The risks (work items) have to be reviewed from top-right to bottom-left so that the team talks about the most “painful” risk first. The rest of the risks should be revisited and checked whether they have got closer to a level transformation or need to change level:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-25-risk-kanban-board/risk_kanban_board_after_update.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And finally, when a risk is sorted out - or a work item is done -, it gets into the done column. Similarly to other Kanban systems this approach provides measures such as &lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;lead time&lt;/a&gt; (time needed to mitigate a risk on a certain level) and &lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;throughput&lt;/a&gt; (number of risks mitigated) and needs to be continuously improved in order to be an &lt;a href=&quot;/blog/2012/09/effective-vs-efficient/&quot;&gt;effective system&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/02/three-columns/&quot;&gt;Be Aware of the Three Columns&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/01/why-wip-limits-matter/&quot;&gt;One Reason Why WIP limits Matter&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/02/wrong-wip-limits-may-kill-your-options/&quot;&gt;Wrong WIP Limits Will Kill Your Options&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/03/risk-kanban-board/&quot;&gt;Risk Kanban Board&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 25, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Fast or Accurate Applications?]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/03/speed-or-accuracy/" />
+  <id>/blog/2014/03/speed-or-accuracy</id>
+  <published>2014-03-24T00:00:00+01:00</published>
+  <updated>2014-03-24T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;It is a common topic between software developers whether an application should be fast or accurate. I’ve always chosen accuracy over speed until now, like when I was solving &lt;a href=&quot;https://github.com/ZsoltFabok/project_euler/blob/master/lib/project_euler/problems/problem_7.rb&quot;&gt;problem 7 on project euler&lt;/a&gt;, which sounded very simple: find the 10001st prime number. My algorithm for finding prime numbers used &lt;a href=&quot;http://en.wikipedia.org/wiki/Wilson&#39;s_theorem&quot;&gt;Wilson’s theorem&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_prime?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Factorial&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And it was just fine for &lt;a href=&quot;https://github.com/ZsoltFabok/project_euler/blob/master/lib/project_euler/problems/problem_3.rb&quot;&gt;problem 3&lt;/a&gt;, where I had to find the prime factors of a certain number. There, the highest prime number I had to deal with was 6857 which is the 882nd prime number. Then I started to look for the 10001st prime, and my algorithm managed to find the 3000th after 2 hours.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I’ve observed before that my algorithm is not really fast, but why change something until it is not necessary, right? Wilson’s theorem is slow, because of the factorisation. Here is the factorial of 100 (100!):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10384284350875615835879868794784780563948700682078952346418475&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;948982003462663882896989074486814358339575949818878047438776630877&lt;/span&gt;
+&lt;span class=&quot;mo&quot;&gt;072&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9164800000000000000000000&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It takes quite a long time and you can imagine how long it takes to calculate the factorial of 1000, or the factorial of the 10001st prime. So I needed something faster, and I found &lt;a href=&quot;http://en.wikipedia.org/wiki/Fermat%27s_little_theorem&quot;&gt;Fermat’s little theorem&lt;/a&gt; (setting &lt;code&gt;a = 2&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_prime?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And it was faster, way faster (~86 seconds with IO operations, because I’m storing the primes in a file cache). But, &lt;a href=&quot;http://projecteuler.net/&quot;&gt;Project Euler&lt;/a&gt; didn’t accept my solution. I thought I had screwed up the indexes and had submitted the 10000th prime instead of 10001st. So, I submitted primes in the range of +/-2, but none of them was good.&lt;/p&gt;
+
+&lt;p&gt;Since it would take ages to guess the right number, I took a different approach. I downloaded the first 1000 primes from the internet and compared them to my primes and there were differences. The first was 341. As it turned out, it is a &lt;a href=&quot;http://en.wikipedia.org/wiki/Pseudoprime&quot;&gt;pseudoprime&lt;/a&gt;. A pseudoprime looks like a prime according to Fermat’s little theorem, but actually it’s not: 11 * 31 = 341. The application became faster but less accurate. I didn’t go back to Wilson’s theorem, but changed the &lt;a href=&quot;https://github.com/ZsoltFabok/project_euler/blob/master/lib/project_euler/math/prime.rb&quot;&gt;code quite a bit&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_prime?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is_pseudoprime?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;  &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;protected&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_pseudoprime?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;number_sqrt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Math&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_i&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;divisors&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;.number_sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;delete_if&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;is_composite_of?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;divisors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# n &amp;gt; 1 makes sure that it works for actual primes in the recursion&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;number&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_composite_of?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_primes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;base_primes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It is a bit slower, but more accurate (~89 seconds with IO). I think, it can be made faster (and cleaner), but for the moment I have enough primes and therefore I don’t need a different solution. Nevertheless, I learned a couple of things. First of all, playing safe and going for accuracy wasn’t a good choice because I didn’t improve and learn new things. Second, faster algorithms mea faster turnover times and faster development. And third, things like pseudoprimes finally make sense after 10 years I finished the University. Nevertheless, it was fun, solving Project Euler puzzles is fun, too. Give it a try, you’ll like it.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2011/12/bdd-demonstration/&quot;&gt;A Step by Step BDD Demonstration with Some Useful Insights&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/04/we-need-realistic-coding-dojos/&quot;&gt;We Need Realistic Coding Dojos&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/03/the-empty-else-block/&quot;&gt;The Empty Else Block&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/08/from-cucumber-to-turnip/&quot;&gt;Moving From Cucumber to Turnip&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/01/open-sourcing-emcalc/&quot;&gt;Open Sourcing Emcalc, a Legacy Application&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/03/speed-or-accuracy/&quot;&gt;Fast or Accurate Applications?&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 24, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Spike and a New Workflow]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/03/spike-and-a-new-workflow/" />
+  <id>/blog/2014/03/spike-and-a-new-workflow</id>
+  <published>2014-03-19T00:00:00+01:00</published>
+  <updated>2014-03-19T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;The other day I found myself writing a single test case the whole day without making a significant progress in the production code. It wasn’t &lt;a href=&quot;/blog/2012/09/effective-vs-efficient/&quot;&gt;efficient&lt;/a&gt; at all and I &lt;a href=&quot;/blog/2012/08/waste-in-software-development#mura&quot;&gt;wasted&lt;/a&gt; the whole day on stupid test cases - so it was time to ditch &lt;a href=&quot;/blog/tag/tdd/&quot;&gt;TDD&lt;/a&gt; for the rest of the weekend and try something different. After calming down I asked myself why I was writing test cases when I didn’t have a clue about the next step. So, instead of writing tests I wrote a &lt;a href=&quot;/blog/tag/xp/&quot;&gt;spike&lt;/a&gt;. It wasn’t nice at all, but showed me which direction I should go. I wrote a test case which tested the spike and was green, and I deleted the spike afterwards. And at this very moment, the Spike Solution from XP finally made perfect sense to me.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;According to &lt;a href=&quot;http://www.extremeprogramming.org/rules/spike.html&quot;&gt;extremeprogramming.org&lt;/a&gt; a spike is a proof of concept: &lt;em&gt;“Create spike solutions to figure out answers to tough technical or design problems”&lt;/em&gt;. Sounds great; it resonates well with my conclusions above (the next time it would be fantastic to find the &lt;em&gt;science&lt;/em&gt; first and then the practice and not vise versa ;-)). And from now on - until I find something better - I’m going to follow this workflow in my projects:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-19-spike-and-a-new-workflow/spike_workflow.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If I know what I should do I’ll use TDD, if I don’t, I’ll write a spike. When I’m satisfied with the results, I write a test case (acceptance or unit). Next I delete the spike, and inject the new test case into the TDD cycle which will be red in that context (there is no matching code, remember: the spike is gone, so it should be red).&lt;/p&gt;
+
+&lt;p&gt;Here is an example. I have a nice algorithm that does certain things to numbers. I know the inputs and outputs of the algorithm, so it is TDD, no questions. However, an algorithm alone is worthless. Either I need an app, a command line interface, or an API. There are too many options and possibilities, so I’d make more progress by just writing spikes until I find the right solution. When I have it, I’ll write a test, delete the spike and let TDD do its magic.&lt;/p&gt;
+
+&lt;p&gt;As you can see the “spike turn” takes more time, and you should be prepared for that. If you aren’t prepared enough, you’ll do the same mistakes I did. I was writing spikes for days. From a certain point of view, there is no difference in writing spike code for a day and writing test code for a day. So my agreement with myself was that I have to sweat out at least one acceptance test in a day when I’m doing a spike.&lt;/p&gt;
+
+&lt;p&gt;After making progress with the new workflow in my project, I realised that I ended up with a nice test pyramid:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-19-spike-and-a-new-workflow/spike_workflow_and_test_pyramid.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The “spike turn” produces one acceptance test case, but the TDD produces more, because the acceptance test case kind of covers the more likely scenario, whilst the unit tests cover all the possible scenarios and outcomes.&lt;/p&gt;
+
+&lt;p&gt;This workflow is very similar to a &lt;a href=&quot;/blog/2011/12/bdd-demonstration/&quot;&gt;BDD workflow&lt;/a&gt;, but there are two important differences. First, BDD is a conversation tool between product and development. Second, the two parties (product and development) have an idea about how the application should behave. I’m using my main success scenario because I don’t have a clue how it should behave. Anyway, I’m happy with it, and if you give it a try, don’t forget to comment and share your experiences.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2011/12/bdd-demonstration/&quot;&gt;A Step by Step BDD Demonstration with Some Useful Insights&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/08/waste-in-software-development/&quot;&gt;Waste in Software Development&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2012/09/effective-vs-efficient/&quot;&gt;There is a Difference Between Effective and Efficient&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/03/spike-and-a-new-workflow/&quot;&gt;Spike and a New Workflow&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 19, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Constant WIP - CONWIP]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/03/conwip/" />
+  <id>/blog/2014/03/conwip</id>
+  <published>2014-03-10T00:00:00+01:00</published>
+  <updated>2014-03-10T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/posts/2014-03-10-conwip/conwip.png&quot; /&gt;
+CONWIP stands for constant work in progress which means that the overall number of work items in the system is limited, not just a single phase or column. For example, with a CONWIP of 6 we can have at most 6 work items between ‘todo’ and ‘done’. Like &lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;throughtput&lt;/a&gt;, &lt;a href=&quot;/blog/2013/12/takt-time/&quot;&gt;takt time&lt;/a&gt;, and &lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;flow efficiency&lt;/a&gt; CONWIP comes from the car manufacturing world and it was designed for a system that produces the same kind of work item over and over. The idea is the following: it is hard to control throughtput (it is a lag measure: it provides a value that applies to a period in the past) while it is relative easy to control the overall number work items (real kanban cards and pulls) in the whole system. For example, our factory produces two kinds of product ‘A’ and ‘B’. At the moment the market needs more of ‘A’ and less of ‘B’, we simply reduce the CONWIP of ‘B’ and increase the CONWIP of ‘A’ (we do product leveling). This will change the throughput. When the demand changes we change the CONWIP values accordingly. Like the previously mentioned metrics, CONWIP cannot be used as such in software development, but after putting it into context it is very helpful.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;First, it is obvious but I have to mention that a very high CONWIP won’t cause very high throughput. There is an upper limitation of every system and if you go above this limit the overall &lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;lead time&lt;/a&gt; will increase and the throughput will decrease because the high CONWIP will allow &lt;a href=&quot;/blog/2014/02/aging-work-items/&quot;&gt;aging work items&lt;/a&gt; in the system. Second, CONWIP has really nothing to do with the WIP that is applies to the columns (or phases) on a Kanban board, except that the CONWIP cannot be lower than the highest WIP. For example, if you have a WIP limit of 5 for testing and your CONWIP is 4, you’ll never have more than 4 items in testing, so why have a WIP of 5 and/or a CONWIP of 4? And third, the sum of WIPs won’t provide the ideal CONWIP. CONWIP is in connection with a desired throughput or capability.&lt;/p&gt;
+
+&lt;p&gt;Let’s say you have 5 developers, you have one ‘ongoing’ and one ‘review column’, and in order to move things forward you have a WIP limit of 2 for ‘review’ and 5 for ‘ongoing’. The sum of these WIPs is 7 but the actual capacity is 5. If you set the CONWIP to 6 or 7 you’ll have at least one developer who is working on multiple things. Moreover, the team slows down because ‘review’ will be emptied when ‘ongoing’ reaches its WIP limit. If you go below 5 you’ll have a developer who is idle. So the best CONWIP for this team under the given circumstances is 5. If you change the WIP limits to 4 and 1 ((for ‘ongoing’ and ‘review’ respectively) because you want your lead developer to do only review you can do it without changing the CONWIP. Unfortunately, it will be the same as the sum of WIPs but as I showed you before it is not a working use case.&lt;/p&gt;
+
+&lt;p&gt;As I mentioned in the first chapter the CONWIP serves as a controlling function in car manufacturing and it can be used in the same way in software development. The team which owns the board below can do more and more week by week (increase in throughput), but never enough to match the demand:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-03-10-conwip/conwip-and-throughput.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So, it decides to maximize the amount of work items it can have at the same time. With this approach the team can have some time and stabilize they are in. So the team takes control over the demand (input) and throughput (output) by using CONWIP.&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;The Lead Time Is The Time The Customer Must Wait to Get What She Asked For&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;Flow Efficiency&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/12/takt-time/&quot;&gt;Using Takt Time to Find Problems Earlier&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;Throughput&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/01/why-wip-limits-matter/&quot;&gt;One Reason Why WIP limits Matter&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/02/wrong-wip-limits-may-kill-your-options/&quot;&gt;Wrong WIP Limits Will Kill Your Options&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/02/aging-work-items/&quot;&gt;Aging Work Items&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/03/conwip/&quot;&gt;Constant WIP - CONWIP&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on March 10, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Improve your Estimations and be More Predictable]]></title>
+  <link rel="alternate" type="text/html" href="/blog/2014/02/be-more-predictable/" />
+  <id>/blog/2014/02/be-more-predictable</id>
+  <published>2014-02-28T00:00:00+01:00</published>
+  <updated>2014-02-28T00:00:00+01:00</updated>
+  <author>
+    <name>Zsolt Fabók</name>
+    <uri></uri>
+    
+  </author>
+  <content type="html">
+    &lt;p&gt;Planning in general - not just in software development - is not an easy thing. We have to know what to do next and have an idea when it will be ready. Although the former is harder the latter seems to be more problematic. We also struggled with it with my old team at Digital Natives. We had frequent and long planning meetings, and had rarely finished everything we had planned. So, we decided it was enough, and it was time to try something new. After about two months, we were able to give very accurate hour based predictions on spent time and delivery (lead time) with a quarter of the effort of our previous planning meetings.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;We started a new board - not a Kanban board - where we collected the already finished work items:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-02-28-be-more-predictable/sla-board.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see this board had three different columns. Each column represented a T-shirt size: ‘S’, ‘M’, and ‘L’. When we set up this board we put all the work items we had into these columns based on difficulty. Our smart questions were: “was this work item hard to do?” and “was it harder than these work items in this column?”. With this approach we ended up with three columns and since we weren’t able to find right titles for the them we named them T-shirt sizes. We calculated the &lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;lead time&lt;/a&gt; and &lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;spent time&lt;/a&gt; using &lt;a href=&quot;/blog/2013/02/when-will-it-be-done/&quot;&gt;distribution diagrams&lt;/a&gt; for each, and wrote them on the board (you can see them on the next picture). At the end of each week, we recalculated and put them on the board in order to use always the latest data for our predictions. When a work item was finished we put it into its proper column.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-02-28-be-more-predictable/sla-board-highlight.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When we got a new work item, we gathered around the board, and we tried to estimate the right difficulty for the new work. Then we wrote ‘S’, ‘M’, or ‘L’ on the card and put it on our Kanban board. During the daily meeting our product owner checked the new work items on the board. When he thought that an item would take too long - its predicted spent time based on its size was too much - he asked us to cut the work item into pieces or he reduced the scope just to let something hit the market sooner. Our &lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;weekly inflow&lt;/a&gt; was around 7 work items, we spent around 5 minutes on finding the right place for the card, so our planning effort was a bit more than half an hour. Before that we have never finished our planning meeting in under two hours. The other big gain was that we could get rid of Scrum sprints and could work continuously: the planning meeting wasn’t an obstacle any more.&lt;/p&gt;
+
+&lt;p&gt;After several weeks, we observed that our predictions were not as good as before. There were ‘M’ sized items that were finished sooner, and vice versa. After a &lt;a href=&quot;/blog/tag/retrospective&quot;&gt;retrospective&lt;/a&gt; meeting we concluded that &lt;strong&gt;some of our data had expired&lt;/strong&gt;. We were getting better at what we were doing, learned a lot about the product, and did several minor improvements in the meantime, therefore our old data was no longer useful. So we introduced lines on our board. Each line represented a week, and the latest was on the top (it took about 5 minutes to shift the whole board down each week, so it wasn’t a big effort). When we were doing the planning we considered only the last three weeks.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;right&quot; src=&quot;/images/posts/2014-02-28-be-more-predictable/post-it.png&quot; /&gt;
+Of course we were wrong several times. The note on the right shows a transformation from ‘S’ -&amp;gt; ‘M’. After a work item was finished we took it from our Kanban board and move it to the other board. When a work item took more time than we had originally predicted, we tried to find the right place for it. The work item above was predicted as ‘S’ but actually was an ‘M’, so we put it into the ‘M’ column. &lt;strong&gt;With this technique we kept our board up to date&lt;/strong&gt;. Of course, if it was an ‘S’ but we predicted an ‘M’ we did the same routine. This ‘S’ -&amp;gt; ‘M’ marker became very helpful later. There is an inner voice that tells us “next time you’ll do better”, but this marker kept us from listening to it. If the new work item was similar to a card with ‘S’ -&amp;gt; ‘M’, we wouldn’t mark it as ‘S’ because we knew that we had problems with predicting similar work items before, so it became an ‘M’. Most of time we were right, and I’m still very happy about it, because &lt;strong&gt;we were making decisions based on data and not gut feeling&lt;/strong&gt;. Moreover, we were also looking for certain keywords. For example, if a work item had the word ‘wizard’ in its description it couldn’t get into the ‘S’ column, ever. Even if it was a text change on the UI. We tried several times to finish a ‘wizard’ related work within ‘S’ scope, and we never succeeded. So, the minimum an ‘wizard’ work item could get was an ‘M’. And our product owner was okay with this (I guess he valued predictability and quality over speed).&lt;/p&gt;
+
+&lt;p&gt;You may wonder about a couple of things. First, why were we tracking both the lead and spent time? We were kind of working in a TTM (time to market) fashion so it mattered how much time we spent on this project during a week or a month, so the spent time was important. On the other hand we needed the lead time to predict when a work item could be delivered. We weren’t doing continuous delivery - we did continuous deployment - so it was good to know when we can deploy.&lt;/p&gt;
+
+&lt;p&gt;Second, what has happened to the architectural decision part of a planning meeting? During a typical Scrum planning meeting, the teams kind of make architectural decisions as well. We didn’t stop doing this. We changed our process so that we did this planning for each new work item when it could get into the ‘analyse’ phase (before implementation). So in general the time we spent on planning didn’t change much. What changed is the time we spent on a regular planning meeting, and we reduced some &lt;a href=&quot;/blog/2012/08/waste-in-software-development#mura&quot;&gt;mura waste&lt;/a&gt;: we planned when it was necessary, and therefore we had fewer re-planning sessions than before.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-02-28-be-more-predictable/kanban-board.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And third, the environment. When we started to do this kind of planning we knew the domain, knew each other and our technical knowledge was kind of the same. The size of the team changed over time, but this affected only the lead time because we rarely worked on work items in pairs.&lt;/p&gt;
+
+&lt;p&gt;I really enjoyed working like this. It was stressless: no hassle around deadlines and estimations, because everything we did was predicable most of the time. &lt;strong&gt;Of course, when we had some performance issues we had some stress, but not because of planning and execution of plans&lt;/strong&gt;. The pictures above were taken after four weeks of usage but we used this technique for three months until the end of the project. I can only recommend this technique, and if you are interested in the &lt;a href=&quot;https://twitter.com/search?q=%23NoEstimates&amp;amp;src=hash&quot;&gt;#noEstimates&lt;/a&gt; movement, this is a good start. You don’t need a physical board either. You can have a bit wider Done column, or a different kind of Archive board. Here is an example from Leankit:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;center&quot; src=&quot;/images/posts/2014-02-28-be-more-predictable/leankit.png&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;related-articles&quot;&gt;&lt;h5&gt;You may also find interesting:&lt;small class=&quot;pull-right&quot;&gt;(&lt;a href=&quot;/blog/&quot;&gt;View all posts&lt;/a&gt;)&lt;/small&gt;&lt;/h5&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/02/when-will-it-be-done/&quot;&gt;When Will It Be Done?&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/07/lead-time/&quot;&gt;The Lead Time Is The Time The Customer Must Wait to Get What She Asked For&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/11/the-kanban-board-is-a-mirror/&quot;&gt;The Kanban Board is a Mirror&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2013/12/flow-efficiency/&quot;&gt;Flow Efficiency&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/blog/2014/01/throughput/&quot;&gt;Throughput&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/blog/2014/02/be-more-predictable/&quot;&gt;Improve your Estimations and be More Predictable&lt;/a&gt; was originally published by Zsolt Fabók at &lt;a href=&quot;&quot;&gt;Zsolt Fabók&lt;/a&gt; on February 28, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+</feed>

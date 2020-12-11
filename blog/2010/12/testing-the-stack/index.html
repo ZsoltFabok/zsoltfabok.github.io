@@ -1,0 +1,510 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Testing the Stack Implementation &#8211; Zsolt Fabók</title>
+<meta name="description" content="I've created my own version of the exercise used during my first agile job interview in order to compare it to the result of the pair programming session of the job interview. The exercise was quite simple.<br/><br/>more...">
+<meta name="keywords" content="tdd, dojo, kata, xp, java">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Testing the Stack Implementation">
+<meta name="twitter:description" content="I've created my own version of the exercise used during my first agile job interview in order to compare it to the result of the pair programming session of the job interview. The exercise was quite simple.<br/><br/>more...">
+<meta name="twitter:site" content="@ZsoltFabok">
+<meta name="twitter:creator" content="@ZsoltFabok">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/site-logo.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Testing the Stack Implementation">
+<meta property="og:description" content="I've created my own version of the exercise used during my first agile job interview in order to compare it to the result of the pair programming session of the job interview. The exercise was quite simple.<br/><br/>more...">
+<meta property="og:url" content="/blog/2010/12/testing-the-stack/">
+<meta property="og:site_name" content="Zsolt Fabók">
+
+
+
+
+
+
+<link rel="canonical" href="/blog/2010/12/testing-the-stack/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zsolt Fabók Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<script src="https://use.edgefonts.net/source-sans-pro:n2,i2,n3,i3,n4,i4,n6,i6,n7,i7,n9,i9;source-code-pro:n4,n7;volkhov.js"></script>
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/vendor/html5shiv.min.js"></script>
+  <script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body id="post">
+
+<div class="navigation-wrapper">
+	<nav role="navigation" id="site-nav" class="animated drop">
+	    <ul>
+      
+		    
+		        
+		    
+		    <li><a href="/" >Home</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/blog/" >Posts</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/speaking/" >Speaking</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/activities/" >Activities</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/about/" >About</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/contact/" >Contact</a></li>
+		  
+		    
+		        
+		    
+		    <li><a href="/search/" >Search</a></li>
+		  
+	    </ul>
+	</nav>
+</div><!-- /.navigation-wrapper -->
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+
+<!-- <header class="masthead">
+	<div class="wrap">
+      
+  		<a href="/" class="site-logo" rel="home" title="Zsolt Fabók"><img src="/images/site-logo.png" width="200" height="200" alt="Zsolt Fabók logo" class="animated fadeInDown"></a>
+      
+      <h1 class="site-title animated fadeIn"><a href="/">Zsolt Fabók</a></h1>
+		<h2 class="site-description animated fadeIn" itemprop="description">Practical ideas on kanban, lean, scrum, xp, java, programming...</h2>
+	</div>
+</header><!-- /.masthead -->
+
+<div class="js-menu-screen menu-screen"></div>
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    
+    <div class="entry-wrapper">
+      <header class="entry-header">
+        
+          <h1 class="center">Testing the Stack Implementation</h1>
+        
+      </header>
+      <footer class="entry-meta">
+        
+        
+        
+          <img src="/images/fabokzs.png" class="bio-photo" alt="Zsolt Fabók bio photo"></a>
+        
+        <span class="author-block">By <span class="author-name">Zsolt Fabók</span></span>
+        <span class="entry-date date published"><time datetime="2010-12-11T23:16:35-07:00"><i class="fa fa-calendar-o"></i> December 11, 2010</time></span>
+        
+        <span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Comment</a></span>
+        <span class="social-share-twitter">
+  <a href="https://twitter.com/intent/tweet?hashtags=tdd,dojo,kata,xp,java&amp;text=Testing%20the%20Stack%20Implementation&amp;url=/blog/2010/12/testing-the-stack/&amp;via=ZsoltFabok" title="Share on Twitter" itemprop="Twitter"><i class="fa fa-twitter-square"></i> Tweet</a>
+</span>
+<span class="social-share-facebook">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/12/testing-the-stack/" title="Share on Facebook" itemprop="Facebook"><i class="fa fa-facebook-square"></i> Like</a>
+</span>
+<span class="social-share-googleplus">
+  <a href="https://plus.google.com/share?url=/blog/2010/12/testing-the-stack/" title="Share on Google Plus" itemprop="GooglePlus"><i class="fa fa-google-plus-square"></i> +1</a>
+</span>
+<!-- /.social-share -->
+        
+      </footer>
+      <div class="entry-content">
+        <p>I’ve created my own version of the exercise used during my first <a href="/blog/2010/12/the-first-agile-job-interview/">agile job interview</a> in order to compare it to the result of the <a href="/blog/tag/pair-programming/">pair programming</a> session of the job interview. The exercise was quite simple: <em><a href="http://www.threeriversinstitute.org/blog/?p=572">implement a stack</a>, and store the values in an array</em>. The implementation is pretty straightforward, the code is available on <a href="https://github.com/ZsoltFabok/kata.stack">github</a>. One can ask: <em>why an array, why not using the collection framework?</em> The answer is simple: just for fun, and just for the exercise :-)</p>
+
+<p>In order to store the necessary amount of values, the internal array needs to be enlarged from time to time. There is nothing wrong with this so far. But in order to avoid unnecessary memory loss, that internal array needs to be shrunk as well. The first version of my <em>Stack</em> implementation lacked this functionality. The user stories of the functionality request can be:</p>
+
+<ul>
+  <li>
+    <p><em>As a developer, I don’t want to reserve more memory for my stack implementation than necessary</em></p>
+  </li>
+  <li>
+    <p><em>As a customer, I don’t want to lose values after shrinking the internal container</em></p>
+  </li>
+</ul>
+
+<p>The second user story is very straightforward, so let’s focus on the first one. User stories and previous test cases are available, so far so good, but <strong>how to test the user story?</strong> An even better question: <em>*how to write a test case first? **I consider my *Stack</em> implementation as an end product, and as such, I believe that it should follow the <a href="http://en.wikipedia.org/wiki/Object-oriented_programming#Encapsulation">encapsulation object oriented programming principle</a>, and it shouldn’t be difficult to use. An obvious choice would be a <a href="http://download.oracle.com/javase/tutorial/reflect/index.html">reflection</a>-based solution, but since I’m not a great fan of reflection, I started to test the code from different angles.</p>
+
+<p>For better understanding, here comes the code being tested:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">shrinkContainerCapacity</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span><span class="o">[]</span> <span class="n">extentedContainer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">container</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">10</span><span class="o">];</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">container</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">extentedContainer</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">container</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">10</span><span class="o">);</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">extentedContainer</span><span class="o">;</span>
+<span class="o">}</span></code></pre></div>
+
+<p><strong>The first user story suggests memory handling, so first let’s try out this angle</strong>. Memory usage can be checked with the following methods:</p>
+
+<ul>
+  <li>
+    <p><em><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html#totalMemory()">Runtime.getRuntime().totalMemory()</a></em></p>
+  </li>
+  <li>
+    <p><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html#freeMemory()"><em>Runtime.getRuntime().freeMemory()</em></a></p>
+  </li>
+  <li>
+    <p><em><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html#maxMemory()">Runtime.getRuntime().maxMemory()</a></em></p>
+  </li>
+</ul>
+
+<p>Using those methods I wrote this test case sketch:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldUseLessMemoryAfterShrinkingInternalContainer</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="o">;</span> <span class="n">attempts</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">stack</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="kt">long</span> <span class="n">availableMemoryBefore</span> <span class="o">=</span> <span class="n">getAvailableMemory</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">stack</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="kt">long</span> <span class="n">availableMemoryAfter</span> <span class="o">=</span> <span class="n">getAvailableMemory</span><span class="o">();</span>
+        <span class="n">assertTrue</span><span class="o">(</span><span class="n">availableMemoryBefore</span> <span class="o">&lt;</span> <span class="n">availableMemoryAfter</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">long</span> <span class="nf">getAvailableMemory</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">gc</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">runFinalization</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">gc</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">runFinalization</span><span class="o">();</span>
+    <span class="kt">long</span> <span class="n">totalMemory</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">totalMemory</span><span class="o">();</span>
+    <span class="kt">long</span> <span class="n">freeMemory</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">freeMemory</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">totalMemory</span> <span class="o">-</span> <span class="n">freeMemory</span><span class="o">;</span>
+<span class="o">}</span></code></pre></div>
+
+<p>I’ve executed the test case several times and it never turned red. I was curious why, because it supposed to be work, isn’t it?</p>
+
+<p>The javaDoc of <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> and <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#runFinalization()">System.runFinalization()</a> states that: “<em>…the Java Virtual Machine has made a best effort…</em>”. Additionally Java Virtual Machine implementations may differ on operation system level: “…<em>The aim is binary compatibility. Each particular host <a href="http://en.wikipedia.org/wiki/Operating_system" title="Operating system">operating system</a> needs its own implementation of the JVM and runtime. These JVMs interpret the bytecode semantically the same way, but the actual implementation may be different.</em>” (source: <a href="http://en.wikipedia.org/wiki/Java_virtual_machine">Wikipedia</a>).</p>
+
+<p>Adding these statements up makes me nervous. The whole situation - using memory measurements for testing - starts looking black for me, so I did some measurements using the test code from above with different Java Virtual Machine implementations on different operating systems:</p>
+
+<ul>
+  <li>
+    <p>Running with eclipse 1.6 <a href="http://en.wikipedia.org/wiki/Java_Runtime_Environment">jre</a> on Ubuntu Linux</p>
+  </li>
+  <li>
+    <p>Running with oracle’s 1.6 jre on Ubuntu Linux</p>
+  </li>
+  <li>
+    <p>Running with <a href="http://www.oracle.com/technetwork/middleware/jrockit/index.html">jrockit</a> 1.6 jre on Ubuntu Linux</p>
+  </li>
+  <li>
+    <p>Running with oracle’s 1.6 jre on Windows XP</p>
+  </li>
+</ul>
+
+<p>I’m interested how the <em>assertTrue(availableMemoryBefore &lt; availableMemoryAfter)</em> will turn out in the different scenarios, so I’m measuring the <em>availableMemoryBefore</em> and <em>availableMemoryAfter</em> values, and calculate the <a href="http://en.wikipedia.org/wiki/Sign_function">SIGN</a> of their difference: if the <em>availableMemoryAfter</em> is greater than <em>availableMemoryBefore</em> the SIGN will return 1, which is equal to a <em>true</em> test case and a green bar. In other words, after <em>shrinking</em> the array, the <em>Stack</em> uses less memory. <em>Mission accomplished</em> sort of say.</p>
+
+<p>Before evaluating the results I have to note two things.  I’ve executed the test cases several times and I didn’t find any difference in their outputs, that’s the reason why I have only one measurement sheet for each case. Additionally I sometimes have the feeling that there is a slight difference when I’m running a java application/test case from eclipse and from command line using oracle’s jre, therefore I did the measurements with both of them separately. Now the result:</p>
+
+<p><img class="center" src="/images/posts/2010-12-11-testing-the-stack/measurement_sign_gc_twice.png" width="496" height="194" title="measurement sign gc twice" /></p>
+
+<p>Now my red bar is understandable. I’m using eclipse under Ubuntu Linux (and oracle’s <a href="http://en.wikipedia.org/wiki/Java_Runtime_Environment">jre</a>), and according to the diagram above, there is less available memory after the first execution of the <em>shrinking *(again, I executed this particular measurement more than twenty times, and I always got the same result). If I had used <a href="http://www.oracle.com/technetwork/middleware/jrockit/index.html">jrockit</a>, the problem above never would have turned out (the orange bars are always at 1, meaning that there is more available memory after *shrinking</em> in every case).</p>
+
+<p>I would have stopped with the measurements here, unless my friend had asked me this: “<em>Why did you have to call the <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> and <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#runFinalization()">System.runFinalization()</a> twice?</em>” It is a very good question. The more I call the <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> the more feasible is that the <a href="http://www.ibm.com/developerworks/library/j-jtp01274.html">Java Virtual Machine will do garbage collection</a>, which means that my application will use less memory, at least on paper.</p>
+
+<p>Unfortunately experience shows otherwise. Have a look again at the javaDoc of <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a>. In layman’s terms the <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> call is just a request to the Java Virtual Machine, and there is no guarantee that it will consider the call at all. According to my measurements below, the Java Virtual Machine considered it, but I had participated in a project several years ago, in which we had memory issues and no matter how often we called the <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> nothing really happened. The Java Virtual Machine felt that the time for garbage collection had not come yet, so it ignored our request.</p>
+
+<p>So <em>SIGN (before - after)</em> looks this, when I’m calling the <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> and <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#runFinalization()">System.runFinalization()</a> only once:</p>
+
+<p><img class="center" src="/images/posts/2010-12-11-testing-the-stack/measurement_sign_gc_once.png" width="498" height="192" title="measurement sign gc once" /></p>
+
+<p>In this case I would still see a red bar with my setup, in several cases (7, 9, 11, 13 and 15) the SIGN is 0, meaning that the amount of available memory is the same before and after the <em>shrinking</em>. After having a close look there isn’t any option, which would make my bar green. I feel like I’m getting somewhere: checking memory usage as validation is not that promising as it was before I started measuring it. Let’s see the result without any <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> and <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#runFinalization()">System.runFinalization()</a> calls in order to finish my measurements and provide more data for evaluation:</p>
+
+<p><img class="center" src="/images/posts/2010-12-11-testing-the-stack/measurement_sign_no_gc.png" width="497" height="193" title="measurement sign no gc" /></p>
+
+<p>The result is not deterministic at all. Now I’m 100% sure that <strong>checking the memory is a dead end</strong> for me. I cannot garantee that my <em>shouldUseLessMemoryAfterShrinkingInternalContainer()</em> test case will produce the same output every time. Someone can use a different kind of machine for test case execution - for example Solaris, on which I didn’t do any measurement at all -, or can change my <em>getAvailableMemory()</em> helper method and execute less or more <a href="http://download.oracle.com/javase/6/docs/api/java/lang/System.html#gc()">System.gc()</a> calls. Unfortunately I need a different approach.</p>
+
+<p>The next thing worth having a look at is <strong><a href="http://martinfowler.com/articles/injection.html">injecting</a> the array copy functionality</strong>. Unfortunately, the <em>System.arraycopy()</em> method is static, so I have to wrap it up, and inject the wrapper class into my <em>Stack</em>. The <em>Stack</em> is considered an end product, I cannot let the user take care of the <a href="http://martinfowler.com/articles/injection.html">dependency injection</a> by herself, so I need a factory to do that:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StackFactory</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">Stack</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Stack</span><span class="o">(</span><span class="k">new</span> <span class="nf">ArrayCopyWrapper</span><span class="o">());</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="c1">// ...</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ArrayCopyWrapper</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">arraycopy</span><span class="o">(</span><span class="n">Object</span> <span class="n">src</span><span class="o">,</span> <span class="kt">int</span> <span class="n">srcPos</span><span class="o">,</span> <span class="n">Object</span> <span class="n">dest</span><span class="o">,</span> <span class="kt">int</span> <span class="n">destPos</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="n">srcPos</span><span class="o">,</span> <span class="n">dest</span><span class="o">,</span> <span class="n">destPos</span><span class="o">,</span> <span class="n">length</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>First let’s see the effect of this modification on the test code:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">shouldShrinkInternalCapacity</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">FakeArrayCopyWrapper</span> <span class="n">arrayCopyWrapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FakeArrayCopyWrapper</span><span class="o">();</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Stack</span><span class="o">(</span><span class="n">arrayCopyWrapper</span><span class="o">);</span>
+
+    <span class="n">arrayCopyWrapper</span><span class="o">.</span><span class="na">setExpectations</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+         <span class="n">stack</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Had to cut the for() loop in half</span>
+    <span class="c1">// In order to be able to set two expectations</span>
+    <span class="n">arrayCopyWrapper</span><span class="o">.</span><span class="na">setExpectations</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    <span class="n">stack</span><span class="o">.</span><span class="na">push</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+
+    <span class="c1">// The same reason here</span>
+    <span class="n">arrayCopyWrapper</span><span class="o">.</span><span class="na">setExpectations</span><span class="o">(</span><span class="mi">20</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="n">stack</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+
+    <span class="n">arrayCopyWrapper</span><span class="o">.</span><span class="na">setExpectations</span><span class="o">(</span><span class="mi">20</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">15</span><span class="o">);</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+       <span class="n">stack</span><span class="o">.</span><span class="na">pop</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>I didn’t want to spend too much time on setting up and using <a href="/blog/2010/08/jmock-versus-mockito/">mock libraries</a>. I had the strange feeling that I didn’t have to put too much effort into this angle. A simple <a href="http://en.wikipedia.org/wiki/Mock_object#Mocks.2C_fakes_and_stubs">fake</a> object will be just fine:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FakeArrayCopyWrapper</span> <span class="kd">extends</span> <span class="n">ArrayCopyWrapper</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">srcPos</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">destPos</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">length</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setExpectations</span><span class="o">(</span><span class="kt">int</span> <span class="n">srcPos</span><span class="o">,</span> <span class="kt">int</span> <span class="n">destPos</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">srcPos</span> <span class="o">=</span> <span class="n">srcPos</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">destPos</span> <span class="o">=</span> <span class="n">destPos</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">length</span> <span class="o">=</span> <span class="n">length</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">arraycopy</span><span class="o">(</span><span class="kt">int</span> <span class="n">srcPos</span><span class="o">,</span> <span class="n">Object</span> <span class="n">dest</span><span class="o">,</span> <span class="kt">int</span> <span class="n">destPos</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">srcPos</span><span class="o">,</span> <span class="n">srcPos</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">destPos</span><span class="o">,</span> <span class="n">destPos</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">length</span><span class="o">,</span> <span class="n">length</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Although I wrote the <em>shouldShrinkInternalCapacity()</em> and <em>FakeArrayCopyWrapper</em> class, I don’t like them too much. The test case is complicated and the Fake is strange.</p>
+
+<p>Additionally, when someone wants to instantiate my <em>Stack</em> she must do this:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Stack</span> <span class="n">stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StackFactory</span><span class="o">().</span><span class="na">create</span><span class="o">()</span></code></pre></div>
+
+<p>But, this version seems to be more user friendly:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="n">Stack</span> <span class="n">stack</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Stack</span><span class="o">()</span></code></pre></div>
+
+<p>The first version is good for internal classes, but personally I don’t want my users to do complicated things like using wrapper factories for creating an object, when there is an easier way.</p>
+
+<p>However there is one more thing. The <em>ArrayCopyWrapper</em> wraps only the <em>System.arraycopy()</em> call. If I executed a code coverage measurement using the <em>shouldShrinkInternalCapacity()</em> test case, the measurement would indicate that the <em>shrinkContainerCapacity()</em> method is 100% covered with <em>shouldShrinkInternalCapacity()</em> test case. This is not true. The current version of <em>shouldShrinkInternalCapacity()</em> does not test the command below, because it focuses only on the <em>arraycopy</em>:</p>
+
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">shrinkContainerCapacity</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">//...</span>
+    <span class="c1">//...</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">extentedContainer</span><span class="o">;</span>
+<span class="o">}</span></code></pre></div>
+
+<p>One can argue that the line above is indirectly tested by the other test cases.  This is true, but I would like to have focused test cases and correct coverage data.</p>
+
+<p>This solution is not user friendly and I had to do things in testing which I don’t really like. This approach is <strong>a</strong><strong>nother dead end</strong> for me, at least.</p>
+
+<p>The last thing I can think of is <em>*checking the size **of the *internal container.</em> I have the following options:</p>
+
+<ul>
+  <li>
+    <p>make it protected</p>
+  </li>
+  <li>
+    <p>create a protected method for getting its size</p>
+  </li>
+  <li>
+    <p>use reflection</p>
+  </li>
+</ul>
+
+<p>The first two options harm <em><a href="http://en.wikipedia.org/wiki/Object-oriented_programming#Encapsulation">encapsulation</a></em>, which I have no intention to do, so <strong>another dead end</strong>.</p>
+
+<p>I had no other option but to do the testing with reflection. I don’t like the current state of the test cases, but I have no other ideas. So I’m going to leave this post open, feel free to submit other ideas on how this feature can be tested. The code is available on <a href="https://github.com/ZsoltFabok/kata.stack">github</a>, and any suggestions and comments are welcome.</p>
+
+
+        <span class="entry-tags inline"><ul><li><a href="/blog/tag/tdd" title="tdd">tdd</a></li><li><a href="/blog/tag/dojo" title="dojo">dojo</a></li><li><a href="/blog/tag/kata" title="kata">kata</a></li><li><a href="/blog/tag/xp" title="xp">xp</a></li><li><a href="/blog/tag/java" title="java">java</a></li></ul></span>
+        <hr/>
+        <div class="social-share">
+          <h4>Share on</h4>
+          <ul>
+            <li>
+              <a rel="nofollow" id="tweet" href="https://twitter.com/intent/tweet?text=/blog/2010/12/testing-the-stack/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="like" href="https://www.facebook.com/sharer/sharer.php?u=/blog/2010/12/testing-the-stack/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="plus" href="https://plus.google.com/share?url=/blog/2010/12/testing-the-stack/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+            </li>
+            <li>
+              <a rel="nofollow" id="linkedin" class="linkedin" href="https://www.linkedin.com/cws/share?url=/blog/2010/12/testing-the-stack/" title="Share on Linkedin"><i class="fa fa-linkedin"></i><span> Linkedin</span></a>
+            </li>
+          </ul>
+          </div><!-- /.social-share -->
+          <script>
+          (function(){
+              var openWindowPopup = function(e) {
+                if(!e) return;
+                e.preventDefault();
+                window.open(this.href, "intent", "scrollbars=yes,resizable=yes,toolbar=no,location=yes,width=550,height=420,left=" + (window.screen ? Math.round(screen.width / 2 - 275) : 50) + ",top=" + 100);
+              };
+            var ids = ['tweet', 'like', 'plus', 'linkedin'];
+            for(var i = 0; i < ids.length; i++) {
+              document.getElementById(ids[i]).onclick = openWindowPopup;
+            }
+          })();
+          </script>
+          <nav class="pagination" role="navigation">
+            
+              <a href="/blog/2010/12/the-first-agile-job-interview/" class="basic-alignment left" title="The First Agile Job Interview">&laquo; The First Agile Job Interview</a>
+            
+            
+              <a href="/blog/2010/12/daily-stand-up-variations/" class="basic-alignment right" title="Daily Stand-up Variations">Daily Stand-up Variations &raquo;</a>
+            
+          </nav><!-- /.pagination -->
+        
+          <div id="disqus_thread"></div><!-- /#disqus_thread -->
+          
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zsoltfabok'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        
+      </div><!-- /.entry-content -->
+    </div><!-- /.entry-wrapper -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo" class="entry-wrapper">
+    
+
+<div class="social-icons">
+	<a href="https://twitter.com/ZsoltFabok" title="Zsolt Fabók on Twitter" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+  <a href="http://www.slideshare.net/fabokzs" title="Zsolt Fabók on Slideshare" target="_blank"><i class="fa fa-slideshare fa-2x"></i></a>
+	<a href="https://facebook.com/zsoltfabokcom" title="Zsolt Fabók on Facebook" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="https://plus.google.com/+ZsoltFabok" title="Zsolt Fabók on Google+" target="_blank"><i class="fa fa-google-plus-square fa-2x"></i></a>
+	<a href="https://linkedin.com/in/zsoltfabok" title="Zsolt Fabók on LinkedIn" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+  <a href="http://www.xing.com/profile/Zsolt_Fabok" title="Zsolt Fabók on Xing" target="_blank"><i class="fa fa-xing-square fa-2x"></i></a>
+	<a href="http://pm.stackexchange.com/users/468/zsolt" title="Zsolt Fabók on StackExchange" target="_blank"><i class="fa fa-stack-exchange fa-2x"></i></a>
+	<a href="https://instagram.com/fabokzs" title="Zsolt Fabók on Instagram" target="_blank"><i class="fa fa-instagram fa-2x"></i></a>
+	
+	<a href="https://github.com/ZsoltFabok" title="Zsolt Fabók on Github" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+	
+  
+	
+  <a href="/feed.xml" title="Atom/RSS feed"><i class="fa fa-rss-square fa-2x"></i></a>
+</div><!-- /.social-icons -->
+<span>&copy; 2020 Zsolt Fabók. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/so-simple/" rel="nofollow">So Simple Theme</a>.</span>
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script type="text/javascript">
+  var BASE_URL = '';
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  var _gaq = _gaq || [];
+  var pluginUrl =
+ 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-16780667-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = 'https://stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+</body>
+</html>
